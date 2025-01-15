@@ -1,31 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>COPY</title>
-    <link rel="stylesheet" href="styles.css" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  </head>
-  <body>
-    <div class="game-table">
-      <div class="board basement">
-        <div class="tile start basement-landing">Basement Landing</div>
-      </div>
+    <head>
+        <title>COPY</title>
+        <link rel="stylesheet" href="styles.css" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    </head>
+    <body>
+        <div class="game-table">
+            <div class="board basement">
+                <div class="tile start basement-landing">Basement Landing</div>
+            </div>
 
-      <div class="board ground active">
-        <div class="tile start entrance-hall"><span>Entrance Hall</span></div>
-        <div class="tile start foyer"><span>Foyer</span></div>
-        <div class="tile start grand-staircase"><span>Grand Staircase</span></div>
-      </div>
+            <div class="board ground active">
+                <div class="tile start entrance-hall">
+                    <span>Entrance Hall</span>
+                </div>
+                <div class="tile start foyer"><span>Foyer</span></div>
+                <div class="tile start grand-staircase">
+                    <span>Grand Staircase</span>
+                </div>
+            </div>
 
-      <div class="board upper">
-        <div class="tile start upper-landing"><span>Upper Landing</span></div>
-      </div>
+            <div class="board upper">
+                <div class="tile start upper-landing">
+                    <span>Upper Landing</span>
+                </div>
+            </div>
 
-      <button class="level-btn basement-btn">Basement</button>
-      <button class="level-btn ground-btn" id="current">Ground</button>
-      <button class="level-btn upper-btn">Upper</button>
-    </div>
-    <script src="app.js" type="module"></script>
-  </body>
+            <button class="level-btn basement-btn">Basement</button>
+            <button class="level-btn ground-btn" id="current">Ground</button>
+            <button class="level-btn upper-btn">Upper</button>
+        </div>
+        <button class="endTurnBtn">End Turn?</button>
+        <script src="app.js" type="module"></script>
+    </body>
 </html>

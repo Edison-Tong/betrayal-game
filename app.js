@@ -5,7 +5,8 @@ let lvl_btns = document.querySelectorAll(".level-btn");
 let startingTiles = document.querySelectorAll(".tile.start");
 let displayedFloor = document.querySelector(".board.active");
 let currentFloorBtn = document.querySelector("#current");
-let playerCount = 1;
+let endTurnBtn = document.querySelector(".endTurnBtn.inactive");
+let playerCount = 2;
 let activePlayer;
 let basementStairs;
 
@@ -22,8 +23,6 @@ function makeButtonsActive() {
             });
     });
 }
-
-// .replace("-btn", "")
 
 function switchBoards(targetFloor) {
     currentFloorBtn.setAttribute("id", "");
@@ -86,7 +85,6 @@ function handlePlayerMovement() {
     let row;
     let column;
     if (displayedFloor.classList.contains(activePlayer.currentFloor)) {
-        // handlePlayerTurns();
         row = parseInt(activePlayer.position.style.gridRow);
         column = parseInt(activePlayer.position.style.gridColumn);
         if (key === "ArrowUp") {
@@ -103,6 +101,7 @@ function handlePlayerMovement() {
         }
     }
     if (row > 0 && row < 12 && column > 0 && column < 12) {
+        activePlayer.speed -= 1;
         let existingTile = Array.from(displayedFloor.children).find((child) => {
             return (
                 child.classList.contains("tile") &&
@@ -190,20 +189,6 @@ function handlePlayerMovesFloors() {
             parseInt(basementStairs.style.gridColumn),
         ]);
     }
-}
-
-function handlePlayerTurns() {
-    if (activePlayer.speed === 0) {
-        activePlayer.speed = 4;
-        if (thing === true) {
-            activePlayer = players[1];
-            thing = false;
-        } else {
-            activePlayer = players[0];
-            thing = true;
-        }
-    }
-    activePlayer.speed -= 1;
 }
 
 makeButtonsActive();
