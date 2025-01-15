@@ -1,99 +1,99 @@
 body {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    background-color: #8b4513; /* Brown background for the game table */
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  background-color: #8b4513; /* Brown background for the game table */
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
 }
 
 .game-table {
-    background-color: #8b4513; /* Brown color for the table */
-    border: 15px solid #654321; /* Dark brown border for the game table */
-    border-radius: 10px; /* Rounded edges */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Add a shadow for depth */
-    text-align: center;
+  background-color: #8b4513; /* Brown color for the table */
+  border: 15px solid #654321; /* Dark brown border for the game table */
+  border-radius: 10px; /* Rounded edges */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Add a shadow for depth */
+  text-align: center;
 }
 
 .board {
-    display: none;
-    background-color: white;
-    border: 5px solid #000;
-    height: 800px;
-    width: 800px;
-    margin: auto;
+  display: none;
+  background-color: white;
+  border: 5px solid #000;
+  height: 800px;
+  width: 800px;
+  margin: auto;
 }
 
 .board.active {
-    display: grid;
+  display: grid;
 }
 
 .tile {
-    background-color: #ddd;
-    border: 1px solid white;
-    display: grid;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 10px;
-    font-weight: bold;
-    box-sizing: border-box;
-    overflow: hidden;
-    position: relative; /* Ensure child elements can be positioned */
+  background-color: #ddd;
+  border: 1px solid white;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  font-weight: bold;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative; /* Ensure child elements can be positioned */
 }
 
 .entrance-hall,
-.foyer,
-.grand-staircase {
-    background-color: green;
+.hallway,
+.ground-floor-staircase {
+  background-color: green;
 }
 
 /* Level buttons styling */
 .level-btn {
-    padding: 10px 20px;
-    margin: 20px 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  padding: 10px 20px;
+  margin: 20px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .level-btn:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 /* Hide the active floor button */
 .level-btn#current {
-    background-color: #ccc;
-    cursor: default;
+  background-color: #ccc;
+  cursor: default;
 }
 
 .endTurnBtn {
-    padding: 10px 20px;
-    margin: 20px 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  padding: 10px 20px;
+  margin: 20px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .endTurnBtn:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 .player {
-    background-color: #ff0;
-    border: 2px solid #000;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    margin: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-    font-size: 10px;
+  background-color: #ff0;
+  border: 2px solid #000;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  font-size: 10px;
 }
