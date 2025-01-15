@@ -132,6 +132,8 @@ function handlePlayerMovement() {
         activePlayer.col = column;
         activePlayer.position.style.gridRow = row;
         activePlayer.position.style.gridColumn = column;
+    } else {
+        alert("you have reached the edge of the board.");
     }
 }
 
