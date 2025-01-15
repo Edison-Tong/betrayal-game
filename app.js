@@ -5,9 +5,8 @@ let lvl_btns = document.querySelectorAll(".level-btn");
 let startingTiles = document.querySelectorAll(".tile.start");
 let displayedFloor = document.querySelector(".board.active");
 let currentFloorBtn = document.querySelector("#current");
-let playerCount = 2;
+let playerCount = 1;
 let activePlayer;
-let playerIndex;
 
 boards.forEach((board) => {
     board.style.gridTemplateRows = "repeat(11 ,1fr)";
@@ -70,7 +69,6 @@ function positionPlayers(time, floor, rowCol) {
             players.push(player);
         }
         activePlayer = players[0];
-        playerIndex = 0;
         return;
     }
     activePlayer.position.remove();
@@ -87,7 +85,7 @@ function handlePlayerMovement() {
     let row;
     let column;
     if (displayedFloor.classList.contains(activePlayer.currentFloor)) {
-        handlePlayerTurns();
+        // handlePlayerTurns();
         row = parseInt(activePlayer.position.style.gridRow);
         column = parseInt(activePlayer.position.style.gridColumn);
         if (key === "ArrowUp") {
@@ -103,10 +101,28 @@ function handlePlayerMovement() {
             return;
         }
     }
-    activePlayer.row = row;
-    activePlayer.col = column;
-    activePlayer.position.style.gridRow = row;
-    activePlayer.position.style.gridColumn = column;
+    if (row > 0 && row < 12 && column > 0 && column < 12) {
+        let existingTile = Array.from(displayedFloor.children).find((child) => {
+            return (
+                child.classList.contains("tile") &&
+                parseInt(child.style.gridColumn) === column &&
+                parseInt(child.style.gridRow) === row
+            );
+        });
+
+        if (!existingTile) {
+            let newTile = document.createElement("div");
+            newTile.classList.add("tile");
+            newTile.style.gridColumn = column;
+            newTile.style.gridRow = row;
+            displayedFloor.append(newTile);
+        }
+
+        activePlayer.row = row;
+        activePlayer.col = column;
+        activePlayer.position.style.gridRow = row;
+        activePlayer.position.style.gridColumn = column;
+    }
 }
 
 function handlePlayerMovesFloors() {
@@ -138,7 +154,6 @@ function handlePlayerMovesFloors() {
     }
 }
 
-let thing = true;
 function handlePlayerTurns() {
     if (activePlayer.speed === 0) {
         activePlayer.speed = 4;
