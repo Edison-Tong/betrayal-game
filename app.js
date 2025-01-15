@@ -7,6 +7,7 @@ let displayedFloor = document.querySelector(".board.active");
 let currentFloorBtn = document.querySelector("#current");
 let playerCount = 1;
 let activePlayer;
+let basementStairs;
 
 boards.forEach((board) => {
     board.style.gridTemplateRows = "repeat(11 ,1fr)";
@@ -111,8 +112,17 @@ function handlePlayerMovement() {
         });
 
         if (!existingTile) {
+            let newTileInfo = getTileData();
+            if (newTileInfo === undefined) {
+                alert("There are no more tiles for this floor");
+                return;
+            }
             let newTile = document.createElement("div");
             newTile.classList.add("tile");
+            newTile.innerHTML = newTileInfo.name;
+            if (newTile.innerHTML === "Basement Stairs") {
+                basementStairs = newTile;
+            }
             newTile.style.gridColumn = column;
             newTile.style.gridRow = row;
             displayedFloor.append(newTile);
@@ -125,32 +135,58 @@ function handlePlayerMovement() {
     }
 }
 
+function getTileData() {
+    let availableTiles = [];
+    let usedTile;
+    tiles.forEach((tile) => {
+        if (tile.floors[displayedFloor.classList[1]]) {
+            availableTiles.push(tile);
+        }
+    });
+    if (availableTiles[0] === undefined) {
+        return;
+    }
+    usedTile = availableTiles.splice(
+        Math.floor(Math.random() * availableTiles.length),
+        1
+    )[0];
+    tiles.splice(tiles.indexOf(usedTile), 1);
+    return usedTile;
+}
+
 function handlePlayerMovesFloors() {
     if (
         displayedFloor.classList.contains("ground") &&
         activePlayer.position.style.gridRow === "8" &&
         activePlayer.position.style.gridColumn === "6"
     ) {
-        console.log("move to upper");
         switchBoards("upper-btn");
         positionPlayers("mid", "upper", [6, 6]);
     } else if (
-        (displayedFloor.classList.contains("upper") ||
-            displayedFloor.classList.contains("basement")) &&
+        displayedFloor.classList.contains("upper") &&
         activePlayer.position.style.gridRow === "6" &&
         activePlayer.position.style.gridColumn === "6"
     ) {
-        console.log("move to ground");
         switchBoards("ground-btn");
         positionPlayers("mid", "ground", [8, 6]);
     } else if (
         displayedFloor.classList.contains("ground") &&
-        activePlayer.position.style.gridRow === "" &&
-        activePlayer.position.style.gridColumn === "" //no basement stairs location yet
+        activePlayer.position.style.gridRow === basementStairs.style.gridRow &&
+        activePlayer.position.style.gridColumn ===
+            basementStairs.style.gridColumn
     ) {
-        console.log("move to basement");
         switchBoards("basement-btn");
         positionPlayers("mid", "basement", [6, 6]);
+    } else if (
+        displayedFloor.classList.contains("basement") &&
+        activePlayer.position.style.gridRow === "6" &&
+        activePlayer.position.style.gridColumn === "6"
+    ) {
+        switchBoards("ground-btn");
+        positionPlayers("mid", "ground", [
+            parseInt(basementStairs.style.gridRow),
+            parseInt(basementStairs.style.gridColumn),
+        ]);
     }
 }
 
