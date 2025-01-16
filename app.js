@@ -5,7 +5,7 @@ let lvl_btns = document.querySelectorAll(".level-btn");
 let startingTiles = document.querySelectorAll(".tile.start");
 let displayedFloor = document.querySelector(".board.active");
 let currentFloorBtn = document.querySelector("#current");
-let endTurnBtn = document.querySelector(".endTurnBtn.inactive");
+let endTurnBtn = document.querySelector(".endTurnBtn");
 let playerCount = 2;
 let activePlayer;
 let basementStairs;
@@ -117,7 +117,7 @@ function handlePlayerMovement() {
                 return;
             }
             let newTile = document.createElement("div");
-            newTile.classList.add("tile");
+            newTile.classList.add("tile", `${newTileInfo.doorConfig}`);
             newTile.innerHTML = newTileInfo.name;
             if (newTile.innerHTML === "Basement Stairs") {
                 basementStairs = newTile;
@@ -189,6 +189,12 @@ function handlePlayerMovesFloors() {
             parseInt(basementStairs.style.gridColumn),
         ]);
     }
+}
+
+endTurnBtn.addEventListener("click", handleEndOfTurn);
+
+function handleEndOfTurn() {
+    alert("end of turn");
 }
 
 makeButtonsActive();
