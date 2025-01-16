@@ -117,7 +117,9 @@ function handlePlayerMovement() {
                 return;
             }
             let newTile = document.createElement("div");
-            newTile.classList.add("tile", `${newTileInfo.doorConfig}`);
+            newTile.classList.add("tile", newTileInfo.name.replaceAll(" ", ""));
+            console.log(newTile.classList);
+            newTile.style.backgroundImage = `url(./images/${newTileInfo.doorConfig}.png)`;
             newTile.innerHTML = newTileInfo.name;
             if (newTile.innerHTML === "Basement Stairs") {
                 basementStairs = newTile;
@@ -125,7 +127,10 @@ function handlePlayerMovement() {
             newTile.style.gridColumn = column;
             newTile.style.gridRow = row;
             displayedFloor.append(newTile);
+            handleRotateTile(newTile);
         }
+
+        // , `${newTileInfo.doorConfig}`
 
         activePlayer.row = row;
         activePlayer.col = column;
@@ -135,6 +140,8 @@ function handlePlayerMovement() {
         alert("you have reached the edge of the board.");
     }
 }
+
+function handleRotateTile(tile) {}
 
 function getTileData() {
     let availableTiles = [];

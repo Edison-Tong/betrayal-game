@@ -1,3 +1,7 @@
+:root {
+    transform: 0;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -41,9 +45,20 @@ body {
     box-sizing: border-box;
     overflow: hidden;
     position: relative; /* Ensure child elements can be positioned */
+    background-size: 100%;
 }
 
-.tile.single {
+.tile::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover; /* Adjust as needed */
+}
+
+/* .tile.single {
     background-image: url("./images/single.png");
     background-size: 100% 100%;
 }
@@ -66,14 +81,14 @@ body {
 .tile.four-way {
     background-image: url("./images/four-way.png");
     background-size: 100% 100%;
-}
+} */
 
 .entrance-hall,
 .hallway,
 .ground-floor-staircase,
 .upper-landing,
 .basement-landing {
-    background-color: green;
+    color: green;
 }
 
 /* Level buttons styling */
