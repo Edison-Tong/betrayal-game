@@ -1,42 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Betrayal Clone</title>
-        <link rel="stylesheet" href="styles.css" />
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    </head>
-    <body>
-        <div class="game-table">
-            <div class="board basement">
-                <div class="tile start basement-landing four-way">
-                    Basement Landing
-                </div>
-            </div>
+  <head>
+    <title>Betrayal Clone</title>
+    <link rel="stylesheet" href="styles.css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <div class="game-table">
+      <div class="board basement">
+        <div class="tile start basement-landing four-way"></div>
+      </div>
 
-            <div class="board ground active">
-                <div class="tile start entrance-hall three-way">
-                    <span>Entrance Hall</span>
-                </div>
-                <div class="tile start hallway four-way">
-                    <span>Hallway</span>
-                </div>
-                <div class="tile start ground-floor-staircase single">
-                    <span>Ground Floor Staircase</span>
-                </div>
-            </div>
+      <div class="board ground active">
+        <div class="tile start entrance-hall three-way"></div>
+        <div class="tile start hallway four-way"></div>
+        <div class="tile start ground-floor-staircase single"></div>
+      </div>
 
-            <div class="board upper">
-                <div class="tile start upper-landing four-way">
-                    <span>Upper Landing</span>
-                </div>
-            </div>
+      <div class="board upper">
+        <div class="tile start upper-landing four-way"></div>
+      </div>
 
-            <button class="level-btn basement-btn">Basement</button>
-            <button class="level-btn ground-btn" id="current">Ground</button>
-            <button class="level-btn upper-btn">Upper</button>
-        </div>
-        <button class="endTurnBtn">End Turn?</button>
-        <script src="app.js" type="module"></script>
-    </body>
+      <button class="level-btn basement-btn">Basement</button>
+      <button class="level-btn ground-btn" id="current">Ground</button>
+      <button class="level-btn upper-btn">Upper</button>
+    </div>
+    <button class="endTurnBtn">End Turn?</button>
+    <script src="app.js" type="module"></script>
+  </body>
 </html>
