@@ -4,6 +4,7 @@ let boards = document.querySelectorAll(".board");
 let lvl_btns = document.querySelectorAll(".level-btn");
 let startingTiles = document.querySelectorAll(".tile.start");
 let displayedFloor = document.querySelector(".board.active");
+let displayedFloorName = document.querySelector(".board.active").classList[1];
 let currentFloorBtn = document.querySelector("#current");
 let endTurnBtn = document.querySelector(".endTurnBtn");
 let playerCount = 2;
@@ -11,19 +12,40 @@ let activePlayer;
 let basementStairs;
 
 boards.forEach((board) => {
-  board.style.gridTemplateRows = "repeat(7 ,1fr)";
-  board.style.gridTemplateColumns = "repeat(7 ,1fr)";
+  board.style.gridTemplateRows = "repeat(3 ,1fr)";
+  board.style.gridTemplateColumns = "repeat(3 ,1fr)";
 });
 
 let boardSize = {
-  basement: { totalRows: 7, totalColumns: 7 },
-  ground: { totalRows: 7, totalColumns: 7 },
-  upper: { totalRows: 7, totalColumns: 7 },
+  basement: { totalRows: 3, totalColumns: 3 },
+  ground: { totalRows: 3, totalColumns: 3 },
+  upper: { totalRows: 3, totalColumns: 3 },
 };
 
 function handleBoardExpanding(direction) {
-  // boards[1].style.gridTemplateRows = "repeat(8, 1fr)";
-  boards[1].style.gridTemplateColumns = "repeat(8, 1fr)";
+  if (direction === "left" || direction === "right") {
+    boardSize[displayedFloorName].totalColumns += 1;
+    displayedFloor.style.gridTemplateColumns = `repeat(${boardSize[displayedFloorName].totalColumns}, 1fr)`;
+  } else if (direction === "top" || direction === "bottom") {
+    boardSize[displayedFloorName].totalRows += 1;
+    displayedFloor.style.gridTemplateRows = `repeat(${boardSize[displayedFloorName].totalRows}, 1fr)`;
+  }
+  if (direction === "top") {
+    console.log("shift every row up one number");
+    Array.from(displayedFloor.children).forEach((child) => {
+      let newRow = parseInt(child.style.gridRow);
+      newRow += 1;
+      child.style.gridRow = newRow;
+    });
+    console.log(displayedFloor.children);
+  } else if (direction === "left") {
+    console.log("shift every column up one number");
+    Array.from(displayedFloor.children).forEach((child) => {
+      let newColumn = parseInt(child.style.gridColumn);
+      newColumn += 1;
+      child.style.gridColumn = newColumn;
+    });
+  }
 }
 
 function makeButtonsActive() {
@@ -66,15 +88,15 @@ function positionPlayers(time, floor, rowCol) {
         label: `P${i}`,
         currentFloor: floor,
         position: document.createElement("div"),
-        row: 6,
-        col: 4,
+        row: 3,
+        col: 2,
         speed: 4,
       };
 
       player.position.classList.add("player");
       player.position.innerHTML = player.label;
-      player.position.style.gridRow = 6;
-      player.position.style.gridColumn = 4;
+      player.position.style.gridRow = 3;
+      player.position.style.gridColumn = 2;
       document.querySelector(".board.ground").append(player.position);
       players.push(player);
     }
@@ -121,7 +143,12 @@ function handlePlayerMovement() {
     handleBoardExpanding("bottom");
   }
 
-  if (row > 0 && row < 8 && column > 0 && column < 8) {
+  if (
+    row > 0 &&
+    row < boardSize[displayedFloorName].totalRows + 1 &&
+    column > 0 &&
+    column < boardSize[displayedFloorName].totalColumns + 1
+  ) {
     activePlayer.speed -= 1;
     let existingTile = Array.from(displayedFloor.children).find((child) => {
       return (
@@ -181,34 +208,34 @@ function getTileData() {
 function handlePlayerMovesFloors() {
   if (
     displayedFloor.classList.contains("ground") &&
-    activePlayer.position.style.gridRow === "4" &&
-    activePlayer.position.style.gridColumn === "4"
+    activePlayer.position.style.gridRow === "1" &&
+    activePlayer.position.style.gridColumn === "2"
   ) {
     switchBoards("upper-btn");
-    positionPlayers("mid", "upper", [4, 4]);
+    positionPlayers("mid", "upper", [2, 2]);
   } else if (
     displayedFloor.classList.contains("upper") &&
-    activePlayer.position.style.gridRow === "4" &&
-    activePlayer.position.style.gridColumn === "4"
+    activePlayer.position.style.gridRow === "2" &&
+    activePlayer.position.style.gridColumn === "2"
   ) {
     switchBoards("ground-btn");
-    positionPlayers("mid", "ground", [4, 4]);
+    positionPlayers("mid", "ground", [1, 2]);
   } else if (
     displayedFloor.classList.contains("ground") &&
     activePlayer.position.style.gridRow === basementStairs.style.gridRow &&
-    activePlayer.position.style.gridColumn === basementStairs.style.gridColumn
+    activePlayer.position.style.gridColumn === basementStairs.style.gridColumn //not correct. Movement to basement does not work
   ) {
     switchBoards("basement-btn");
-    positionPlayers("mid", "basement", [4, 4]);
+    positionPlayers("mid", "basement", [2, 2]);
   } else if (
     displayedFloor.classList.contains("basement") &&
-    activePlayer.position.style.gridRow === "4" &&
-    activePlayer.position.style.gridColumn === "4"
+    activePlayer.position.style.gridRow === "2" &&
+    activePlayer.position.style.gridColumn === "2"
   ) {
     switchBoards("ground-btn");
     positionPlayers("mid", "ground", [
       parseInt(basementStairs.style.gridRow),
-      parseInt(basementStairs.style.gridColumn),
+      parseInt(basementStairs.style.gridColumn), //not correct. Movement from basement does not work
     ]);
   }
 }

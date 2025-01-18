@@ -5,8 +5,8 @@ let initialTiles = [
     floor: "basement",
     doorConfig: "four-way",
     image: "Basement_Landing.png",
-    row: 4,
-    col: 4,
+    row: 2,
+    col: 2,
   },
   {
     name: "Entrance Hall",
@@ -14,8 +14,8 @@ let initialTiles = [
     floor: "ground",
     doorConfig: "three-way",
     image: "Entrance_Hall.png",
-    row: 6,
-    col: 4,
+    row: 3,
+    col: 2,
   },
   {
     name: "Hallway",
@@ -23,8 +23,8 @@ let initialTiles = [
     floor: "ground",
     doorConfig: "four-way",
     image: "Hallway.png",
-    row: 5,
-    col: 4,
+    row: 2,
+    col: 2,
   },
   {
     name: "Ground Floor Staircase",
@@ -32,8 +32,8 @@ let initialTiles = [
     floor: "ground",
     doorConfig: "single",
     image: "Ground_Floor_Staircase.png",
-    row: 4,
-    col: 4,
+    row: 1,
+    col: 2,
   },
   {
     name: "Upper Landing",
@@ -41,8 +41,8 @@ let initialTiles = [
     floor: "upper",
     doorConfig: "four-way",
     image: "Upper_Landing.png",
-    row: 4,
-    col: 4,
+    row: 2,
+    col: 2,
   },
 ];
 
