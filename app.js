@@ -9,7 +9,10 @@ let currentFloorBtn = document.querySelector("#current");
 let endTurnBtn = document.querySelector(".endTurnBtn");
 let playerCount = 2;
 let activePlayer;
-let basementStairs;
+let groundFloorStaircase = document.querySelector(".ground-floor-staircase");
+let hallway = document.querySelector(".hallway");
+let upperLanding = document.querySelector(".upper-landing");
+let basementLanding = document.querySelector(".basement-landing");
 
 boards.forEach((board) => {
   board.style.gridTemplateRows = "repeat(3 ,1fr)";
@@ -167,9 +170,6 @@ function handlePlayerMovement() {
       let newTile = document.createElement("div");
       newTile.classList.add("tile", newTileInfo.name.replaceAll(" ", ""));
       newTile.style.backgroundImage = `url(./images/${newTileInfo.image})`;
-      if (newTile.innerHTML === "Basement Stairs") {
-        basementStairs = newTile;
-      }
       newTile.style.gridColumn = column;
       newTile.style.gridRow = row;
       displayedFloor.append(newTile);
@@ -208,18 +208,18 @@ function getTileData() {
 function handlePlayerMovesFloors() {
   if (
     displayedFloor.classList.contains("ground") &&
-    activePlayer.position.style.gridRow === "1" &&
-    activePlayer.position.style.gridColumn === "2"
+    activePlayer.position.style.gridRow === groundFloorStaircase.style.gridRow &&
+    activePlayer.position.style.gridColumn === groundFloorStaircase.style.gridColumn
   ) {
     switchBoards("upper-btn");
-    positionPlayers("mid", "upper", [2, 2]);
+    positionPlayers("mid", "upper", [upperLanding.style.gridRow, upperLanding.style.gridColumn]);
   } else if (
     displayedFloor.classList.contains("upper") &&
-    activePlayer.position.style.gridRow === "2" &&
-    activePlayer.position.style.gridColumn === "2"
+    activePlayer.position.style.gridRow === upperLanding.style.gridRow &&
+    activePlayer.position.style.gridColumn === upperLanding.style.gridColumn
   ) {
     switchBoards("ground-btn");
-    positionPlayers("mid", "ground", [1, 2]);
+    positionPlayers("mid", "ground", [groundFloorStaircase.style.gridRow, groundFloorStaircase.style.gridColumn]);
   } else if (
     displayedFloor.classList.contains("ground") &&
     activePlayer.position.style.gridRow === basementStairs.style.gridRow &&
