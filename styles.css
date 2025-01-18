@@ -1,7 +1,3 @@
-:root {
-  transform: 0;
-}
-
 body {
   margin: 0;
   padding: 0;
@@ -18,14 +14,18 @@ body {
   border-radius: 10px; /* Rounded edges */
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Add a shadow for depth */
   text-align: center;
+  height: auto;
+  max-height: 90vh; /* Slightly less than the full height for spacing */
+  max-width: 90vw;
+  overflow: auto;
 }
 
 .board {
   display: none;
   background-color: grey;
   border: 5px solid #000;
-  height: 800px;
-  width: 800px;
+  height: auto;
+  width: auto;
   margin: auto;
 }
 
@@ -34,6 +34,8 @@ body {
 }
 
 .tile {
+  height: 200px;
+  width: 200px;
   background-color: #ddd;
   display: grid;
   justify-content: center;
@@ -88,6 +90,19 @@ body {
 .upper-landing,
 .basement-landing {
   color: green;
+}
+
+/* Wrapper for the buttons */
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Add spacing between buttons */
+  position: sticky;
+  bottom: -1px; /* Stick to the bottom of the container */
+  background-color: #8b4513; /* Match the table background */
+  padding: 10px;
+  z-index: 1000; /* Ensure the buttons are above other elements */
+  border-top: 5px solid #654321; /* Optional: visually separate from the board */
 }
 
 /* Level buttons styling */
