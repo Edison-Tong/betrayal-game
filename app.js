@@ -21,8 +21,9 @@ let boardSize = {
   upper: { totalRows: 7, totalColumns: 7 },
 };
 
-function handleBoardExpanding() {
-  console.log("Bigger");
+function handleBoardExpanding(direction) {
+  // boards[1].style.gridTemplateRows = "repeat(8, 1fr)";
+  boards[1].style.gridTemplateColumns = "repeat(8, 1fr)";
 }
 
 function makeButtonsActive() {
@@ -110,8 +111,14 @@ function handlePlayerMovement() {
     }
   }
 
-  if (column === 0 || column > boardSize["ground"].totalColumns || row === 0 || row > boardSize["ground"].totalRows) {
-    handleBoardExpanding();
+  if (column === 0) {
+    handleBoardExpanding("left");
+  } else if (column > boardSize["ground"].totalColumns) {
+    handleBoardExpanding("right");
+  } else if (row === 0) {
+    handleBoardExpanding("top");
+  } else if (row > boardSize["ground"].totalRows) {
+    handleBoardExpanding("bottom");
   }
 
   if (row > 0 && row < 8 && column > 0 && column < 8) {
