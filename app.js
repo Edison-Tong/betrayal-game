@@ -15,6 +15,16 @@ boards.forEach((board) => {
   board.style.gridTemplateColumns = "repeat(7 ,1fr)";
 });
 
+let boardSize = {
+  basement: { totalRows: 7, totalColumns: 7 },
+  ground: { totalRows: 7, totalColumns: 7 },
+  upper: { totalRows: 7, totalColumns: 7 },
+};
+
+function handleBoardExpanding() {
+  console.log("Bigger");
+}
+
 function makeButtonsActive() {
   lvl_btns.forEach((button) => {
     if (!button.getAttribute("id", "current"))
@@ -99,7 +109,12 @@ function handlePlayerMovement() {
       return;
     }
   }
-  if (row > 0 && row < 12 && column > 0 && column < 12) {
+
+  if (column === 0 || column > boardSize["ground"].totalColumns || row === 0 || row > boardSize["ground"].totalRows) {
+    handleBoardExpanding();
+  }
+
+  if (row > 0 && row < 8 && column > 0 && column < 8) {
     activePlayer.speed -= 1;
     let existingTile = Array.from(displayedFloor.children).find((child) => {
       return (
@@ -117,7 +132,6 @@ function handlePlayerMovement() {
       }
       let newTile = document.createElement("div");
       newTile.classList.add("tile", newTileInfo.name.replaceAll(" ", ""));
-      console.log(newTile.classList);
       newTile.style.backgroundImage = `url(./images/${newTileInfo.image})`;
       if (newTile.innerHTML === "Basement Stairs") {
         basementStairs = newTile;
