@@ -3,7 +3,7 @@ let initialTiles = [
     name: "Basement Landing",
     type: "starting",
     floor: "basement",
-    doorConfig: "four-way",
+    doors: ["top", "right", "bottom", "left"],
     image: "Basement_Landing.png",
     row: 2,
     col: 2,
@@ -12,7 +12,7 @@ let initialTiles = [
     name: "Entrance Hall",
     type: "starting",
     floor: "ground",
-    doorConfig: "three-way",
+    doors: ["top", "right", "left"],
     image: "Entrance_Hall.png",
     row: 3,
     col: 2,
@@ -21,7 +21,7 @@ let initialTiles = [
     name: "Hallway",
     type: "starting",
     floor: "ground",
-    doorConfig: "four-way",
+    doors: ["top", "right", "bottom", "left"],
     image: "Hallway.png",
     row: 2,
     col: 2,
@@ -30,7 +30,7 @@ let initialTiles = [
     name: "Ground Floor Staircase",
     type: "starting",
     floor: "ground",
-    doorConfig: "single",
+    doors: ["bottom"],
     image: "Ground_Floor_Staircase.png",
     row: 1,
     col: 2,
@@ -39,7 +39,7 @@ let initialTiles = [
     name: "Upper Landing",
     type: "starting",
     floor: "upper",
-    doorConfig: "four-way",
+    doors: ["top", "right", "bottom", "left"],
     image: "Upper_Landing.png",
     row: 2,
     col: 2,
@@ -49,7 +49,7 @@ let initialTiles = [
 // {
 //     name: "",
 //     floors: {basement: true, ground: true, upper: false},
-//     doorConfig: "",
+//     doors: "",
 //     symbol: "",
 //     message: "",
 // }
@@ -58,7 +58,7 @@ let tiles = [
   {
     name: "Armory",
     floors: { basement: true, ground: true, upper: false },
-    doorConfig: "corner",
+    doors: ["top", "right"],
     image: "Armory.png",
     symbol: "none",
     message:
@@ -67,7 +67,7 @@ let tiles = [
   {
     name: "Ballroom",
     floors: { basement: false, ground: true, upper: false },
-    doorConfig: "four-way",
+    doors: ["top", "right", "bottom", "left"],
     image: "Ballroom.png",
     symbol: "omen",
     message: "none",
@@ -75,7 +75,7 @@ let tiles = [
   {
     name: "Bloody Room",
     floors: { basement: false, ground: true, upper: true },
-    doorConfig: "corner",
+    doors: ["top", "right"],
     image: "Bloody_Room.png",
     symbol: "item",
     message: "none",
@@ -83,7 +83,7 @@ let tiles = [
   {
     name: "Catacombs",
     floors: { basement: true, ground: false, upper: false },
-    doorConfig: "four-way",
+    doors: ["top", "right", "bottom", "left"],
     image: "Catacombs.png",
     symbol: "omen",
     message: "none",
@@ -91,7 +91,7 @@ let tiles = [
   {
     name: "Chapel",
     floors: { basement: false, ground: true, upper: false },
-    doorConfig: "opposing",
+    doors: ["top", "bottom"],
     image: "Chapel.png",
     symbol: "omen",
     message: "When you discover htis tile, gain 1 Sanity",
@@ -99,7 +99,7 @@ let tiles = [
   {
     name: "Charred Room",
     floors: { basement: false, ground: true, upper: true },
-    doorConfig: "corner",
+    doors: ["top", "right"],
     image: "Charred_Room.png",
     symbol: "omen",
     message: "",
@@ -107,7 +107,7 @@ let tiles = [
   {
     name: "Chasm",
     floors: { basement: true, ground: false, upper: false },
-    doorConfig: "opposing",
+    doors: ["top", "bottom"],
     image: "Chasm.png",
     symbol: "event",
     message: "none",
@@ -115,7 +115,7 @@ let tiles = [
   {
     name: "Collapsed Room",
     floors: { basement: false, ground: true, upper: true },
-    doorConfig: "corner",
+    doors: ["top", "right"],
     image: "Collapsed_Room.png",
     symbol: "none",
     message:
@@ -124,7 +124,7 @@ let tiles = [
   {
     name: "Conservatory",
     floors: { basement: false, ground: true, upper: false },
-    doorConfig: "opposing",
+    doors: ["top", "bottom"],
     image: "Conservatory.png",
     symbol: "item",
     message: "none",
@@ -132,7 +132,7 @@ let tiles = [
   {
     name: "Cramped Passageway",
     floors: { basement: true, ground: true, upper: true },
-    doorConfig: "four-way",
+    doors: ["top", "right", "bottom", "left"],
     image: "Cramped_Passageway.png",
     symbol: "event",
     message: "none",
@@ -140,7 +140,7 @@ let tiles = [
   {
     name: "Crawlspace",
     floors: { basement: true, ground: false, upper: true },
-    doorConfig: "three-way",
+    doors: ["top", "right", "left"],
     image: "Crawlspace.png",
     symbol: "event",
     message: "none",
@@ -148,7 +148,7 @@ let tiles = [
   {
     name: "Dining Room",
     floors: { basement: false, ground: true, upper: false },
-    doorConfig: "four-way",
+    doors: ["top", "right", "bottom", "left"],
     image: "Dining_Room.png",
     symbol: "event",
     message: "none",
@@ -156,7 +156,7 @@ let tiles = [
   {
     name: "Furnace Room",
     floors: { basement: true, ground: false, upper: false },
-    doorConfig: "three-way",
+    doors: ["rght", "bottom", "left"],
     image: "Furnace_Room.png",
     symbol: "event",
     message: "If you end your turn on this tile, take one die of Physical damage",
@@ -164,7 +164,7 @@ let tiles = [
   {
     name: "Gallery",
     floors: { basement: false, ground: false, upper: true },
-    doorConfig: "opposing",
+    doors: ["top", "bottom"],
     image: "Gallery.png",
     symbol: "event",
     message: "Leads to Ballroom",
@@ -172,7 +172,7 @@ let tiles = [
   {
     name: "Game Room",
     floors: { basement: true, ground: false, upper: true },
-    doorConfig: "four-way",
+    doors: ["top", "right", "bottom", "left"],
     image: "Game_Room.png",
     symbol: "item",
     message: "none",
@@ -180,7 +180,7 @@ let tiles = [
   {
     name: "Graveyard",
     floors: { basement: false, ground: true, upper: false },
-    doorConfig: "corner",
+    doors: ["top", "right"],
     image: "Graveyard.png",
     symbol: "omen",
     message: "Leads to the Underground Cavern",
@@ -188,7 +188,7 @@ let tiles = [
   {
     name: "Guest Quarters",
     floors: { basement: false, ground: true, upper: true },
-    doorConfig: "corner",
+    doors: ["top", "right"],
     image: "Guest_Quarters.png",
     symbol: "event",
     message: "none",
@@ -196,7 +196,7 @@ let tiles = [
   {
     name: "Gymnasium",
     floors: { basement: true, ground: true, upper: false },
-    doorConfig: "corner",
+    doors: ["top", "left"],
     image: "Gymnasium.png",
     symbol: "none",
     message: "When you discover this tile, gain 1 Speed",
@@ -204,7 +204,7 @@ let tiles = [
   {
     name: "Junk Room",
     floors: { basement: false, ground: true, upper: true },
-    doorConfig: "three-way",
+    doors: ["top", "right", "bottom"],
     image: "Junk_Room.png",
     symbol: "item",
     message: "When you discoverthis tile, place an Obstacle token on it",
@@ -212,7 +212,7 @@ let tiles = [
   {
     name: "Kitchen",
     floors: { basement: false, ground: true, upper: false },
-    doorConfig: "opposing",
+    doors: ["top", "bottom"],
     image: "Kitchen.png",
     symbol: "event",
     message: "none",
@@ -220,7 +220,7 @@ let tiles = [
   {
     name: "Laboratory",
     floors: { basement: false, ground: true, upper: false },
-    doorConfig: "corner",
+    doors: ["top", "right"],
     image: "Laboratory.png",
     symbol: "event",
     message: "none",
@@ -228,7 +228,7 @@ let tiles = [
   {
     name: "Larder",
     floors: { basement: false, ground: true, upper: false },
-    doorConfig: "corner",
+    doors: ["top", "left"],
     image: "Larder.png",
     symbol: "none",
     message: "When you discover this tile, gain 1 Might",
@@ -236,7 +236,7 @@ let tiles = [
   {
     name: "Laundry Chute",
     floors: { basement: false, ground: true, upper: false },
-    doorConfig: "single",
+    doors: ["top"],
     image: "Laundry_Chute.png",
     symbol: "none",
     message:
@@ -245,7 +245,7 @@ let tiles = [
   {
     name: "Library",
     floors: { basement: false, ground: true, upper: true },
-    doorConfig: "three-way",
+    doors: ["top", "right", "bottom"],
     image: "Library.png",
     symbol: "omen",
     message: "When you discover this tile, gain 1 Knowledge",
@@ -253,7 +253,7 @@ let tiles = [
   {
     name: "Mystic Elevator",
     floors: { basement: true, ground: true, upper: true },
-    doorConfig: "single",
+    doors: ["top"],
     image: "Mystic_Elevator.png",
     symbol: "none",
     message:
@@ -262,7 +262,7 @@ let tiles = [
   {
     name: "Nursery",
     floors: { basement: true, ground: true, upper: false },
-    doorConfig: "corner",
+    doors: ["top", "right"],
     image: "Nursery.png",
     symbol: "omen",
     message: "none",
@@ -270,7 +270,7 @@ let tiles = [
   {
     name: "Observatory",
     floors: { basement: false, ground: false, upper: true },
-    doorConfig: "three-way",
+    doors: ["top", "right", "bottom"],
     image: "Observatory.png",
     symbol: "omen",
     message: "none",
@@ -278,7 +278,7 @@ let tiles = [
   {
     name: "Operating Theatre",
     floors: { basement: true, ground: false, upper: true },
-    doorConfig: "corner",
+    doors: ["top", "right"],
     image: "Operating_Theatre.png",
     symbol: "item",
     message: "none",
@@ -286,7 +286,7 @@ let tiles = [
   {
     name: "Organ Room",
     floors: { basement: true, ground: false, upper: true },
-    doorConfig: "corner",
+    doors: ["right", "bottom"],
     image: "Organ_Room.png",
     symbol: "event",
     message: "none",
@@ -294,7 +294,7 @@ let tiles = [
   {
     name: "Panic Room",
     floors: { basement: true, ground: false, upper: false },
-    doorConfig: "single",
+    doors: ["top"],
     image: "Panic_Room.png",
     symbol: "omen",
     message:
@@ -303,7 +303,7 @@ let tiles = [
   {
     name: "Primary Bedroom",
     floors: { basement: false, ground: true, upper: true },
-    doorConfig: "three-way",
+    doors: ["top", "right", "bottom"],
     image: "Primary_Bedroom.png",
     symbol: "omen",
     message: "none",
@@ -311,7 +311,7 @@ let tiles = [
   {
     name: "Ritual Room",
     floors: { basement: true, ground: false, upper: false },
-    doorConfig: "corner",
+    doors: ["top", "right"],
     image: "Ritual_Room.png",
     symbol: "omen",
     message: "none",
@@ -319,7 +319,7 @@ let tiles = [
   {
     name: "Salon",
     floors: { basement: false, ground: true, upper: true },
-    doorConfig: "corner",
+    doors: ["top", "right"],
     image: "Salon.png",
     symbol: "event",
     message: "none",
@@ -327,7 +327,7 @@ let tiles = [
   {
     name: "Secret Staircase",
     floors: { basement: true, ground: false, upper: false },
-    doorConfig: "single",
+    doors: ["top"],
     image: "Secret_Staircase.png",
     symbol: "none",
     message: "Leads to the Hallway",
@@ -335,7 +335,7 @@ let tiles = [
   {
     name: "Soundproofed Room",
     floors: { basement: true, ground: false, upper: true },
-    doorConfig: "three-way",
+    doors: ["top", "right", "bottom"],
     image: "Soundproofed_Room.png",
     symbol: "omen",
     message: "none",
@@ -343,7 +343,7 @@ let tiles = [
   {
     name: "Specimen Room",
     floors: { basement: false, ground: true, upper: true },
-    doorConfig: "opposing",
+    doors: ["right", "left"],
     image: "Specimen_Room.png",
     symbol: "omen",
     message: "none",
@@ -351,7 +351,7 @@ let tiles = [
   {
     name: "Statuary Corridor",
     floors: { basement: false, ground: false, upper: true },
-    doorConfig: "opposing",
+    doors: ["top", "bottom"],
     image: "Statuary_Corridor.png",
     symbol: "event",
     message: "none",
@@ -359,7 +359,7 @@ let tiles = [
   {
     name: "Tower",
     floors: { basement: false, ground: false, upper: true },
-    doorConfig: "opposing",
+    doors: ["top", "bottom"],
     image: "Tower.png",
     symbol: "event",
     message: "none",
@@ -367,7 +367,7 @@ let tiles = [
   {
     name: "Underground Cavern",
     floors: { basement: true, ground: false, upper: false },
-    doorConfig: "four-way",
+    doors: ["top", "right", "bottom", "left"],
     image: "Underground_Cavern.png",
     symbol: "event",
     message: "Leads to the Graveyard",
@@ -375,7 +375,7 @@ let tiles = [
   {
     name: "Underground Lake",
     floors: { basement: true, ground: false, upper: false },
-    doorConfig: "corner",
+    doors: ["top", "right"],
     image: "Underground_lake.png",
     symbol: "event",
     message: "none",
@@ -383,7 +383,7 @@ let tiles = [
   {
     name: "Vault",
     floors: { basement: true, ground: false, upper: false },
-    doorConfig: "single",
+    doors: ["top"],
     image: "Vault.png",
     symbol: "item",
     message: "none",
@@ -391,7 +391,7 @@ let tiles = [
   {
     name: "Winter Bedroom",
     floors: { basement: false, ground: true, upper: true },
-    doorConfig: "corner",
+    doors: ["top", "right"],
     image: "Winter_Bedroom.png",
     symbol: "omen",
     message: "none",
