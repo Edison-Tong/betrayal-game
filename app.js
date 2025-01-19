@@ -34,20 +34,19 @@ function handleBoardExpanding(direction) {
     displayedFloor.style.gridTemplateRows = `repeat(${boardSize[displayedFloorName].totalRows}, 1fr)`;
   }
   if (direction === "top") {
-    console.log("shift every row up one number");
     Array.from(displayedFloor.children).forEach((child) => {
       let newRow = parseInt(child.style.gridRow);
       newRow += 1;
       child.style.gridRow = newRow;
     });
-    console.log(displayedFloor.children);
+    activePlayer.position.style.gridRow = parseInt(activePlayer.position.style.gridRow) - 1;
   } else if (direction === "left") {
-    console.log("shift every column up one number");
     Array.from(displayedFloor.children).forEach((child) => {
       let newColumn = parseInt(child.style.gridColumn);
       newColumn += 1;
       child.style.gridColumn = newColumn;
     });
+    activePlayer.position.style.gridColumn = parseInt(activePlayer.position.style.gridColumn) - 1;
   }
 }
 
@@ -138,53 +137,46 @@ function handlePlayerMovement() {
 
   if (column === 0) {
     handleBoardExpanding("left");
+    column = 1;
   } else if (column > boardSize["ground"].totalColumns) {
     handleBoardExpanding("right");
   } else if (row === 0) {
     handleBoardExpanding("top");
+    row = 1;
   } else if (row > boardSize["ground"].totalRows) {
     handleBoardExpanding("bottom");
   }
 
-  if (
-    row > 0 &&
-    row < boardSize[displayedFloorName].totalRows + 1 &&
-    column > 0 &&
-    column < boardSize[displayedFloorName].totalColumns + 1
-  ) {
-    activePlayer.speed -= 1;
-    let existingTile = Array.from(displayedFloor.children).find((child) => {
-      return (
-        child.classList.contains("tile") &&
-        parseInt(child.style.gridColumn) === column &&
-        parseInt(child.style.gridRow) === row
-      );
-    });
+  activePlayer.speed -= 1;
+  let existingTile = Array.from(displayedFloor.children).find((child) => {
+    return (
+      child.classList.contains("tile") &&
+      parseInt(child.style.gridColumn) === column &&
+      parseInt(child.style.gridRow) === row
+    );
+  });
 
-    if (!existingTile) {
-      let newTileInfo = getTileData();
-      if (newTileInfo === undefined) {
-        alert("There are no more tiles for this floor");
-        return;
-      }
-      let newTile = document.createElement("div");
-      newTile.classList.add("tile", newTileInfo.name.replaceAll(" ", ""));
-      newTile.style.backgroundImage = `url(./images/${newTileInfo.image})`;
-      newTile.style.gridColumn = column;
-      newTile.style.gridRow = row;
-      displayedFloor.append(newTile);
-      handleRotateTile(newTile);
+  if (!existingTile) {
+    let newTileInfo = getTileData();
+    if (newTileInfo === undefined) {
+      alert("There are no more tiles for this floor");
+      return;
     }
-
-    // , `${newTileInfo.doorConfig}`
-
-    activePlayer.row = row;
-    activePlayer.col = column;
-    activePlayer.position.style.gridRow = row;
-    activePlayer.position.style.gridColumn = column;
-  } else {
-    alert("you have reached the edge of the board.");
+    let newTile = document.createElement("div");
+    newTile.classList.add("tile", newTileInfo.name.replaceAll(" ", ""));
+    newTile.style.backgroundImage = `url(./images/${newTileInfo.image})`;
+    newTile.style.gridRow = row;
+    newTile.style.gridColumn = column;
+    console.log(column);
+    console.log(newTile);
+    displayedFloor.append(newTile);
+    handleRotateTile(newTile);
   }
+
+  activePlayer.row = row;
+  activePlayer.col = column;
+  activePlayer.position.style.gridRow = row;
+  activePlayer.position.style.gridColumn = column;
 }
 
 function handleRotateTile(tile) {}
