@@ -15,6 +15,7 @@ let upperLanding = document.querySelector(".upper-landing");
 let basementLanding = document.querySelector(".basement-landing");
 let laundryChute;
 let secretStaircase;
+let isRotating = false;
 
 boards.forEach((board) => {
   board.style.gridTemplateRows = "repeat(3 ,1fr)";
@@ -116,7 +117,8 @@ function positionPlayers(time, floor, rowCol) {
 
 document.addEventListener("keydown", handlePlayerMovement);
 
-function handlePlayerMovement() {
+async function handlePlayerMovement() {
+  if (isRotating) return;
   let key = event.key;
   let row;
   let column;
@@ -175,8 +177,9 @@ function handlePlayerMovement() {
     } else if (newTile.classList.contains("SecretStaircase")) {
       secretStaircase = newTile;
     }
+    newTile.classList.add("highlight");
     displayedFloor.append(newTile);
-    handleRotateTile(newTile);
+    await handleRotateTile(newTile);
   }
 
   activePlayer.row = row;
@@ -185,7 +188,32 @@ function handlePlayerMovement() {
   activePlayer.position.style.gridColumn = column;
 }
 
-function handleRotateTile(tile) {}
+function handleRotateTile(tile) {
+  return new Promise((resolve) => {
+    isRotating = true;
+    let currentRotation = 0;
+
+    // Function to rotate the tile
+    function rotateTile(event) {
+      if (event.key === "ArrowLeft") {
+        currentRotation = (currentRotation - 90) % 360; // Rotate counterclockwise
+        tile.style.transform = `rotate(${currentRotation}deg)`;
+      } else if (event.key === "ArrowRight") {
+        currentRotation = (currentRotation + 90) % 360; // Rotate clockwise
+        tile.style.transform = `rotate(${currentRotation}deg)`;
+      } else if (event.key === "Enter") {
+        // Finalize rotation
+        document.removeEventListener("keydown", rotateTile); // Remove the event listener
+        isRotating = false; // Reset the flag to resume actions
+        tile.classList.remove("highlight");
+        resolve(); // Resolve the promise to indicate the rotation is done
+      }
+    }
+
+    // Add event listener to listen for key presses
+    document.addEventListener("keydown", rotateTile);
+  });
+}
 
 function getTileData() {
   let availableTiles = [];

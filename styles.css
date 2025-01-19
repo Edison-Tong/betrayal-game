@@ -59,30 +59,12 @@ body {
   background-size: cover; /* Adjust as needed */
 }
 
-/* .tile.single {
-    background-image: url("./images/single.png");
-    background-size: 100% 100%;
+.tile.highlight {
+  border: 3px solid yellow;
+  box-shadow: 0 0 10px 5px rgba(255, 255, 0, 0.8);
+  z-index: 10; /* Ensure it appears above other elements */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
-.tile.corner {
-    background-image: url("./images/corner.png");
-    background-size: 100% 100%;
-}
-
-.tile.opposing {
-    background-image: url("./images/opposing.png");
-    background-size: 100% 100%;
-}
-
-.tile.three-way {
-    background-image: url("./images/three-way.png");
-    background-size: 100% 100%;
-}
-
-.tile.four-way {
-    background-image: url("./images/four-way.png");
-    background-size: 100% 100%;
-} */
 
 .entrance-hall,
 .hallway,
