@@ -328,7 +328,7 @@ let tiles = [
     name: "Secret Staircase",
     floors: { basement: true, ground: false, upper: false },
     doorConfig: "single",
-    image: "Single_Staircase.png",
+    image: "Secret_Staircase.png",
     symbol: "none",
     message: "Leads to the Hallway",
   },

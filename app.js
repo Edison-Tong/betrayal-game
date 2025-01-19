@@ -13,6 +13,8 @@ let groundFloorStaircase = document.querySelector(".ground-floor-staircase");
 let hallway = document.querySelector(".hallway");
 let upperLanding = document.querySelector(".upper-landing");
 let basementLanding = document.querySelector(".basement-landing");
+let laundryChute;
+let secretStaircase;
 
 boards.forEach((board) => {
   board.style.gridTemplateRows = "repeat(3 ,1fr)";
@@ -167,8 +169,12 @@ function handlePlayerMovement() {
     newTile.style.backgroundImage = `url(./images/${newTileInfo.image})`;
     newTile.style.gridRow = row;
     newTile.style.gridColumn = column;
-    console.log(column);
     console.log(newTile);
+    if (newTile.classList.contains("LaundryChute")) {
+      laundryChute = newTile;
+    } else if (newTile.classList.contains("SecretStaircase")) {
+      secretStaircase = newTile;
+    }
     displayedFloor.append(newTile);
     handleRotateTile(newTile);
   }
@@ -214,20 +220,31 @@ function handlePlayerMovesFloors() {
     positionPlayers("mid", "ground", [groundFloorStaircase.style.gridRow, groundFloorStaircase.style.gridColumn]);
   } else if (
     displayedFloor.classList.contains("ground") &&
-    activePlayer.position.style.gridRow === basementStairs.style.gridRow &&
-    activePlayer.position.style.gridColumn === basementStairs.style.gridColumn //not correct. Movement to basement does not work
+    activePlayer.position.style.gridRow === laundryChute.style.gridRow &&
+    activePlayer.position.style.gridColumn === laundryChute.style.gridColumn
   ) {
     switchBoards("basement-btn");
-    positionPlayers("mid", "basement", [2, 2]);
+    positionPlayers("mid", "basement", [
+      parseInt(basementLanding.style.gridRow),
+      parseInt(basementLanding.style.gridColumn),
+    ]);
   } else if (
     displayedFloor.classList.contains("basement") &&
-    activePlayer.position.style.gridRow === "2" &&
-    activePlayer.position.style.gridColumn === "2"
+    activePlayer.position.style.gridRow === secretStaircase.style.gridRow &&
+    activePlayer.position.style.gridColumn === secretStaircase.style.gridColumn
   ) {
     switchBoards("ground-btn");
-    positionPlayers("mid", "ground", [
-      parseInt(basementStairs.style.gridRow),
-      parseInt(basementStairs.style.gridColumn), //not correct. Movement from basement does not work
+    positionPlayers("mid", "ground", [parseInt(hallway.style.gridRow), parseInt(hallway.style.gridColumn)]);
+  } else if (
+    displayedFloor.classList.contains("ground") &&
+    activePlayer.position.style.gridRow === hallway.style.gridRow &&
+    activePlayer.position.style.gridColumn === hallway.style.gridColumn &&
+    secretStaircase !== undefined
+  ) {
+    switchBoards("basement-btn");
+    positionPlayers("mid", "basement", [
+      parseInt(secretStaircase.style.gridRow),
+      parseInt(secretStaircase.style.gridColumn),
     ]);
   }
 }
