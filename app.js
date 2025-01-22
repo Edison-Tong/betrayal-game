@@ -21,6 +21,7 @@ let isRotating = false;
 let movingToTile;
 let usedTiles = [];
 let direction;
+let tileMessageBox = document.querySelector(".tile-message");
 
 let doorAlignments = {
     top: "bottom",
@@ -68,16 +69,16 @@ function handleBoardExpanding(direction) {
             newRow += 1;
             child.style.gridRow = newRow;
         });
-        activePlayer.position.style.gridRow =
-            parseInt(activePlayer.position.style.gridRow) - 1;
+        activePlayer.marker.style.gridRow =
+            parseInt(activePlayer.marker.style.gridRow) - 1;
     } else if (direction === "left") {
         Array.from(displayedFloor.children).forEach((child) => {
             let newColumn = parseInt(child.style.gridColumn);
             newColumn += 1;
             child.style.gridColumn = newColumn;
         });
-        activePlayer.position.style.gridColumn =
-            parseInt(activePlayer.position.style.gridColumn) - 1;
+        activePlayer.marker.style.gridColumn =
+            parseInt(activePlayer.marker.style.gridColumn) - 1;
     }
 }
 
@@ -238,6 +239,10 @@ async function handlePlayerMovement() {
         }
     }
 
+    movingToTile.message === "none"
+        ? (tileMessageBox.style.display = "none")
+        : ((tileMessageBox.style.display = "block"),
+          (tileMessageBox.innerHTML = movingToTile.message));
     activePlayer.currentTile = movingToTile;
     activePlayer.row = row;
     activePlayer.col = column;
