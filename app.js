@@ -138,6 +138,7 @@ function positionPlayers(time, floor, rowCol) {
                 might: playerInfo[i].might,
                 knowledge: playerInfo[i].knowledge,
                 sanity: playerInfo[i].sanity,
+                movesThisTurn: 0,
                 row: rowCol[0],
                 col: rowCol[1],
             };
@@ -162,7 +163,7 @@ function positionPlayers(time, floor, rowCol) {
 }
 
 async function handlePlayerMovement() {
-    if (isRotating || activePlayer.speed === 0) return;
+    if (isRotating || activePlayer.speed === activePlayer.movesThisTurn) return;
     let key = event.key;
     let row;
     let column;
@@ -190,8 +191,7 @@ async function handlePlayerMovement() {
     if (!activePlayer.currentTile.doors.some((door) => door === direction)) {
         return;
     }
-    activePlayer.speed -= 1;
-    console.log(activePlayer.speed);
+    activePlayer.movesThisTurn += 1;
     let existingTile = Array.from(displayedFloor.children).find((child) => {
         return (
             child.classList.contains("tile") &&
@@ -405,15 +405,12 @@ function handlePlayerMovesFloors() {
 
 function handleEndOfTurn() {
     alert("end of turn");
-    activePlayer.speed = playerInfo[playerTurnCounter].speed;
-
+    activePlayer.movesThisTurn = 0;
     playerTurnCounter++;
     if (playerTurnCounter === playerCount) {
         playerTurnCounter = 0;
     }
-    console.log(playerTurnCounter);
     activePlayer = players[playerTurnCounter];
-    console.log(activePlayer);
 }
 
 makeButtonsActive();
