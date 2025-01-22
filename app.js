@@ -8,7 +8,8 @@ let displayedFloor = document.querySelector(".board.active");
 let displayedFloorName = document.querySelector(".board.active").classList[1];
 let currentFloorBtn = document.querySelector("#current");
 let endTurnBtn = document.querySelector(".endTurnBtn");
-let playerCount = 6;
+let playerCount = 3;
+let players = [];
 let activePlayer;
 let playerTurnCounter = 0;
 let groundFloorStaircase = document.querySelector(".ground-floor-staircase");
@@ -22,6 +23,9 @@ let movingToTile;
 let usedTiles = [];
 let direction;
 let tileMessageBox = document.querySelector(".tile-message");
+
+document.addEventListener("keydown", handlePlayerMovement);
+endTurnBtn.addEventListener("click", handleEndOfTurn);
 
 let doorAlignments = {
     top: "bottom",
@@ -120,18 +124,20 @@ function positionStartingTiles() {
     });
 }
 
-let players = [];
-
 function positionPlayers(time, floor, rowCol) {
     if (time === "start") {
         for (let i = 0; i < playerCount; i++) {
             let player = {
-                id: `p${i + 1}`,
+                id: `p${i}`,
                 name: playerInfo[i].name,
                 currentFloor: floor,
                 currentTile: tiles[1],
                 marker: document.createElement("div"),
                 markerColor: playerInfo[i].color,
+                speed: playerInfo[i].speed,
+                might: playerInfo[i].might,
+                knowledge: playerInfo[i].knowledge,
+                sanity: playerInfo[i].sanity,
                 row: rowCol[0],
                 col: rowCol[1],
             };
@@ -155,10 +161,8 @@ function positionPlayers(time, floor, rowCol) {
     displayedFloor.append(activePlayer.marker);
 }
 
-document.addEventListener("keydown", handlePlayerMovement);
-
 async function handlePlayerMovement() {
-    if (isRotating) return;
+    if (isRotating || activePlayer.speed === 0) return;
     let key = event.key;
     let row;
     let column;
@@ -187,6 +191,7 @@ async function handlePlayerMovement() {
         return;
     }
     activePlayer.speed -= 1;
+    console.log(activePlayer.speed);
     let existingTile = Array.from(displayedFloor.children).find((child) => {
         return (
             child.classList.contains("tile") &&
@@ -398,15 +403,17 @@ function handlePlayerMovesFloors() {
     }
 }
 
-endTurnBtn.addEventListener("click", handleEndOfTurn);
-
 function handleEndOfTurn() {
     alert("end of turn");
+    activePlayer.speed = playerInfo[playerTurnCounter].speed;
+
     playerTurnCounter++;
-    if (playerTurnCounter > playerCount) {
+    if (playerTurnCounter === playerCount) {
         playerTurnCounter = 0;
     }
+    console.log(playerTurnCounter);
     activePlayer = players[playerTurnCounter];
+    console.log(activePlayer);
 }
 
 makeButtonsActive();

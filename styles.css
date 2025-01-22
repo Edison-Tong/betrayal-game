@@ -143,23 +143,23 @@ body {
     font-size: 10px;
 }
 
-.player#p1 {
+.player#p0 {
     transform: translate(-50px, -50px);
 }
 
-.player#p2 {
+.player#p1 {
     transform: translate(0px, -50px);
 }
 
-.player#p3 {
+.player#p2 {
     transform: translate(50px, -50px);
 }
-.player#p4 {
+.player#p3 {
     transform: translate(-50px, 50px);
 }
-.player#p5 {
+.player#p4 {
     transform: translate(0px, 50px);
 }
-.player#p6 {
+.player#p5 {
     transform: translate(50px, 50px);
 }
