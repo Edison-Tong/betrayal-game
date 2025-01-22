@@ -1,4 +1,5 @@
 import tiles from "./tiles.js";
+import playerInfo from "./playerInfo.js"
 
 let boards = document.querySelectorAll(".board");
 let lvl_btns = document.querySelectorAll(".level-btn");
