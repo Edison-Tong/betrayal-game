@@ -214,7 +214,7 @@ let tiles = [
     name: "furnace room",
     type: "normal",
     floors: { basement: true, ground: false, upper: false },
-    doors: ["rght", "bottom", "left"],
+    doors: ["right", "bottom", "left"],
     image: "Furnace_Room.png",
     symbol: "event",
     message: "If you end your turn on this tile, take one die of Physical damage",

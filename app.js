@@ -188,12 +188,14 @@ async function handlePlayerMovement() {
   });
 
   if (!existingTile) {
+    let previousTile = movingToTile;
     movingToTile = getTileData();
-    usedTiles.push(movingToTile);
     if (movingToTile === undefined) {
       alert("There are no more tiles for this floor");
+      movingToTile = previousTile;
       return;
     }
+    usedTiles.push(movingToTile);
     if (column === 0) {
       handleBoardExpanding("left");
       column = 1;
@@ -210,15 +212,16 @@ async function handlePlayerMovement() {
     newTile.style.backgroundImage = `url(./images/${movingToTile.image})`;
     newTile.style.gridRow = row;
     newTile.style.gridColumn = column;
-    if (newTile.classList.contains("LaundryChute")) {
+    if (newTile.classList.contains("laundry-chute")) {
       laundryChute = newTile;
-    } else if (newTile.classList.contains("SecretStaircase")) {
+    } else if (newTile.classList.contains("secret-staircase")) {
       secretStaircase = newTile;
     }
     newTile.classList.add("highlight");
     displayedFloor.append(newTile);
     await handleRotateTile(newTile);
   } else {
+    console.log(usedTiles);
     usedTiles.forEach((tile) => {
       if (tile.name === existingTile.classList[1].replaceAll("-", " ")) {
         movingToTile = tile;
@@ -299,13 +302,10 @@ function getTileData() {
 function checkDoorAlignment() {
   let allowPassage = false;
   movingToTile.doors.forEach((door) => {
-    // console.log("doors", door);
-    // console.log("alignment", doorAlignments[direction]);
     if (door === doorAlignments[direction]) {
       allowPassage = true;
     }
   });
-  console.log(allowPassage);
   return allowPassage;
 }
 
@@ -315,6 +315,7 @@ function handlePlayerMovesFloors() {
     activePlayer.position.style.gridRow === groundFloorStaircase.style.gridRow &&
     activePlayer.position.style.gridColumn === groundFloorStaircase.style.gridColumn
   ) {
+    activePlayer.currentTile = tiles[4];
     switchBoards("upper-btn");
     positionPlayers("mid", "upper", [upperLanding.style.gridRow, upperLanding.style.gridColumn]);
   } else if (
@@ -322,6 +323,7 @@ function handlePlayerMovesFloors() {
     activePlayer.position.style.gridRow === upperLanding.style.gridRow &&
     activePlayer.position.style.gridColumn === upperLanding.style.gridColumn
   ) {
+    activePlayer.currentTile = tiles[3];
     switchBoards("ground-btn");
     positionPlayers("mid", "ground", [groundFloorStaircase.style.gridRow, groundFloorStaircase.style.gridColumn]);
   } else if (
@@ -329,6 +331,7 @@ function handlePlayerMovesFloors() {
     activePlayer.position.style.gridRow === laundryChute.style.gridRow &&
     activePlayer.position.style.gridColumn === laundryChute.style.gridColumn
   ) {
+    activePlayer.currentTile = tiles[0];
     switchBoards("basement-btn");
     positionPlayers("mid", "basement", [
       parseInt(basementLanding.style.gridRow),
@@ -339,6 +342,7 @@ function handlePlayerMovesFloors() {
     activePlayer.position.style.gridRow === secretStaircase.style.gridRow &&
     activePlayer.position.style.gridColumn === secretStaircase.style.gridColumn
   ) {
+    activePlayer.currentTile = tiles[2];
     switchBoards("ground-btn");
     positionPlayers("mid", "ground", [parseInt(hallway.style.gridRow), parseInt(hallway.style.gridColumn)]);
   } else if (
@@ -347,6 +351,13 @@ function handlePlayerMovesFloors() {
     activePlayer.position.style.gridColumn === hallway.style.gridColumn &&
     secretStaircase !== undefined
   ) {
+    let secretStaircaseData;
+    usedTiles.forEach((tileData) => {
+      if (tileData.name === secretStaircase.classList[1].replace("-", " ")) {
+        secretStaircaseData = tileData;
+      }
+    });
+    activePlayer.currentTile = secretStaircaseData;
     switchBoards("basement-btn");
     positionPlayers("mid", "basement", [
       parseInt(secretStaircase.style.gridRow),
