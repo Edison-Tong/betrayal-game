@@ -221,16 +221,16 @@ async function handlePlayerMovement() {
     displayedFloor.append(newTile);
     await handleRotateTile(newTile);
   } else {
-    console.log(usedTiles);
     usedTiles.forEach((tile) => {
       if (tile.name === existingTile.classList[1].replaceAll("-", " ")) {
         movingToTile = tile;
       }
     });
+    if (!checkDoorAlignment()) {
+      return;
+    }
   }
-  if (!checkDoorAlignment()) {
-    return;
-  }
+
   activePlayer.currentTile = movingToTile;
   activePlayer.row = row;
   activePlayer.col = column;
