@@ -33,7 +33,7 @@ let playerInfo = [
     },
     {
         name: "Charly",
-        color: "blue",
+        color: "skyblue",
         speed: 3,
         might: 3,
         knowledge: 5,
@@ -41,6 +41,7 @@ let playerInfo = [
     },
     {
         name: "Marlee",
+        color: "white",
         speed: 3,
         might: 4,
         knowledge: 5,
