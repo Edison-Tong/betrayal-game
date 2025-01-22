@@ -10,6 +10,7 @@ let currentFloorBtn = document.querySelector("#current");
 let endTurnBtn = document.querySelector(".endTurnBtn");
 let playerCount = 6;
 let activePlayer;
+let playerTurnCounter = 0;
 let groundFloorStaircase = document.querySelector(".ground-floor-staircase");
 let hallway = document.querySelector(".hallway");
 let upperLanding = document.querySelector(".upper-landing");
@@ -143,7 +144,7 @@ function positionPlayers(time, floor, rowCol) {
             document.querySelector(".board.ground").append(player.marker);
             players.push(player);
         }
-        activePlayer = players[0];
+        activePlayer = players[playerTurnCounter];
         return;
     }
     activePlayer.marker.remove();
@@ -396,6 +397,11 @@ endTurnBtn.addEventListener("click", handleEndOfTurn);
 
 function handleEndOfTurn() {
     alert("end of turn");
+    playerTurnCounter++;
+    if (playerTurnCounter > playerCount) {
+        playerTurnCounter = 0;
+    }
+    activePlayer = players[playerTurnCounter];
 }
 
 makeButtonsActive();
