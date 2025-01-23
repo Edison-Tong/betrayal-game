@@ -56,7 +56,8 @@ let tiles = [
         doors: ["top", "right"],
         image: "Armory.png",
         symbol: "none",
-        message: `When you discover this tile, reveal cards from the top of the item deck until you reveal a weapon.
+        message: `When you discover this tile,
+        reveal cards from the top of the item deck until you reveal a weapon. <br>
             Take it and bury the rest`,
     },
     {
@@ -93,8 +94,7 @@ let tiles = [
         doors: ["top", "bottom"],
         image: "Chapel.png",
         symbol: "omen",
-        message: `When you discover this tile,
-        gain 1 Sanity`,
+        message: `When you discover this tile, gain 1 Sanity`,
     },
     {
         name: "charred room",
@@ -121,8 +121,8 @@ let tiles = [
         doors: ["top", "right"],
         image: "Collapsed_Room.png",
         symbol: "none",
-        message: `If you end your tur on this tile, make a speed roll.
-            5+: Nothing happens.
+        message: `If you end your tur on this tile, make a speed roll. <br>
+            5+: Nothing happens. <br>
             4-0: Place your explorer on the Basement Landing and take one die of Physical damage`,
     },
     {
@@ -168,8 +168,7 @@ let tiles = [
         doors: ["right", "bottom", "left"],
         image: "Furnace_Room.png",
         symbol: "event",
-        message: `If you end your turn on this tile,
-            take one die of Physical damage`,
+        message: `If you end your turn on this tile, take one die of Physical damage`,
     },
     {
         name: "gallery",
@@ -214,8 +213,7 @@ let tiles = [
         doors: ["top", "left"],
         image: "Gymnasium.png",
         symbol: "none",
-        message: `When you discover this tile,
-        gain 1 Speed`,
+        message: `When you discover this tile, gain 1 Speed`,
     },
     {
         name: "junk room",
@@ -224,8 +222,7 @@ let tiles = [
         doors: ["top", "right", "bottom"],
         image: "Junk_Room.png",
         symbol: "item",
-        message: `When you discover this tile,
-        place an Obstacle token on it`,
+        message: `When you discover this tile, place an Obstacle token on it`,
     },
     {
         name: "kitchen",
@@ -252,8 +249,7 @@ let tiles = [
         doors: ["top", "left"],
         image: "Larder.png",
         symbol: "none",
-        message: `When you discover this tile,
-        gain 1 Might`,
+        message: `When you discover this tile, gain 1 Might`,
     },
     {
         name: "laundry chute",
@@ -262,7 +258,7 @@ let tiles = [
         doors: ["top"],
         image: "Laundry_Chute.png",
         symbol: "none",
-        message: `Leads to the Basement Landing.
+        message: `Leads to the Basement Landing. <br>
             If you end your turn on this tile,
             place your explorer on the Basement Landing`,
     },
@@ -273,8 +269,7 @@ let tiles = [
         doors: ["top", "right", "bottom"],
         image: "Library.png",
         symbol: "omen",
-        message: `When you discover this tile,
-        gain 1 Knowledge`,
+        message: `When you discover this tile, gain 1 Knowledge`,
     },
     {
         name: "mystic elevator",
@@ -284,10 +279,10 @@ let tiles = [
         image: "Mystic_Elevator.png",
         symbol: "none",
         message: `Once per turn when you enter this tile, you may roll two dice.
-            Move the Mystic Elevator to an open doorway on:
-            4+: Any region.
-            3: Upper Floor.
-            2: Ground Floor.
+            Move the Mystic Elevator to an open doorway on: <br>
+            4+: Any region. <br>
+            3: Upper Floor. <br>
+            2: Ground Floor. <br>
             1-0: Basement`,
     },
     {
@@ -333,7 +328,7 @@ let tiles = [
         doors: ["top"],
         image: "Panic_Room.png",
         symbol: "omen",
-        message: `When you discover this tie,
+        message: `When you discover this tile,
             if the Secret Stairs tile has not been placed,
             find it in the tile stack and place it in the Basement.
             Then, shuffle the tile stack.`,
