@@ -129,6 +129,18 @@ body {
     width: 210px;
 }
 
+.sidebar {
+    width: 200px;
+    background-color: #f4f4f4;
+    padding: 15px;
+    border-right: 1px solid #ddd;
+}
+
+.player-stats {
+    margin: 5px 0;
+    font-size: 20px;
+}
+
 .player {
     background-color: #ff0;
     border: 2px solid #000;
