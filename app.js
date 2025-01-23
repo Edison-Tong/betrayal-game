@@ -23,6 +23,7 @@ let movingToTile;
 let usedTiles = [];
 let direction;
 let tileMessageBox = document.querySelector(".tile-message");
+let symbolFound;
 
 document.addEventListener("keydown", handlePlayerMovement);
 endTurnBtn.addEventListener("click", handleEndOfTurn);
@@ -159,7 +160,7 @@ function positionPlayers(time, floor, rowCol) {
 }
 
 async function handlePlayerMovement() {
-  if (isRotating || activePlayer.speed === activePlayer.movesThisTurn) return;
+  if (isRotating || activePlayer.speed === activePlayer.movesThisTurn || symbolFound) return;
   let key = event.key;
   let row;
   let column;
@@ -216,6 +217,9 @@ async function handlePlayerMovement() {
       row = 1;
     } else if (row > boardSize["ground"].totalRows) {
       handleBoardExpanding("bottom");
+    }
+    if (movingToTile.symbol !== "none") {
+      symbolFound = true;
     }
     let newTile = document.createElement("div");
     newTile.classList.add("tile", movingToTile.name.replaceAll(" ", "-"));
@@ -386,8 +390,10 @@ function handleEndOfTurn() {
   if (playerTurnCounter === playerCount) {
     playerTurnCounter = 0;
   }
+
   activePlayer = players[playerTurnCounter];
   switchBoards(activePlayer.currentFloor);
+  symbolFound = false;
 }
 
 makeButtonsActive();
