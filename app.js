@@ -25,8 +25,16 @@ let direction;
 let tileMessageBox = document.querySelector(".tile-message");
 let symbolFound;
 
-document.addEventListener("keydown", handlePlayerMovement);
+// document.addEventListener("keydown", handlePlayerMovement);
 endTurnBtn.addEventListener("click", handleEndOfTurn);
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" && document.activeElement.tagName === "BUTTON") {
+    event.preventDefault();
+  }
+  switchBoards(activePlayer.currentFloor);
+  handlePlayerMovement();
+});
 
 let doorAlignments = {
   top: "bottom",
@@ -89,7 +97,7 @@ function makeButtonsActive() {
   lvl_btns.forEach((button) => {
     if (!button.getAttribute("id", "current"))
       button.addEventListener("click", () => {
-        switchBoards(button.classList[1]);
+        switchBoards(button.classList[1].replace("-btn", ""));
       });
   });
 }
