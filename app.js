@@ -95,13 +95,13 @@ function makeButtonsActive() {
 
 function switchBoards(targetFloor) {
   currentFloorBtn.setAttribute("id", "");
-  currentFloorBtn = document.querySelector(`.${targetFloor}`);
+  currentFloorBtn = document.querySelector(`.${targetFloor}-btn`);
   currentFloorBtn.setAttribute("id", "current");
   currentFloorBtn.removeEventListener("click", switchBoards);
   makeButtonsActive();
 
   displayedFloor.classList.remove("active");
-  document.querySelector(`.${targetFloor.replace("-btn", "")}`).classList.add("active");
+  document.querySelector(`.${targetFloor}`).classList.add("active");
   displayedFloor = document.querySelector(".board.active");
 }
 
@@ -156,7 +156,6 @@ function positionPlayers(time, floor, rowCol) {
   activePlayer.marker.style.gridRow = rowCol[0];
   activePlayer.marker.style.gridColumn = rowCol[1];
   displayedFloor.append(activePlayer.marker);
-  console.log(activePlayer);
 }
 
 async function handlePlayerMovement() {
@@ -330,7 +329,7 @@ function handlePlayerMovesFloors() {
     activePlayer.marker.style.gridColumn === groundFloorStaircase.style.gridColumn
   ) {
     activePlayer.currentTile = tiles[4];
-    switchBoards("upper-btn");
+    switchBoards("upper");
     positionPlayers("mid", "upper", [upperLanding.style.gridRow, upperLanding.style.gridColumn]);
   } else if (
     displayedFloor.classList.contains("upper") &&
@@ -338,7 +337,7 @@ function handlePlayerMovesFloors() {
     activePlayer.marker.style.gridColumn === upperLanding.style.gridColumn
   ) {
     activePlayer.currentTile = tiles[3];
-    switchBoards("ground-btn");
+    switchBoards("ground");
     positionPlayers("mid", "ground", [groundFloorStaircase.style.gridRow, groundFloorStaircase.style.gridColumn]);
   } else if (
     displayedFloor.classList.contains("ground") &&
@@ -346,7 +345,7 @@ function handlePlayerMovesFloors() {
     activePlayer.marker.style.gridColumn === laundryChute.style.gridColumn
   ) {
     activePlayer.currentTile = tiles[0];
-    switchBoards("basement-btn");
+    switchBoards("basement");
     positionPlayers("mid", "basement", [
       parseInt(basementLanding.style.gridRow),
       parseInt(basementLanding.style.gridColumn),
@@ -357,7 +356,7 @@ function handlePlayerMovesFloors() {
     activePlayer.marker.style.gridColumn === secretStaircase.style.gridColumn
   ) {
     activePlayer.currentTile = tiles[2];
-    switchBoards("ground-btn");
+    switchBoards("ground");
     positionPlayers("mid", "ground", [parseInt(hallway.style.gridRow), parseInt(hallway.style.gridColumn)]);
   } else if (
     displayedFloor.classList.contains("ground") &&
@@ -372,7 +371,7 @@ function handlePlayerMovesFloors() {
       }
     });
     activePlayer.currentTile = secretStaircaseData;
-    switchBoards("basement-btn");
+    switchBoards("basement");
     positionPlayers("mid", "basement", [
       parseInt(secretStaircase.style.gridRow),
       parseInt(secretStaircase.style.gridColumn),
@@ -388,6 +387,7 @@ function handleEndOfTurn() {
     playerTurnCounter = 0;
   }
   activePlayer = players[playerTurnCounter];
+  switchBoards(activePlayer.currentFloor);
 }
 
 makeButtonsActive();
