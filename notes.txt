@@ -1,0 +1,23 @@
+Hallway - (movement) leads to Secret Staircase
+Ground Floor Staircase - (movemnet) leads to Upper Landing
+Upper Landing - (movement) leads to Ground Floor Staircase
+Secret Staircase - (movement) leads to Hallway
+
+Underground Cavern - (movement) leads to Graveyard
+Gallery - (movement) leads to the ballroom
+Graveyard - (movement) leads to Underground Cavern
+
+Mystic Elevator - (movement) roll 2 dice
+
+Chapel - (discover) gain 1 sanity
+Gymnasium - (discover) gain 1 speed
+Larder - (discover) gain 1 might
+Library - (discover) gain 1 knowledge
+Armory - (discover) get random weapon item
+
+Junk room - (discover) place obstacle token
+Panic Room - (discover) place Secret Staircase tile (if not already placed)
+
+Laundry chute - (End turn) leads to basement landing
+Collapsed Room - (End Turn) speed Roll
+Furnace Room - (End Turn) one DIE of damage
