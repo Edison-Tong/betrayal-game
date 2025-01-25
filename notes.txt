@@ -7,7 +7,9 @@ Underground Cavern - (movement) leads to Graveyard
 Gallery - (movement) leads to the ballroom
 Graveyard - (movement) leads to Underground Cavern
 
+
 Mystic Elevator - (movement) roll 2 dice
+
 
 Chapel - (discover) gain 1 sanity
 Gymnasium - (discover) gain 1 speed

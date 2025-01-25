@@ -24,6 +24,17 @@ let usedTiles = [];
 let direction;
 let tileMessageBox = document.querySelector(".tile-message");
 let symbolFound;
+let movementTiles = {
+  groundFloorStaircase: { data: tiles[3], element: document.querySelector(".ground-floor-staircase") },
+  hallway: { data: tiles[2], element: document.querySelector(".hallway") },
+  upperLanding: { data: tiles[4], element: document.querySelector(".upper-landing") },
+  basementLanding: { data: tiles[0], element: document.querySelector(".basement-landing") },
+  secretStaircase: { data: tiles[38] },
+  gallery: { data: tiles[18] },
+  ballroom: { data: tiles[6] },
+  undergroundCavern: { data: tiles[43] },
+  graveyard: { data: tiles[20] },
+};
 
 // document.addEventListener("keydown", handlePlayerMovement);
 endTurnBtn.addEventListener("click", handleEndOfTurn);
@@ -198,7 +209,7 @@ async function handlePlayerMovement() {
       direction = "left";
       column -= 1;
     } else if (key === "Enter") {
-      handlePlayerMovesFloors();
+      handlePlayerMovesTiles();
       column = activePlayer.currentTile.col;
       row = activePlayer.currentTile.row;
     }
@@ -247,7 +258,7 @@ async function handlePlayerMovement() {
     if (newTile.classList.contains("laundry-chute")) {
       laundryChute = newTile;
     } else if (newTile.classList.contains("secret-staircase")) {
-      secretStaircase = newTile;
+      movementTiles.secretStaircase.marker = newTile;
     }
     newTile.classList.add("highlight");
     displayedFloor.append(newTile);
@@ -344,24 +355,36 @@ function checkDoorAlignment() {
   return allowPassage;
 }
 
-function handlePlayerMovesFloors() {
+function handlePlayerMovesTiles() {
+  // Underground Cavern - (movement) leads to Graveyard
+  // Graveyard - (movement) leads to Underground Cavern
+  // Gallery - (movement) leads to the ballroom
   if (
+    // ground floor staircase
     displayedFloor.classList.contains("ground") &&
-    activePlayer.marker.style.gridRow === groundFloorStaircase.style.gridRow &&
-    activePlayer.marker.style.gridColumn === groundFloorStaircase.style.gridColumn
+    activePlayer.marker.style.gridRow === movementTiles.groundFloorStaircase.element.style.gridRow &&
+    activePlayer.marker.style.gridColumn === movementTiles.groundFloorStaircase.element.style.gridColumn
   ) {
-    activePlayer.currentTile = tiles[4];
+    activePlayer.currentTile = movementTiles.upperLanding.data;
     switchBoards("upper");
-    positionPlayers("mid", "upper", [upperLanding.style.gridRow, upperLanding.style.gridColumn]);
+    positionPlayers("mid", "upper", [
+      movementTiles.upperLanding.element.style.gridRow,
+      movementTiles.upperLanding.element.style.gridColumn,
+    ]);
   } else if (
+    //upperlanding
     displayedFloor.classList.contains("upper") &&
-    activePlayer.marker.style.gridRow === upperLanding.style.gridRow &&
-    activePlayer.marker.style.gridColumn === upperLanding.style.gridColumn
+    activePlayer.marker.style.gridRow === movementTiles.upperLanding.element.style.gridRow &&
+    activePlayer.marker.style.gridColumn === movementTiles.upperLanding.element.style.gridColumn
   ) {
     activePlayer.currentTile = tiles[3];
     switchBoards("ground");
-    positionPlayers("mid", "ground", [groundFloorStaircase.style.gridRow, groundFloorStaircase.style.gridColumn]);
+    positionPlayers("mid", "ground", [
+      movementTiles.groundFloorStaircase.element.style.gridRow,
+      movementTiles.groundFloorStaircase.element.style.gridColumn,
+    ]);
   } else if (
+    //laundry chute. Move to end turn function eventually
     displayedFloor.classList.contains("ground") &&
     activePlayer.marker.style.gridRow === laundryChute.style.gridRow &&
     activePlayer.marker.style.gridColumn === laundryChute.style.gridColumn
@@ -369,34 +392,30 @@ function handlePlayerMovesFloors() {
     activePlayer.currentTile = tiles[0];
     switchBoards("basement");
     positionPlayers("mid", "basement", [
-      parseInt(basementLanding.style.gridRow),
-      parseInt(basementLanding.style.gridColumn),
+      parseInt(movementTiles.basementLanding.element.style.gridRow),
+      parseInt(movementTiles.basementLanding.element.style.gridColumn),
     ]);
   } else if (
+    //secret staircase
     displayedFloor.classList.contains("basement") &&
-    activePlayer.marker.style.gridRow === secretStaircase.style.gridRow &&
-    activePlayer.marker.style.gridColumn === secretStaircase.style.gridColumn
+    activePlayer.marker.style.gridRow === movementTiles.secretStaircase.element.style.gridRow &&
+    activePlayer.marker.style.gridColumn === movementTiles.secretStaircase.element.style.gridColumn
   ) {
     activePlayer.currentTile = tiles[2];
     switchBoards("ground");
     positionPlayers("mid", "ground", [parseInt(hallway.style.gridRow), parseInt(hallway.style.gridColumn)]);
   } else if (
+    //hallway
     displayedFloor.classList.contains("ground") &&
-    activePlayer.marker.style.gridRow === hallway.style.gridRow &&
-    activePlayer.marker.style.gridColumn === hallway.style.gridColumn &&
+    activePlayer.marker.style.gridRow === movementTiles.hallway.element.style.gridRow &&
+    activePlayer.marker.style.gridColumn === movementTiles.hallway.element.style.gridColumn &&
     secretStaircase !== undefined
   ) {
-    let secretStaircaseData;
-    usedTiles.forEach((tileData) => {
-      if (tileData.name === secretStaircase.classList[1].replace("-", " ")) {
-        secretStaircaseData = tileData;
-      }
-    });
-    activePlayer.currentTile = secretStaircaseData;
+    activePlayer.currentTile = movementTiles.secretStaircase.data;
     switchBoards("basement");
     positionPlayers("mid", "basement", [
-      parseInt(secretStaircase.style.gridRow),
-      parseInt(secretStaircase.style.gridColumn),
+      parseInt(movementTiles.secretStaircase.element.style.gridRow),
+      parseInt(movementTiles.secretStaircase.element.style.gridColumn),
     ]);
   }
 }
