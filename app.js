@@ -12,10 +12,10 @@ let playerCount = 3;
 let players = [];
 let activePlayer;
 let playerTurnCounter = 0;
-let groundFloorStaircase = document.querySelector(".ground-floor-staircase");
-let hallway = document.querySelector(".hallway");
-let upperLanding = document.querySelector(".upper-landing");
-let basementLanding = document.querySelector(".basement-landing");
+// let groundFloorStaircase = document.querySelector(".ground-floor-staircase");
+// let hallway = document.querySelector(".hallway");
+// let upperLanding = document.querySelector(".upper-landing");
+// let basementLanding = document.querySelector(".basement-landing");
 let laundryChute;
 let secretStaircase;
 let isRotating = false;
@@ -24,16 +24,79 @@ let usedTiles = [];
 let direction;
 let tileMessageBox = document.querySelector(".tile-message");
 let symbolFound;
+// let movementTiles = {
+//   groundFloorStaircase: { data: tiles[3], element: document.querySelector(".ground-floor-staircase") },
+//   hallway: { data: tiles[2], element: document.querySelector(".hallway") },
+//   upperLanding: { data: tiles[4], element: document.querySelector(".upper-landing") },
+//   basementLanding: { data: tiles[0], element: document.querySelector(".basement-landing") },
+//   secretStaircase: { data: tiles[38] },
+//   gallery: { data: tiles[18] },
+//   ballroom: { data: tiles[6] },
+//   undergroundCavern: { data: tiles[43] },
+//   graveyard: { data: tiles[20] },
+// };
+
 let movementTiles = {
-  groundFloorStaircase: { data: tiles[3], element: document.querySelector(".ground-floor-staircase") },
-  hallway: { data: tiles[2], element: document.querySelector(".hallway") },
-  upperLanding: { data: tiles[4], element: document.querySelector(".upper-landing") },
-  basementLanding: { data: tiles[0], element: document.querySelector(".basement-landing") },
-  secretStaircase: { data: tiles[38] },
-  gallery: { data: tiles[18] },
-  ballroom: { data: tiles[6] },
-  undergroundCavern: { data: tiles[43] },
-  graveyard: { data: tiles[20] },
+  groundFloorStaircase: {
+    opposite: "upperLanding",
+    connectingFloor: "upper",
+    data: tiles[3],
+    element: document.querySelector(".ground-floor-staircase"),
+  },
+  hallway: {
+    opposite: "secretStaircase",
+    connectingFloor: "basement",
+    data: tiles[2],
+    element: document.querySelector(".hallway"),
+  },
+  upperLanding: {
+    opposite: "groundFloorStaircase",
+    connectingFloor: "ground",
+    data: tiles[4],
+    element: document.querySelector(".upper-landing"),
+  },
+  basementLanding: {
+    opposite: "laundryChute",
+    connectingFloor: "ground",
+    data: tiles[0],
+    element: document.querySelector(".basement-landing"),
+  },
+  secretStaircase: { opposite: "hallway", connectingFloor: "ground", data: tiles[11] },
+  gallery: { oppoite: "ballroom", connectingFloor: "ground", data: tiles[8] },
+  ballroom: { opposite: "gallery", connectingFloor: "upper", data: tiles[5] },
+  undergroundCavern: { opposite: "graveyard", connectingFloor: "ground", data: tiles[12] },
+  graveyard: { opposite: "undergroundCavern", connectingFloor: "basement", data: tiles[9] },
+};
+
+// Laundry chute - (End turn) leads to basement landing
+// Collapsed Room - (End Turn) speed Roll
+// Furnace Room - (End Turn) one DIE of damage
+
+// movementTiles.basementLanding.element.style.gridRow
+
+let endOfTurnTiles = {
+  laundryChute: {
+    data: tiles[10],
+    effect: () => {
+      switchBoards("basement");
+      positionPlayers("mid", "basement", [
+        movementTiles.basementLanding.element.style.gridRow,
+        movementTiles.basementLanding.element.style.gridColumn,
+      ]);
+    },
+  },
+  collapsedRoom: {
+    data: tiles[6],
+    effect: (player) => {
+      console.log(activePlayer.stats.speed);
+    },
+  },
+  furnaceRoom: {
+    data: tiles[7],
+    effect: (player) => {
+      console.log(player);
+    },
+  },
 };
 
 // document.addEventListener("keydown", handlePlayerMovement);
@@ -189,7 +252,10 @@ function handlePlayerStats() {
 }
 
 async function handlePlayerMovement() {
-  if (isRotating || activePlayer.speed === activePlayer.movesThisTurn || symbolFound) return;
+  // || activePlayer.stats.speed === activePlayer.movesThisTurn || symbolFound
+  if (isRotating) {
+    return;
+  }
   let key = event.key;
   let row;
   let column;
@@ -209,7 +275,7 @@ async function handlePlayerMovement() {
       direction = "left";
       column -= 1;
     } else if (key === "Enter") {
-      handlePlayerMovesTiles();
+      handlePlayerMovesTiles(activePlayer.currentTile.name.replaceAll(" ", ""));
       column = activePlayer.currentTile.col;
       row = activePlayer.currentTile.row;
     }
@@ -218,7 +284,6 @@ async function handlePlayerMovement() {
   if (!activePlayer.currentTile.doors.some((door) => door === direction)) {
     return;
   }
-  activePlayer.movesThisTurn += 1;
   let existingTile = Array.from(displayedFloor.children).find((child) => {
     return (
       child.classList.contains("tile") &&
@@ -251,21 +316,28 @@ async function handlePlayerMovement() {
       symbolFound = true;
     }
     let newTile = document.createElement("div");
-    newTile.classList.add("tile", movingToTile.name.replaceAll(" ", "-"));
+    newTile.classList.add("tile", movingToTile.name.replaceAll(" ", "-").toLowerCase());
     newTile.style.backgroundImage = `url(./images/${movingToTile.image})`;
     newTile.style.gridRow = row;
     newTile.style.gridColumn = column;
+
     if (newTile.classList.contains("laundry-chute")) {
       laundryChute = newTile;
     } else if (newTile.classList.contains("secret-staircase")) {
-      movementTiles.secretStaircase.marker = newTile;
+      movementTiles.secretStaircase.element = newTile;
+    } else if (newTile.classList.contains("ballroom")) {
+      movementTiles.ballroom.element = newTile;
+    } else if (newTile.classList.contains("graveyard")) {
+      movementTiles.graveyard.element = newTile;
+    } else if (newTile.classList.contains("underground-cavern")) {
+      movementTiles.undergroundCavern.element = newTile;
     }
     newTile.classList.add("highlight");
     displayedFloor.append(newTile);
     await handleRotateTile(newTile);
   } else {
     usedTiles.forEach((tile) => {
-      if (tile.name === existingTile.classList[1].replaceAll("-", " ")) {
+      if (tile.name.toLowerCase() === existingTile.classList[1].replaceAll("-", " ")) {
         movingToTile = tile;
       }
     });
@@ -274,10 +346,12 @@ async function handlePlayerMovement() {
     }
   }
 
+  activePlayer.movesThisTurn += 1;
   movingToTile.message === "none"
     ? (tileMessageBox.style.display = "none")
     : ((tileMessageBox.style.display = "block"), (tileMessageBox.innerHTML = movingToTile.message));
   activePlayer.currentTile = movingToTile;
+
   activePlayer.row = row;
   activePlayer.col = column;
   activePlayer.marker.style.gridRow = row;
@@ -355,72 +429,116 @@ function checkDoorAlignment() {
   return allowPassage;
 }
 
-function handlePlayerMovesTiles() {
-  // Underground Cavern - (movement) leads to Graveyard
-  // Graveyard - (movement) leads to Underground Cavern
-  // Gallery - (movement) leads to the ballroom
-  if (
-    // ground floor staircase
-    displayedFloor.classList.contains("ground") &&
-    activePlayer.marker.style.gridRow === movementTiles.groundFloorStaircase.element.style.gridRow &&
-    activePlayer.marker.style.gridColumn === movementTiles.groundFloorStaircase.element.style.gridColumn
-  ) {
-    activePlayer.currentTile = movementTiles.upperLanding.data;
-    switchBoards("upper");
-    positionPlayers("mid", "upper", [
-      movementTiles.upperLanding.element.style.gridRow,
-      movementTiles.upperLanding.element.style.gridColumn,
-    ]);
-  } else if (
-    //upperlanding
-    displayedFloor.classList.contains("upper") &&
-    activePlayer.marker.style.gridRow === movementTiles.upperLanding.element.style.gridRow &&
-    activePlayer.marker.style.gridColumn === movementTiles.upperLanding.element.style.gridColumn
-  ) {
-    activePlayer.currentTile = tiles[3];
-    switchBoards("ground");
-    positionPlayers("mid", "ground", [
-      movementTiles.groundFloorStaircase.element.style.gridRow,
-      movementTiles.groundFloorStaircase.element.style.gridColumn,
-    ]);
-  } else if (
-    //laundry chute. Move to end turn function eventually
-    displayedFloor.classList.contains("ground") &&
-    activePlayer.marker.style.gridRow === laundryChute.style.gridRow &&
-    activePlayer.marker.style.gridColumn === laundryChute.style.gridColumn
-  ) {
-    activePlayer.currentTile = tiles[0];
-    switchBoards("basement");
-    positionPlayers("mid", "basement", [
-      parseInt(movementTiles.basementLanding.element.style.gridRow),
-      parseInt(movementTiles.basementLanding.element.style.gridColumn),
-    ]);
-  } else if (
-    //secret staircase
-    displayedFloor.classList.contains("basement") &&
-    activePlayer.marker.style.gridRow === movementTiles.secretStaircase.element.style.gridRow &&
-    activePlayer.marker.style.gridColumn === movementTiles.secretStaircase.element.style.gridColumn
-  ) {
-    activePlayer.currentTile = tiles[2];
-    switchBoards("ground");
-    positionPlayers("mid", "ground", [parseInt(hallway.style.gridRow), parseInt(hallway.style.gridColumn)]);
-  } else if (
-    //hallway
-    displayedFloor.classList.contains("ground") &&
-    activePlayer.marker.style.gridRow === movementTiles.hallway.element.style.gridRow &&
-    activePlayer.marker.style.gridColumn === movementTiles.hallway.element.style.gridColumn &&
-    secretStaircase !== undefined
-  ) {
-    activePlayer.currentTile = movementTiles.secretStaircase.data;
-    switchBoards("basement");
-    positionPlayers("mid", "basement", [
-      parseInt(movementTiles.secretStaircase.element.style.gridRow),
-      parseInt(movementTiles.secretStaircase.element.style.gridColumn),
-    ]);
-  }
+function handlePlayerMovesTiles(tileName) {
+  let moveTo = movementTiles[tileName].opposite;
+  let floor = movementTiles[tileName].connectingFloor;
+  activePlayer.currentTile = movementTiles[moveTo].data;
+
+  switchBoards(floor);
+  positionPlayers("mid", floor, [
+    movementTiles[moveTo].element.style.gridRow,
+    movementTiles[moveTo].element.style.gridColumn,
+  ]);
 }
 
-function handleEndOfTurn() {
+// function handlePlayerMovesTiles() {
+//   // Gallery - (movement) leads to the ballroom
+//   if (
+//     // ground floor staircase to upper landing
+//     displayedFloor.classList.contains("ground") &&
+//     activePlayer.marker.style.gridRow === movementTiles.groundFloorStaircase.element.style.gridRow &&
+//     activePlayer.marker.style.gridColumn === movementTiles.groundFloorStaircase.element.style.gridColumn
+//   ) {
+//     activePlayer.currentTile = movementTiles.upperLanding.data;
+//     switchBoards("upper");
+//     positionPlayers("mid", "upper", [
+//       movementTiles.upperLanding.element.style.gridRow,
+//       movementTiles.upperLanding.element.style.gridColumn,
+//     ]);
+//   } else if (
+//     //upperlanding to ground floor staircase
+//     displayedFloor.classList.contains("upper") &&
+//     activePlayer.marker.style.gridRow === movementTiles.upperLanding.element.style.gridRow &&
+//     activePlayer.marker.style.gridColumn === movementTiles.upperLanding.element.style.gridColumn
+//   ) {
+//     activePlayer.currentTile = movementTiles.groundFloorStaircase.data;
+//     switchBoards("ground");
+//     positionPlayers("mid", "ground", [
+//       movementTiles.groundFloorStaircase.element.style.gridRow,
+//       movementTiles.groundFloorStaircase.element.style.gridColumn,
+//     ]);
+//   } else if (
+//     //secret staircase to hallway
+//     movementTiles.secretStaircase.element !== undefined &&
+//     displayedFloor.classList.contains("basement") &&
+//     activePlayer.marker.style.gridRow === movementTiles.secretStaircase.element.style.gridRow &&
+//     activePlayer.marker.style.gridColumn === movementTiles.secretStaircase.element.style.gridColumn
+//   ) {
+//     activePlayer.currentTile = tiles[2];
+//     switchBoards("ground");
+//     positionPlayers("mid", "ground", [
+//       parseInt(movementTiles.hallway.element.style.gridRow),
+//       parseInt(movementTiles.hallway.element.style.gridColumn),
+//     ]);
+//   } else if (
+//     //hallway to secret staircase
+//     displayedFloor.classList.contains("ground") &&
+//     activePlayer.marker.style.gridRow === movementTiles.hallway.element.style.gridRow &&
+//     activePlayer.marker.style.gridColumn === movementTiles.hallway.element.style.gridColumn &&
+//     movementTiles.secretStaircase.element !== undefined
+//   ) {
+//     activePlayer.currentTile = movementTiles.secretStaircase.data;
+//     switchBoards("basement");
+//     positionPlayers("mid", "basement", [
+//       parseInt(movementTiles.secretStaircase.element.style.gridRow),
+//       parseInt(movementTiles.secretStaircase.element.style.gridColumn),
+//     ]);
+//   } else if (
+//     //graveyard to underground cavern
+//     movementTiles.undergroundCavern.element !== undefined &&
+//     movementTiles.graveyard.element !== undefined &&
+//     displayedFloor.classList.contains("ground") &&
+//     activePlayer.marker.style.gridRow === movementTiles.graveyard.element.style.gridRow &&
+//     activePlayer.marker.style.gridColumn === movementTiles.graveyard.element.style.gridColumn
+//   ) {
+//     activePlayer.currentTile = movementTiles.undergroundCavern.data;
+//     switchBoards("basement");
+//     positionPlayers("mid", "basement", [
+//       parseInt(movementTiles.undergroundCavern.element.style.gridRow),
+//       parseInt(movementTiles.undergroundCavern.element.style.gridColumn),
+//     ]);
+//   } else if (
+//     // underground cavern to graveyard
+//     movementTiles.undergroundCavern.element !== undefined &&
+//     movementTiles.graveyard.element !== undefined &&
+//     displayedFloor.classList.contains("basement") &&
+//     activePlayer.marker.style.gridRow === movementTiles.undergroundCavern.element.style.gridRow &&
+//     activePlayer.marker.style.gridColumn === movementTiles.undergroundCavern.element.style.gridColumn
+//   ) {
+//     activePlayer.currentTile = movementTiles.graveyard.data;
+//     switchBoards("ground");
+//     positionPlayers("mid", "ground", [
+//       parseInt(movementTiles.graveyard.element.style.gridRow),
+//       parseInt(movementTiles.graveyard.element.style.gridColumn),
+//     ]);
+//   } else if (
+//     //laundry chute to basemant landing. Move to end turn function eventually
+//     laundryChute !== undefined &&
+//     displayedFloor.classList.contains("ground") &&
+//     activePlayer.marker.style.gridRow === laundryChute.style.gridRow &&
+//     activePlayer.marker.style.gridColumn === laundryChute.style.gridColumn
+//   ) {
+//     activePlayer.currentTile = tiles[0];
+//     switchBoards("basement");
+//     positionPlayers("mid", "basement", [
+//       parseInt(movementTiles.basementLanding.element.style.gridRow),
+//       parseInt(movementTiles.basementLanding.element.style.gridColumn),
+//     ]);
+//   }
+// }
+
+async function handleEndOfTurn() {
+  await handleEndOfTurnEvents();
   activePlayer.movesThisTurn = 0;
   playerTurnCounter++;
   if (playerTurnCounter === playerCount) {
@@ -431,6 +549,14 @@ function handleEndOfTurn() {
   switchBoards(activePlayer.currentFloor);
   handlePlayerStats();
   symbolFound = false;
+}
+
+function handleEndOfTurnEvents() {
+  for (let key in endOfTurnTiles) {
+    if (activePlayer.currentTile.name.replace(" ", "") === key) {
+      endOfTurnTiles[key].effect();
+    }
+  }
 }
 
 makeButtonsActive();
