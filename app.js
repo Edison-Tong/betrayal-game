@@ -2,6 +2,8 @@ import tiles from "./tiles.js";
 import playerInfo from "./playerInfo.js";
 
 let boards = document.querySelectorAll(".board");
+let dice = document.querySelectorAll(".die");
+let rollBtn = document.querySelector(".roll-btn");
 let lvl_btns = document.querySelectorAll(".level-btn");
 let startingTiles = [];
 let displayedFloor = document.querySelector(".board.active");
@@ -68,12 +70,6 @@ let movementTiles = {
   graveyard: { opposite: "undergroundCavern", connectingFloor: "basement", data: tiles[9] },
 };
 
-// Laundry chute - (End turn) leads to basement landing
-// Collapsed Room - (End Turn) speed Roll
-// Furnace Room - (End Turn) one DIE of damage
-
-// movementTiles.basementLanding.element.style.gridRow
-
 let endOfTurnTiles = {
   laundryChute: {
     data: tiles[10],
@@ -88,7 +84,7 @@ let endOfTurnTiles = {
   collapsedRoom: {
     data: tiles[6],
     effect: (player) => {
-      console.log(activePlayer.stats.speed);
+      rollDice(activePlayer.stats.speed);
     },
   },
   furnaceRoom: {
@@ -558,6 +554,36 @@ function handleEndOfTurnEvents() {
     }
   }
 }
+
+rollBtn.addEventListener("click", () => {
+  rollDice(activePlayer.stats.speed);
+});
+
+function handleRollDice(diceAmount) {
+  for (let i = 0; i < dice.length; i++) {
+    if (i < diceAmount) {
+      dice[i].style.display = "default";
+    } else {
+      dice[i].style.display = "none";
+    }
+  }
+
+  setInterval(() => {
+    for (let i = 0; i < dice.length; i++) {
+      let num = Math.floor(Math.random() * 3);
+      dice[i].src = `./images/dice/${num}.png`;
+    }
+  }, 100);
+}
+
+// function rollDice(baseAmount) {
+//   setInterval(() => {
+//     for (let i = 0; i < dice.length; i++) {
+//       let num = Math.floor(Math.random() * 3);
+//       dice[i].src = `./images/dice/${num}.png`;
+//     }
+//   }, 100);
+// }
 
 makeButtonsActive();
 positionStartingTiles();
