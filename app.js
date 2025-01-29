@@ -3,6 +3,7 @@ import playerInfo from "./playerInfo.js";
 
 let boards = document.querySelectorAll(".board");
 let dice = document.querySelectorAll(".die");
+let totalDisplay = document.querySelector(".total-display");
 let rollBtn = document.querySelector(".roll-btn");
 let lvl_btns = document.querySelectorAll(".level-btn");
 let startingTiles = [];
@@ -14,10 +15,7 @@ let playerCount = 3;
 let players = [];
 let activePlayer;
 let playerTurnCounter = 0;
-// let groundFloorStaircase = document.querySelector(".ground-floor-staircase");
-// let hallway = document.querySelector(".hallway");
-// let upperLanding = document.querySelector(".upper-landing");
-// let basementLanding = document.querySelector(".basement-landing");
+
 let laundryChute;
 let secretStaircase;
 let isRotating = false;
@@ -83,8 +81,18 @@ let endOfTurnTiles = {
   },
   collapsedRoom: {
     data: tiles[6],
-    effect: (player) => {
-      rollDice(activePlayer.stats.speed);
+    effect: async () => {
+      let roll = await handleDiceRoll(activePlayer.stats.speed);
+      if (roll >= 5) {
+        console.log("You escaped the collapsed room!");
+      } else {
+        console.log("You failed to escape the collapsed room!");
+        switchBoards("basement");
+        positionPlayers("mid", "basement", [
+          movementTiles.basementLanding.element.style.gridRow,
+          movementTiles.basementLanding.element.style.gridColumn,
+        ]);
+      }
     },
   },
   furnaceRoom: {
@@ -437,102 +445,6 @@ function handlePlayerMovesTiles(tileName) {
   ]);
 }
 
-// function handlePlayerMovesTiles() {
-//   // Gallery - (movement) leads to the ballroom
-//   if (
-//     // ground floor staircase to upper landing
-//     displayedFloor.classList.contains("ground") &&
-//     activePlayer.marker.style.gridRow === movementTiles.groundFloorStaircase.element.style.gridRow &&
-//     activePlayer.marker.style.gridColumn === movementTiles.groundFloorStaircase.element.style.gridColumn
-//   ) {
-//     activePlayer.currentTile = movementTiles.upperLanding.data;
-//     switchBoards("upper");
-//     positionPlayers("mid", "upper", [
-//       movementTiles.upperLanding.element.style.gridRow,
-//       movementTiles.upperLanding.element.style.gridColumn,
-//     ]);
-//   } else if (
-//     //upperlanding to ground floor staircase
-//     displayedFloor.classList.contains("upper") &&
-//     activePlayer.marker.style.gridRow === movementTiles.upperLanding.element.style.gridRow &&
-//     activePlayer.marker.style.gridColumn === movementTiles.upperLanding.element.style.gridColumn
-//   ) {
-//     activePlayer.currentTile = movementTiles.groundFloorStaircase.data;
-//     switchBoards("ground");
-//     positionPlayers("mid", "ground", [
-//       movementTiles.groundFloorStaircase.element.style.gridRow,
-//       movementTiles.groundFloorStaircase.element.style.gridColumn,
-//     ]);
-//   } else if (
-//     //secret staircase to hallway
-//     movementTiles.secretStaircase.element !== undefined &&
-//     displayedFloor.classList.contains("basement") &&
-//     activePlayer.marker.style.gridRow === movementTiles.secretStaircase.element.style.gridRow &&
-//     activePlayer.marker.style.gridColumn === movementTiles.secretStaircase.element.style.gridColumn
-//   ) {
-//     activePlayer.currentTile = tiles[2];
-//     switchBoards("ground");
-//     positionPlayers("mid", "ground", [
-//       parseInt(movementTiles.hallway.element.style.gridRow),
-//       parseInt(movementTiles.hallway.element.style.gridColumn),
-//     ]);
-//   } else if (
-//     //hallway to secret staircase
-//     displayedFloor.classList.contains("ground") &&
-//     activePlayer.marker.style.gridRow === movementTiles.hallway.element.style.gridRow &&
-//     activePlayer.marker.style.gridColumn === movementTiles.hallway.element.style.gridColumn &&
-//     movementTiles.secretStaircase.element !== undefined
-//   ) {
-//     activePlayer.currentTile = movementTiles.secretStaircase.data;
-//     switchBoards("basement");
-//     positionPlayers("mid", "basement", [
-//       parseInt(movementTiles.secretStaircase.element.style.gridRow),
-//       parseInt(movementTiles.secretStaircase.element.style.gridColumn),
-//     ]);
-//   } else if (
-//     //graveyard to underground cavern
-//     movementTiles.undergroundCavern.element !== undefined &&
-//     movementTiles.graveyard.element !== undefined &&
-//     displayedFloor.classList.contains("ground") &&
-//     activePlayer.marker.style.gridRow === movementTiles.graveyard.element.style.gridRow &&
-//     activePlayer.marker.style.gridColumn === movementTiles.graveyard.element.style.gridColumn
-//   ) {
-//     activePlayer.currentTile = movementTiles.undergroundCavern.data;
-//     switchBoards("basement");
-//     positionPlayers("mid", "basement", [
-//       parseInt(movementTiles.undergroundCavern.element.style.gridRow),
-//       parseInt(movementTiles.undergroundCavern.element.style.gridColumn),
-//     ]);
-//   } else if (
-//     // underground cavern to graveyard
-//     movementTiles.undergroundCavern.element !== undefined &&
-//     movementTiles.graveyard.element !== undefined &&
-//     displayedFloor.classList.contains("basement") &&
-//     activePlayer.marker.style.gridRow === movementTiles.undergroundCavern.element.style.gridRow &&
-//     activePlayer.marker.style.gridColumn === movementTiles.undergroundCavern.element.style.gridColumn
-//   ) {
-//     activePlayer.currentTile = movementTiles.graveyard.data;
-//     switchBoards("ground");
-//     positionPlayers("mid", "ground", [
-//       parseInt(movementTiles.graveyard.element.style.gridRow),
-//       parseInt(movementTiles.graveyard.element.style.gridColumn),
-//     ]);
-//   } else if (
-//     //laundry chute to basemant landing. Move to end turn function eventually
-//     laundryChute !== undefined &&
-//     displayedFloor.classList.contains("ground") &&
-//     activePlayer.marker.style.gridRow === laundryChute.style.gridRow &&
-//     activePlayer.marker.style.gridColumn === laundryChute.style.gridColumn
-//   ) {
-//     activePlayer.currentTile = tiles[0];
-//     switchBoards("basement");
-//     positionPlayers("mid", "basement", [
-//       parseInt(movementTiles.basementLanding.element.style.gridRow),
-//       parseInt(movementTiles.basementLanding.element.style.gridColumn),
-//     ]);
-//   }
-// }
-
 async function handleEndOfTurn() {
   await handleEndOfTurnEvents();
   activePlayer.movesThisTurn = 0;
@@ -548,42 +460,60 @@ async function handleEndOfTurn() {
 }
 
 function handleEndOfTurnEvents() {
+  const promises = [];
+
   for (let key in endOfTurnTiles) {
     if (activePlayer.currentTile.name.replace(" ", "") === key) {
-      endOfTurnTiles[key].effect();
+      const effectPromise = endOfTurnTiles[key].effect();
+      if (effectPromise instanceof Promise) {
+        promises.push(effectPromise); // Collect async tasks
+      }
     }
   }
+
+  return Promise.all(promises); // Ensure all tasks complete
 }
 
-rollBtn.addEventListener("click", () => {
-  rollDice(activePlayer.stats.speed);
-});
+async function handleDiceRoll(diceAmount) {
+  const dice = document.querySelectorAll(".dice img");
+  let interval;
 
-function handleRollDice(diceAmount) {
+  // Show only the specified number of dice
   for (let i = 0; i < dice.length; i++) {
-    if (i < diceAmount) {
-      dice[i].style.display = "default";
-    } else {
-      dice[i].style.display = "none";
-    }
+    dice[i].style.display = i < diceAmount ? "inline-block" : "none";
   }
 
-  setInterval(() => {
-    for (let i = 0; i < dice.length; i++) {
-      let num = Math.floor(Math.random() * 3);
+  // Start dice rolling animation
+  interval = setInterval(() => {
+    for (let i = 0; i < diceAmount; i++) {
+      let num = Math.floor(Math.random() * 3); // Random dice roll (0-2)
+      dice[i].dataset.value = num; // Store the number for later use
       dice[i].src = `./images/dice/${num}.png`;
     }
   }, 100);
-}
 
-// function rollDice(baseAmount) {
-//   setInterval(() => {
-//     for (let i = 0; i < dice.length; i++) {
-//       let num = Math.floor(Math.random() * 3);
-//       dice[i].src = `./images/dice/${num}.png`;
-//     }
-//   }, 100);
-// }
+  // Return a Promise that resolves when the dice roll completes
+  const total = await new Promise((resolve) => {
+    rollBtn.addEventListener(
+      "click",
+      () => {
+        clearInterval(interval);
+        rollBtn.style.display = "none";
+        let total = 0;
+
+        for (let i = 0; i < diceAmount; i++) {
+          total += parseInt(dice[i].dataset.value, 10);
+        }
+
+        totalDisplay.innerHTML = `Your roll: ${total}`;
+        resolve(total); // Resolve the promise with the computed total
+      },
+      { once: true }
+    ); // Ensure the event fires only once
+  });
+
+  return total;
+}
 
 makeButtonsActive();
 positionStartingTiles();
