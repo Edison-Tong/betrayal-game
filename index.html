@@ -1,73 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Betrayal Clone</title>
-    <link rel="stylesheet" href="styles.css" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  </head>
-  <body>
-    <div class="dice">
-      <image class="die" src="./images/dice/1.png"></image>
-      <image class="die" src="./images/dice/1.png"></image>
-      <image class="die" src="./images/dice/1.png"></image>
-      <image class="die" src="./images/dice/1.png"></image>
-      <br />
-      <image class="die" src="./images/dice/2.png"></image>
-      <image class="die" src="./images/dice/2.png"></image>
-      <image class="die" src="./images/dice/0.png"></image>
-      <image class="die" src="./images/dice/0.png"></image>
-      <br />
-      <button class="roll-btn">Roll Dice</button>
-      <div class="total-display"></div>
-    </div>
-    <div class="sidebar">
-      <div class="player-stats">
-        <p>
-          <strong>Name:</strong>
-          <span id="player-name">Player 1</span>
-        </p>
-        <p>
-          <strong>Speed:</strong>
-          <span id="player-speed">4</span>
-        </p>
-        <p>
-          <strong>Might:</strong>
-          <span id="player-might">5</span>
-        </p>
-        <p>
-          <strong>Knowledge:</strong>
-          <span id="player-knowledge">4</span>
-        </p>
-        <p>
-          <strong>Sanity:</strong>
-          <span id="player-sanity">3</span>
-        </p>
-      </div>
-    </div>
-    <div class="game-table">
-      <div class="board basement">
-        <div class="tile basement-landing start"></div>
-      </div>
+    <head>
+        <title>Betrayal Clone</title>
+        <link rel="stylesheet" href="styles.css" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    </head>
+    <body>
+        <div class="dice">
+            <image class="die" src="./images/dice/1.png"></image>
+            <image class="die" src="./images/dice/1.png"></image>
+            <image class="die" src="./images/dice/1.png"></image>
+            <image class="die" src="./images/dice/1.png"></image>
+            <br />
+            <image class="die" src="./images/dice/2.png"></image>
+            <image class="die" src="./images/dice/2.png"></image>
+            <image class="die" src="./images/dice/0.png"></image>
+            <image class="die" src="./images/dice/0.png"></image>
+            <br />
+            <div class="total-display"></div>
 
-      <div class="board ground active">
-        <div class="tile entrance-hall start"></div>
-        <div class="tile hallway start"></div>
-        <div class="tile ground-floor-staircase start"></div>
-      </div>
+            <button class="roll-btn">Roll Dice</button>
+        </div>
+        <div class="sidebar">
+            <div class="player-stats">
+                <p>
+                    <strong>Name:</strong>
+                    <span id="player-name">Player 1</span>
+                </p>
+                <p>
+                    <strong>Speed:</strong>
+                    <span id="player-speed">4</span>
+                </p>
+                <p>
+                    <strong>Might:</strong>
+                    <span id="player-might">5</span>
+                </p>
+                <p>
+                    <strong>Knowledge:</strong>
+                    <span id="player-knowledge">4</span>
+                </p>
+                <p>
+                    <strong>Sanity:</strong>
+                    <span id="player-sanity">3</span>
+                </p>
+            </div>
+        </div>
+        <div class="game-table">
+            <div class="board basement">
+                <div class="tile basement-landing start"></div>
+            </div>
 
-      <div class="board upper">
-        <div class="tile upper-landing start"></div>
-      </div>
+            <div class="board ground active">
+                <div class="tile entrance-hall start"></div>
+                <div class="tile hallway start"></div>
+                <div class="tile ground-floor-staircase start"></div>
+            </div>
 
-      <div class="button-container">
-        <button class="level-btn basement-btn">Basement</button>
-        <button class="level-btn ground-btn" id="current">Ground</button>
-        <button class="level-btn upper-btn">Upper</button>
-      </div>
-    </div>
-    <button class="endTurnBtn">End Turn?</button>
-    <div class="tile-message"></div>
-    <script src="app.js" type="module"></script>
-  </body>
+            <div class="board upper">
+                <div class="tile upper-landing start"></div>
+            </div>
+
+            <div class="button-container">
+                <button class="level-btn basement-btn">Basement</button>
+                <button class="level-btn ground-btn" id="current">
+                    Ground
+                </button>
+                <button class="level-btn upper-btn">Upper</button>
+            </div>
+        </div>
+        <button class="endTurnBtn">End Turn?</button>
+        <div class="tile-message"></div>
+        <script src="app.js" type="module"></script>
+    </body>
 </html>

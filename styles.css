@@ -34,9 +34,9 @@ body {
   cursor: pointer;
 }
 
-/* .roll-btn {
+.roll-btn {
   display: none;
-} */
+}
 
 .board {
   display: none;
