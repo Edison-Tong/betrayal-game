@@ -89,6 +89,8 @@ let endOfTurnTiles = {
                 movementTiles.basementLanding.element.style.gridRow,
                 movementTiles.basementLanding.element.style.gridColumn,
             ]);
+            activePlayer.currentFloor = "basement";
+            activePlayer.currentTile = tiles[0];
         },
     },
     collapsedRoom: {
@@ -104,13 +106,18 @@ let endOfTurnTiles = {
                     movementTiles.basementLanding.element.style.gridRow,
                     movementTiles.basementLanding.element.style.gridColumn,
                 ]);
+                activePlayer.currentFloor = "basement";
+                activePlayer.currentTile = tiles[0];
             }
         },
     },
     furnaceRoom: {
         data: tiles[7],
-        effect: (player) => {
-            console.log(player);
+        effect: async () => {
+            console.log("take one DIE of damage");
+            let roll = await handleDiceRoll(1);
+            console.log(roll);
+            console.log(playerInfo[activePlayer.id.replace("p", "")]);
         },
     },
 };
@@ -493,11 +500,11 @@ async function handleEndOfTurn() {
 }
 
 function handleEndOfTurnEvents() {
-    const promises = [];
+    let promises = [];
 
     for (let key in endOfTurnTiles) {
         if (activePlayer.currentTile.name.replace(" ", "") === key) {
-            const effectPromise = endOfTurnTiles[key].effect();
+            let effectPromise = endOfTurnTiles[key].effect();
             if (effectPromise instanceof Promise) {
                 promises.push(effectPromise); // Collect async tasks
             }
@@ -511,7 +518,6 @@ async function handleDiceRoll(diceAmount) {
     rollBtn.style.display = "inline";
     totalDisplay.innerHTML = "Rolling...";
 
-    const dice = document.querySelectorAll(".dice img");
     let interval;
 
     // Show only the specified number of dice
@@ -529,7 +535,7 @@ async function handleDiceRoll(diceAmount) {
     }, 100);
 
     // Return a Promise that resolves when the dice roll completes
-    const total = await new Promise((resolve) => {
+    let total = await new Promise((resolve) => {
         rollBtn.addEventListener(
             "click",
             () => {
