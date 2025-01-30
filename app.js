@@ -540,10 +540,87 @@ async function handleDiceRoll(diceAmount) {
   return total;
 }
 
+// function handleTraitChange(type, amount) {
+//   let playerStatsInfo = playerInfo[activePlayer.id.replace("p", "")].stats;
+//   let damage = 0;
+//   let buttons = document.querySelectorAll(`.${type} button`);
+//   buttons.forEach((button) => {
+//     button.classList.remove("hidden");
+//     if (button.classList.contains("increment")) {
+//       button.addEventListener("click", raiseTrait);
+//     } else {
+//       button.addEventListener("click", lowerTrait);
+//     }
+//   });
+//   function raiseTrait() {
+//     let type = event.target.classList[1].replace("-btn", "");
+//     damage--;
+//     console.log("raise");
+//     playerStatsInfo[type].index++;
+//     console.log(playerStatsInfo[type].index);
+//     console.log(playerStatsInfo[type].slider[playerStatsInfo[type].index]);
+//   }
+//   function lowerTrait() {
+//     let type = event.target.classList[1].replace("-btn", "");
+
+//     damage++;
+//     console.log("lower");
+//   }
+// }
+
 function handleTraitChange(type, amount) {
-  let buttons = document.querySelectorAll(`.${type} button`);
-  buttons.forEach((button) => {
-    button.classList.remove("hidden");
+  return new Promise((resolve, reject) => {
+    try {
+      let playerStatsInfo = playerInfo[activePlayer.id.replace("p", "")].stats;
+      let damage = 0;
+
+      // Find buttons to show
+      let buttons = document.querySelectorAll(`.${type} button`);
+      buttons.forEach((button) => {
+        button.classList.remove("hidden");
+        if (button.classList.contains("increment")) {
+          button.addEventListener("click", raiseTrait);
+        } else {
+          button.addEventListener("click", lowerTrait);
+        }
+      });
+
+      function raiseTrait(event) {
+        let type = event.target.classList[1].replace("-btn", "");
+        damage--;
+        console.log("raise");
+        playerStatsInfo[type].index++;
+        console.log(playerStatsInfo[type].index);
+        console.log(playerStatsInfo[type].slider[playerStatsInfo[type].index]);
+
+        // Resolve promise once trait has been raised
+        resolve({
+          type: type,
+          newIndex: playerStatsInfo[type].index,
+          newValue: playerStatsInfo[type].slider[playerStatsInfo[type].index],
+        });
+      }
+
+      function lowerTrait(event) {
+        let type = event.target.classList[1].replace("-btn", "");
+        damage++;
+        console.log("lower");
+
+        // Decrease stat index for lowering the trait
+        playerStatsInfo[type].index--;
+        console.log(playerStatsInfo[type].index);
+        console.log(playerStatsInfo[type].slider[playerStatsInfo[type].index]);
+
+        // Resolve promise once trait has been lowered
+        resolve({
+          type: type,
+          newIndex: playerStatsInfo[type].index,
+          newValue: playerStatsInfo[type].slider[playerStatsInfo[type].index],
+        });
+      }
+    } catch (error) {
+      reject(error); // In case of an error
+    }
   });
 }
 
