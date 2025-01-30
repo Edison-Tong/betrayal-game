@@ -652,24 +652,25 @@ function handleTraitChange(type, amount) {
                 activePlayer.stats[type] =
                     playerStatsInfo[type].slider[playerStatsInfo[type].index];
                 renderPlayerStats();
-
-                console.log(playerStatsInfo[type].index);
-                console.log(
-                    playerStatsInfo[type].slider[playerStatsInfo[type].index]
-                );
-
-                // Resolve promise once trait has been lowered
             }
             function confirmTraits() {
-                console.log(damage, amount);
-                // resolve({
-                //     type: type,
-                //     newIndex: playerStatsInfo[type].index,
-                //     newValue:
-                //         playerStatsInfo[type].slider[
-                //             playerStatsInfo[type].index
-                //         ],
-                // });
+                if (damage !== amount) {
+                    return;
+                }
+                buttons.forEach((button) => {
+                    button.classList.add("hidden");
+                    if (button.classList.contains("increment")) {
+                        button.removeEventListener("click", raiseTrait);
+                    } else {
+                        button.removeEventListener("click", lowerTrait);
+                    }
+                    confirmTraitsBtn.classList.add("hidden");
+                    confirmTraitsBtn.removeEventListener(
+                        "click",
+                        confirmTraits
+                    );
+                });
+                resolve({ damage });
             }
         } catch (error) {
             reject(error); // In case of an error
