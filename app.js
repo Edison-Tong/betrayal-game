@@ -118,6 +118,7 @@ let endOfTurnTiles = {
       let roll = await handleDiceRoll(1);
       console.log(roll);
       console.log(playerInfo[activePlayer.id.replace("p", "")]);
+      handleTraitChange("pysical", roll);
     },
   },
 };
@@ -357,6 +358,8 @@ async function handlePlayerMovement() {
     }
     newTile.classList.add("highlight");
     displayedFloor.append(newTile);
+    endTurnBtn.removeEventListener("click", handleEndOfTurn);
+
     await handleRotateTile(newTile);
   } else {
     usedTiles.forEach((tile) => {
@@ -405,6 +408,7 @@ function handleRotateTile(tile) {
         isRotating = false; // Reset the flag to resume actions
         tile.classList.remove("highlight");
         resolve(); // Resolve the promise to indicate the rotation is done
+        endTurnBtn.addEventListener("click", handleEndOfTurn);
       }
     }
 
@@ -465,6 +469,7 @@ function handlePlayerMovesTiles(tileName) {
 }
 
 async function handleEndOfTurn() {
+  endTurnBtn.removeEventListener("click", handleEndOfTurn);
   await handleEndOfTurnEvents();
   activePlayer.movesThisTurn = 0;
   playerTurnCounter++;
@@ -476,6 +481,7 @@ async function handleEndOfTurn() {
   switchBoards(activePlayer.currentFloor);
   handlePlayerStats();
   symbolFound = false;
+  endTurnBtn.addEventListener("click", handleEndOfTurn);
 }
 
 function handleEndOfTurnEvents() {
@@ -534,6 +540,10 @@ async function handleDiceRoll(diceAmount) {
   });
 
   return total;
+}
+
+function handleTraitChange(type, amount) {
+  console.log(type, amount);
 }
 
 makeButtonsActive();

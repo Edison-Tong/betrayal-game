@@ -63,15 +63,15 @@ let tiles = [
   //     console.log(player);
   //   },
   // },
-  {
-    name: "ballroom",
-    type: "normal",
-    floors: { basement: false, ground: true, upper: false },
-    doors: ["top", "right", "bottom", "left"],
-    image: "Ballroom.png",
-    symbol: "omen",
-    message: "none",
-  },
+  // {
+  //   name: "ballroom",
+  //   type: "normal",
+  //   floors: { basement: false, ground: true, upper: false },
+  //   doors: ["top", "right", "bottom", "left"],
+  //   image: "Ballroom.png",
+  //   symbol: "omen",
+  //   message: "none",
+  // },
   // {
   //   name: "bloody Room",
   //   type: "normal",
@@ -121,17 +121,17 @@ let tiles = [
   //   symbol: "event",
   //   message: "none",
   // },
-  {
-    name: "collapsed Room",
-    type: "normal",
-    floors: { basement: false, ground: true, upper: true },
-    doors: ["top", "right"],
-    image: "Collapsed_Room.png",
-    symbol: "none",
-    message: `If you end your tur on this tile, make a speed roll. <br>
-            5+: Nothing happens. <br>
-            4-0: Place your explorer on the Basement Landing and take one die of Physical damage`,
-  },
+  // {
+  //   name: "collapsed Room",
+  //   type: "normal",
+  //   floors: { basement: false, ground: true, upper: true },
+  //   doors: ["top", "right"],
+  //   image: "Collapsed_Room.png",
+  //   symbol: "none",
+  //   message: `If you end your tur on this tile, make a speed roll. <br>
+  //           5+: Nothing happens. <br>
+  //           4-0: Place your explorer on the Basement Landing and take one die of Physical damage`,
+  // },
   // {
   //   name: "conservatory",
   //   type: "normal",
@@ -171,7 +171,7 @@ let tiles = [
   {
     name: "furnace Room",
     type: "normal",
-    floors: { basement: true, ground: false, upper: false },
+    floors: { basement: true, ground: true, upper: false }, // CHANGE FURNACE ROOM TO ONLY BASEMENT AFTER TESTING
     doors: ["right", "bottom", "left"],
     image: "Furnace_Room.png",
     symbol: "event",
@@ -180,15 +180,15 @@ let tiles = [
       console.log(player);
     },
   },
-  {
-    name: "gallery",
-    type: "normal",
-    floors: { basement: false, ground: false, upper: true },
-    doors: ["top", "bottom"],
-    image: "Gallery.png",
-    symbol: "event",
-    message: `Leads to Ballroom`,
-  },
+  // {
+  //   name: "gallery",
+  //   type: "normal",
+  //   floors: { basement: false, ground: false, upper: true },
+  //   doors: ["top", "bottom"],
+  //   image: "Gallery.png",
+  //   symbol: "event",
+  //   message: `Leads to Ballroom`,
+  // },
   // {
   //   name: "game Room",
   //   type: "normal",
@@ -198,15 +198,15 @@ let tiles = [
   //   symbol: "item",
   //   message: "none",
   // },
-  {
-    name: "graveyard",
-    type: "normal",
-    floors: { basement: false, ground: true, upper: false },
-    doors: ["top", "right"],
-    image: "Graveyard.png",
-    symbol: "omen",
-    message: `Leads to the Underground Cavern`,
-  },
+  // {
+  //   name: "graveyard",
+  //   type: "normal",
+  //   floors: { basement: false, ground: true, upper: false },
+  //   doors: ["top", "right"],
+  //   image: "Graveyard.png",
+  //   symbol: "omen",
+  //   message: `Leads to the Underground Cavern`,
+  // },
   // {
   //   name: "guest Quarters",
   //   type: "normal",
@@ -272,17 +272,17 @@ let tiles = [
   //     player.might += 1;
   //   },
   // },
-  {
-    name: "laundry Chute",
-    type: "normal",
-    floors: { basement: false, ground: true, upper: false },
-    doors: ["top"],
-    image: "Laundry_Chute.png",
-    symbol: "none",
-    message: `Leads to the Basement Landing. <br>
-            If you end your turn on this tile,
-            place your explorer on the Basement Landing`,
-  },
+  // {
+  //   name: "laundry Chute",
+  //   type: "normal",
+  //   floors: { basement: false, ground: true, upper: false },
+  //   doors: ["top"],
+  //   image: "Laundry_Chute.png",
+  //   symbol: "none",
+  //   message: `Leads to the Basement Landing. <br>
+  //           If you end your turn on this tile,
+  //           place your explorer on the Basement Landing`,
+  // },
   // {
   //   name: "library",
   //   type: "normal",
@@ -385,15 +385,15 @@ let tiles = [
   //   symbol: "event",
   //   message: "none",
   // },
-  {
-    name: "secret Staircase",
-    type: "normal",
-    floors: { basement: true, ground: false, upper: false },
-    doors: ["top"],
-    image: "Secret_Staircase.png",
-    symbol: "none",
-    message: `Leads to the Hallway`,
-  },
+  // {
+  //   name: "secret Staircase",
+  //   type: "normal",
+  //   floors: { basement: true, ground: false, upper: false },
+  //   doors: ["top"],
+  //   image: "Secret_Staircase.png",
+  //   symbol: "none",
+  //   message: `Leads to the Hallway`,
+  // },
   // {
   //   name: "soundproofed Room",
   //   type: "normal",
@@ -430,15 +430,15 @@ let tiles = [
   //   symbol: "event",
   //   message: "none",
   // },
-  {
-    name: "underground Cavern",
-    type: "normal",
-    floors: { basement: true, ground: false, upper: false },
-    doors: ["top", "right", "bottom", "left"],
-    image: "Underground_Cavern.png",
-    symbol: "event",
-    message: `Leads to the Graveyard`,
-  },
+  // {
+  //   name: "underground Cavern",
+  //   type: "normal",
+  //   floors: { basement: true, ground: false, upper: false },
+  //   doors: ["top", "right", "bottom", "left"],
+  //   image: "Underground_Cavern.png",
+  //   symbol: "event",
+  //   message: `Leads to the Graveyard`,
+  // },
   // {
   //   name: "underground Lake",
   //   type: "normal",
