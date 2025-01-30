@@ -15,7 +15,7 @@ let playerCount = 3;
 let players = [];
 let activePlayer;
 let playerTurnCounter = 0;
-
+let playerStatsInfo;
 let laundryChute;
 let secretStaircase;
 let isRotating = false;
@@ -98,9 +98,7 @@ let endOfTurnTiles = {
         effect: async () => {
             let roll = await handleDiceRoll(activePlayer.stats.speed);
             if (roll >= 5) {
-                console.log("You escaped the collapsed room!");
             } else {
-                console.log("You failed to escape the collapsed room!");
                 switchBoards("basement");
                 positionPlayers("mid", "basement", [
                     movementTiles.basementLanding.element.style.gridRow,
@@ -114,9 +112,7 @@ let endOfTurnTiles = {
     furnaceRoom: {
         data: tiles[7],
         effect: async () => {
-            console.log("take one DIE of damage");
             let roll = await handleDiceRoll(1);
-            if (roll === 0) return;
             let damage = await handleTraitChange("physical", roll);
         },
     },
@@ -277,17 +273,60 @@ function positionPlayers(time, floor, rowCol) {
     displayedFloor.append(activePlayer.marker);
 }
 
-function renderPlayerStats() {
-    document.querySelector("#player-name").innerHTML = activePlayer.name;
-    document.querySelector("#player-speed").innerHTML =
-        activePlayer.stats.speed;
-    document.querySelector("#player-might").innerHTML =
-        activePlayer.stats.might;
-    document.querySelector("#player-knowledge").innerHTML =
-        activePlayer.stats.knowledge;
-    document.querySelector("#player-sanity").innerHTML =
-        activePlayer.stats.sanity;
+// INITIAL RENDER IS GOOD BUT FOLLOWING RENDERS FAIL
+function renderPlayerStats(time, event) {
+    playerStatsInfo = playerInfo[activePlayer.id.replace("p", "")].stats;
+
+    function styleStats() {
+        for (let key in playerStatsInfo) {
+            playerStatsInfo[key].slider.forEach((value, i) => {
+                if (i === playerStatsInfo[key].index) {
+                    playerStatsInfo[key].slider[
+                        i
+                    ] = `<span class="current-stat base-stat">${value}</span>`;
+                } else if (i === 0) {
+                    playerStatsInfo[key].slider[
+                        i
+                    ] = `<span class="dead-stat">${value}</span>`;
+                } else {
+                    playerStatsInfo[key].slider[i] = `<span>${value}</span>`;
+                }
+            });
+        }
+    }
+    if (time === "start") {
+        styleStats();
+        document.querySelector("#player-speed").innerHTML =
+            playerStatsInfo.speed.slider.join(" ");
+        document.querySelector("#player-might").innerHTML =
+            playerStatsInfo.might.slider.join(" ");
+        document.querySelector("#player-knowledge").innerHTML =
+            playerStatsInfo.knowledge.slider.join(" ");
+        document.querySelector("#player-sanity").innerHTML =
+            playerStatsInfo.sanity.slider.join(" ");
+    } else {
+        //NOT WORKING YET
+        let trait = event.target.classList[1].replace("-btn", "");
+        playerStatsInfo[trait].slider.forEach((stat, i) => {
+            if (stat.includes("current-stat")) {
+                if (stat.includes("base-stat")) {
+                    playerStatsInfo[trait].slider[i];
+                }
+                playerStatsInfo[trait].slider[i];
+                console.log(playerStatsInfo[trait].slider);
+            }
+        });
+    }
 }
+
+//TEST FUNCTION. DELETE LATER
+document.addEventListener("keydown", () => {
+    if (event.key === "t") {
+        document.querySelectorAll(".current-stat").forEach((stat) => {
+            console.log(stat);
+        });
+    }
+});
 
 async function handlePlayerMovement() {
     // || activePlayer.stats.speed === activePlayer.movesThisTurn || symbolFound
@@ -571,34 +610,6 @@ async function handleDiceRoll(diceAmount) {
     return total;
 }
 
-// function handleTraitChange(type, amount) {
-//   let playerStatsInfo = playerInfo[activePlayer.id.replace("p", "")].stats;
-//   let damage = 0;
-//   let buttons = document.querySelectorAll(`.${type} button`);
-//   buttons.forEach((button) => {
-//     button.classList.remove("hidden");
-//     if (button.classList.contains("increment")) {
-//       button.addEventListener("click", raiseTrait);
-//     } else {
-//       button.addEventListener("click", lowerTrait);
-//     }
-//   });
-//   function raiseTrait() {
-//     let type = event.target.classList[1].replace("-btn", "");
-//     damage--;
-//     console.log("raise");
-//     playerStatsInfo[type].index++;
-//     console.log(playerStatsInfo[type].index);
-//     console.log(playerStatsInfo[type].slider[playerStatsInfo[type].index]);
-//   }
-//   function lowerTrait() {
-//     let type = event.target.classList[1].replace("-btn", "");
-
-//     damage++;
-//     console.log("lower");
-//   }
-// }
-
 function handleTraitChange(type, amount) {
     return new Promise((resolve, reject) => {
         try {
@@ -626,15 +637,10 @@ function handleTraitChange(type, amount) {
                 }
                 let type = event.target.classList[1].replace("-btn", "");
                 damage--;
-                console.log("raise");
                 playerStatsInfo[type].index++;
                 activePlayer.stats[type] =
                     playerStatsInfo[type].slider[playerStatsInfo[type].index];
                 renderPlayerStats();
-                console.log(playerStatsInfo[type].index);
-                console.log(
-                    playerStatsInfo[type].slider[playerStatsInfo[type].index]
-                );
 
                 // Resolve promise once trait has been raised
             }
@@ -645,13 +651,12 @@ function handleTraitChange(type, amount) {
                 }
                 let type = event.target.classList[1].replace("-btn", "");
                 damage++;
-                console.log("lower");
 
                 // Decrease stat index for lowering the trait
                 playerStatsInfo[type].index--;
                 activePlayer.stats[type] =
                     playerStatsInfo[type].slider[playerStatsInfo[type].index];
-                renderPlayerStats();
+                renderPlayerStats("mid", event);
             }
             function confirmTraits() {
                 if (damage !== amount) {
@@ -681,4 +686,4 @@ function handleTraitChange(type, amount) {
 makeButtonsActive();
 positionStartingTiles();
 positionPlayers("start", "ground", [3, 2]);
-renderPlayerStats();
+renderPlayerStats("start");
