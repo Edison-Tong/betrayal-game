@@ -116,9 +116,7 @@ let endOfTurnTiles = {
     effect: async () => {
       console.log("take one DIE of damage");
       let roll = await handleDiceRoll(1);
-      console.log(roll);
-      console.log(playerInfo[activePlayer.id.replace("p", "")]);
-      handleTraitChange("pysical", roll);
+      let damage = await handleTraitChange("physical", roll);
     },
   },
 };
@@ -267,7 +265,7 @@ function positionPlayers(time, floor, rowCol) {
   displayedFloor.append(activePlayer.marker);
 }
 
-function handlePlayerStats() {
+function renderPlayerStats() {
   document.querySelector("#player-name").innerHTML = activePlayer.name;
   document.querySelector("#player-speed").innerHTML = activePlayer.stats.speed;
   document.querySelector("#player-might").innerHTML = activePlayer.stats.might;
@@ -479,7 +477,7 @@ async function handleEndOfTurn() {
 
   activePlayer = players[playerTurnCounter];
   switchBoards(activePlayer.currentFloor);
-  handlePlayerStats();
+  renderPlayerStats();
   symbolFound = false;
   endTurnBtn.addEventListener("click", handleEndOfTurn);
 }
@@ -543,10 +541,13 @@ async function handleDiceRoll(diceAmount) {
 }
 
 function handleTraitChange(type, amount) {
-  console.log(type, amount);
+  let buttons = document.querySelectorAll(`.${type} button`);
+  buttons.forEach((button) => {
+    button.classList.remove("hidden");
+  });
 }
 
 makeButtonsActive();
 positionStartingTiles();
 positionPlayers("start", "ground", [3, 2]);
-handlePlayerStats();
+renderPlayerStats();

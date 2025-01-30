@@ -193,3 +193,40 @@ body {
 .player#p5 {
   transform: translate(50px, 50px);
 }
+
+.increment,
+.decrement {
+  cursor: pointer;
+  outline: none;
+  padding: 2px;
+  font-size: 15px;
+}
+
+.increment:nth-last-child(1),
+.decrement:nth-last-child(1) {
+  border-bottom-right-radius: 15px;
+  border-top-right-radius: 15px;
+  padding: 2px 4px;
+}
+.increment:nth-child(2),
+.decrement:nth-child(2) {
+  border-bottom-left-radius: 15px;
+  border-top-left-radius: 15px;
+}
+
+.increment:hover,
+.decrement:hover {
+  background-color: #e6e6e6;
+}
+.increment:nth-last-child(1):active,
+.decrement:nth-last-child(2):active {
+  box-shadow: inset -4px 5px 10px rgba(0, 0, 0, 0.5);
+}
+.increment:nth-child(2):active,
+.decrement:nth-child(1):active {
+  box-shadow: inset 4px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+button.hidden {
+  display: none;
+}
