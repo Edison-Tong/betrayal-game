@@ -164,10 +164,10 @@ let boardSize = {
 function handleBoardExpanding(direction) {
   if (direction === "left" || direction === "right") {
     boardSize[displayedFloorName].totalColumns += 1;
-    displayedFloor.style.gridTemplateColumns = repeat(`${boardSize[displayedFloorName].totalColumns}, 1fr`);
+    displayedFloor.style.gridTemplateColumns = `repeat(${boardSize[displayedFloorName].totalColumns}, 1fr)`;
   } else if (direction === "top" || direction === "bottom") {
     boardSize[displayedFloorName].totalRows += 1;
-    displayedFloor.style.gridTemplateRows = repeat(`${boardSize[displayedFloorName].totalRows}, 1fr`);
+    displayedFloor.style.gridTemplateRows = `repeat(${boardSize[displayedFloorName].totalRows}, 1fr)`;
   }
   if (direction === "top") {
     Array.from(displayedFloor.children).forEach((child) => {
@@ -292,8 +292,7 @@ function renderPlayerStats() {
 }
 
 async function handlePlayerMovement() {
-  // || activePlayer.stats.speed === activePlayer.movesThisTurn || symbolFound
-  if (isRotating) {
+  if (isRotating || activePlayer.stats.speed === activePlayer.movesThisTurn || symbolFound) {
     return;
   }
   let key = event.key;
@@ -409,11 +408,11 @@ function handleRotateTile(tile) {
     function rotateTile(event) {
       if (event.key === "ArrowLeft") {
         currentRotation = (currentRotation - 90) % 360; // Rotate counterclockwise
-        tile.style.transform = rotate(`${currentRotation}deg`);
+        tile.style.transform = `rotate(${currentRotation}deg)`;
         updateDoors("left");
       } else if (event.key === "ArrowRight") {
         currentRotation = (currentRotation + 90) % 360; // Rotate clockwise
-        tile.style.transform = rotate(`${currentRotation}deg`);
+        tile.style.transform = `rotate(${currentRotation}deg)`;
         updateDoors("right");
       } else if (event.key === "Enter") {
         // Finalize rotation
@@ -607,13 +606,7 @@ function handleTraitChange(type, amount, gainOrLose) {
       }
 
       function confirmTraits() {
-        let total = 0;
-        for (let key in damage) {
-          if (damage[key] !== amount) {
-            total += damage[key];
-          }
-        }
-        if (total !== amount) {
+        if (damage !== amount) {
           return;
         }
         buttons.forEach((button) => {
