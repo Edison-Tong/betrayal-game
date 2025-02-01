@@ -113,7 +113,7 @@ let endOfTurnTiles = {
     data: tiles[7],
     effect: async () => {
       let roll = await handleDiceRoll(1);
-      let damage = await handleTraitChange("physical", roll);
+      let damage = await handleTraitChange("physical", roll, "lose");
     },
   },
 };
@@ -558,11 +558,17 @@ async function handleDiceRoll(diceAmount) {
   return total;
 }
 
-function handleTraitChange(type, amount) {
+function handleTraitChange(type, amount, gainOrLose) {
   return new Promise((resolve, reject) => {
     try {
       let playerStatsInfo = playerInfo[activePlayer.id.replace("p", "")].stats;
       let damage = 0;
+      let initialStats = {
+        speed: playerStatsInfo.speed.index,
+        might: playerStatsInfo.might.index,
+        knowledge: playerStatsInfo.knowledge.index,
+        sanity: playerStatsInfo.sanity.index,
+      };
 
       // Find buttons to show
       let buttons = document.querySelectorAll(`.${type} button`);
@@ -579,32 +585,35 @@ function handleTraitChange(type, amount) {
       confirmTraitsBtn.addEventListener("click", confirmTraits);
 
       function raiseTrait(event) {
-        if (damage === 0) {
+        let trait = event.target.classList[1].replace("-btn", "");
+        if (gainOrLose === "lose" && playerStatsInfo[trait].index === initialStats[trait]) {
           return;
         }
-        let type = event.target.classList[1].replace("-btn", "");
         damage--;
-        playerStatsInfo[type].index++;
-        activePlayer.stats[type] = playerStatsInfo[type].slider[playerStatsInfo[type].index];
+        playerStatsInfo[trait].index++;
+        activePlayer.stats[trait] = playerStatsInfo[trait].slider[playerStatsInfo[trait].index];
         renderPlayerStats();
-
-        // Resolve promise once trait has been raised
       }
 
       function lowerTrait(event) {
+        let trait = event.target.classList[1].replace("-btn", "");
         if (damage === amount) {
           return;
         }
-        let type = event.target.classList[1].replace("-btn", "");
         damage++;
-
-        // Decrease stat index for lowering the trait
-        playerStatsInfo[type].index--;
-        activePlayer.stats[type] = playerStatsInfo[type].slider[playerStatsInfo[type].index];
+        playerStatsInfo[trait].index--;
+        activePlayer.stats[trait] = playerStatsInfo[trait].slider[playerStatsInfo[trait].index];
         renderPlayerStats();
       }
+
       function confirmTraits() {
-        if (damage !== amount) {
+        let total = 0;
+        for (let key in damage) {
+          if (damage[key] !== amount) {
+            total += damage[key];
+          }
+        }
+        if (total !== amount) {
           return;
         }
         buttons.forEach((button) => {
