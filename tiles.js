@@ -50,7 +50,7 @@ let tiles = [
     message: `Leads to the Ground Floor Staircase`,
   },
   {
-    name: "armory",
+    name: "discover",
     type: "normal",
     floors: { basement: true, ground: true, upper: false },
     doors: ["top", "right"],
@@ -59,8 +59,8 @@ let tiles = [
     message: `When you discover this tile,
         reveal cards from the top of the item deck until you reveal a weapon. <br>
             Take it and bury the rest`,
-    effect: (player) => {
-      console.log(player);
+    effect: () => {
+      console.log("ARMORY");
     },
   },
   {
@@ -92,15 +92,19 @@ let tiles = [
   },
   {
     name: "chapel",
-    type: "normal",
+    type: "discover",
     floors: { basement: false, ground: true, upper: false },
     doors: ["top", "bottom"],
     image: "Chapel.png",
     symbol: "omen",
     message: `When you discover this tile, gain 1 Sanity`,
-    effect: (player) => {
-      console.log(player);
-      player.sanity += 1;
+    effect: (playerInfo, activePlayer) => {
+      console.log("gain 1 Sanity");
+
+      let playerStatsInfo = playerInfo[activePlayer.id.replace("p", "")].stats;
+      console.log(playerStatsInfo.sanity.index);
+      playerStatsInfo.sanity.index++;
+      activePlayer.stats.sanity = playerStatsInfo.sanity.slider[playerStatsInfo.sanity.index];
     },
   },
   {
@@ -176,9 +180,6 @@ let tiles = [
     image: "Furnace_Room.png",
     symbol: "event",
     message: `If you end your turn on this tile, take one die of Physical damage`,
-    effect: (player) => {
-      console.log(player);
-    },
   },
   {
     name: "gallery",
@@ -218,27 +219,31 @@ let tiles = [
   },
   {
     name: "gymnasium",
-    type: "normal",
+    type: "discover",
     floors: { basement: true, ground: true, upper: false },
     doors: ["top", "left"],
     image: "Gymnasium.png",
     symbol: "none",
     message: `When you discover this tile, gain 1 Speed`,
-    effect: (player) => {
-      console.log(player);
-      player.speed += 1;
+    effect: (playerInfo, activePlayer) => {
+      console.log("gain 1 speed");
+
+      let playerStatsInfo = playerInfo[activePlayer.id.replace("p", "")].stats;
+      console.log(playerStatsInfo.speed.index);
+      playerStatsInfo.speed.index++;
+      activePlayer.stats.speed = playerStatsInfo.speed.slider[playerStatsInfo.speed.index];
     },
   },
   {
     name: "junk Room",
-    type: "normal",
+    type: "discover",
     floors: { basement: false, ground: true, upper: true },
     doors: ["top", "right", "bottom"],
     image: "Junk_Room.png",
     symbol: "item",
     message: `When you discover this tile, place an Obstacle token on it`,
-    effect: (player) => {
-      console.log(player);
+    effect: () => {
+      conosle.log("JUNK ROOM");
     },
   },
   {
@@ -261,15 +266,19 @@ let tiles = [
   },
   {
     name: "larder",
-    type: "normal",
+    type: "discover",
     floors: { basement: false, ground: true, upper: false },
     doors: ["top", "left"],
     image: "Larder.png",
     symbol: "none",
     message: `When you discover this tile, gain 1 Might`,
-    effect: (player) => {
-      console.log(player);
-      player.might += 1;
+    effect: (playerInfo, activePlayer) => {
+      console.log("gain 1 might");
+
+      let playerStatsInfo = playerInfo[activePlayer.id.replace("p", "")].stats;
+      console.log(playerStatsInfo.might.index);
+      playerStatsInfo.might.index++;
+      activePlayer.stats.might = playerStatsInfo.might.slider[playerStatsInfo.might.index];
     },
   },
   {
@@ -285,15 +294,19 @@ let tiles = [
   },
   {
     name: "library",
-    type: "normal",
+    type: "discover",
     floors: { basement: false, ground: true, upper: true },
     doors: ["top", "right", "bottom"],
     image: "Library.png",
     symbol: "omen",
     message: `When you discover this tile, gain 1 Knowledge`,
-    effect: (player) => {
-      console.log(player);
-      player.knowledge += 1;
+    effect: (playerInfo, activePlayer) => {
+      console.log("gain 1 knowledge");
+
+      let playerStatsInfo = playerInfo[activePlayer.id.replace("p", "")].stats;
+      console.log(playerStatsInfo.knowledge.index);
+      playerStatsInfo.knowledge.index++;
+      activePlayer.stats.knowledge = playerStatsInfo.knowledge.slider[playerStatsInfo.knowledge.index];
     },
   },
   {
@@ -348,7 +361,7 @@ let tiles = [
   },
   {
     name: "panic Room",
-    type: "normal",
+    type: "discover",
     floors: { basement: true, ground: false, upper: false },
     doors: ["top"],
     image: "Panic_Room.png",
@@ -357,6 +370,9 @@ let tiles = [
             if the Secret Stairs tile has not been placed,
             find it in the tile stack and place it in the Basement.
             Then, shuffle the tile stack.`,
+    effect: () => {
+      console.log("PANIC ROOM");
+    },
   },
   {
     name: "primary Bedroom",

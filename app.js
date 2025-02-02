@@ -24,17 +24,6 @@ let usedTiles = [];
 let direction;
 let tileMessageBox = document.querySelector(".tile-message");
 let symbolFound;
-// let movementTiles = {
-//   groundFloorStaircase: { data: tiles[3], element: document.querySelector(".ground-floor-staircase") },
-//   hallway: { data: tiles[2], element: document.querySelector(".hallway") },
-//   upperLanding: { data: tiles[4], element: document.querySelector(".upper-landing") },
-//   basementLanding: { data: tiles[0], element: document.querySelector(".basement-landing") },
-//   secretStaircase: { data: tiles[38] },
-//   gallery: { data: tiles[18] },
-//   ballroom: { data: tiles[6] },
-//   undergroundCavern: { data: tiles[43] },
-//   graveyard: { data: tiles[20] },
-// };
 
 let movementTiles = {
   groundFloorStaircase: {
@@ -64,25 +53,25 @@ let movementTiles = {
   secretStaircase: {
     opposite: "hallway",
     connectingFloor: "ground",
-    data: tiles[11],
+    data: tiles[38],
   },
   gallery: { oppoite: "ballroom", connectingFloor: "ground", data: tiles[8] },
   ballroom: { opposite: "gallery", connectingFloor: "upper", data: tiles[5] },
   undergroundCavern: {
     opposite: "graveyard",
     connectingFloor: "ground",
-    data: tiles[12],
+    data: tiles[18],
   },
   graveyard: {
     opposite: "undergroundCavern",
     connectingFloor: "basement",
-    data: tiles[9],
+    data: tiles[20],
   },
 };
 
 let endOfTurnTiles = {
   laundryChute: {
-    data: tiles[10],
+    data: tiles[27],
     effect: () => {
       switchBoards("basement");
       positionPlayers("mid", "basement", [
@@ -94,7 +83,7 @@ let endOfTurnTiles = {
     },
   },
   collapsedRoom: {
-    data: tiles[6],
+    data: tiles[12],
     effect: async () => {
       let roll = await handleDiceRoll(activePlayer.stats.speed);
       if (roll >= 5) {
@@ -110,11 +99,43 @@ let endOfTurnTiles = {
     },
   },
   furnaceRoom: {
-    data: tiles[7],
+    data: tiles[17],
     effect: async () => {
       let roll = await handleDiceRoll(1);
       let damage = await handleTraitChange("physical", roll, "lose");
     },
+  },
+};
+
+// Chapel - (discover) gain 1 sanity
+// Gymnasium - (discover) gain 1 speed
+// Larder - (discover) gain 1 might
+// Library - (discover) gain 1 knowledge
+// Armory - (discover) get random weapon item
+// Junk room - (discover) place obstacle token
+// Panic Room - (discover) place Secret Staircase tile (if not already placed)
+
+let discoverTiles = {
+  chapel: {
+    data: tiles[9],
+  },
+  gymnasium: {
+    data: tiles[22],
+  },
+  larder: {
+    data: tiles[26],
+  },
+  library: {
+    data: tiles[28],
+  },
+  armory: {
+    data: tiles[5],
+  },
+  junkRoom: {
+    data: tiles[23],
+  },
+  panicRoom: {
+    data: tiles[34],
   },
 };
 
@@ -376,6 +397,11 @@ async function handlePlayerMovement() {
     endTurnBtn.removeEventListener("click", handleEndOfTurn);
 
     await handleRotateTile(newTile);
+
+    if (movingToTile.type === "discover") {
+      movingToTile.effect(playerInfo, activePlayer);
+      renderPlayerStats();
+    }
   } else {
     usedTiles.forEach((tile) => {
       if (tile.name.toLowerCase() === existingTile.classList[1].replaceAll("-", " ")) {
@@ -449,7 +475,7 @@ function getTileData() {
   let availableTiles = [];
   let usedTile;
   tiles.forEach((tile) => {
-    if (tile.floors[displayedFloor.classList[1]] && tile.type === "normal") {
+    if (tile.floors[displayedFloor.classList[1]] && tile.type !== "starting") {
       availableTiles.push(tile);
     }
   });
