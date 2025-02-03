@@ -11,6 +11,9 @@ let displayedFloor = document.querySelector(".board.active");
 let displayedFloorName = document.querySelector(".board.active").classList[1];
 let currentFloorBtn = document.querySelector("#current");
 let endTurnBtn = document.querySelector(".endTurnBtn");
+let viewCardsBtn = document.querySelector(".view-cards-btn");
+let exitCardsBtn = document.querySelector(".exit-btn");
+let playerCardsDisplay = document.querySelector(".player-cards");
 let playerCount = 3;
 let players = [];
 let activePlayer;
@@ -141,6 +144,14 @@ let discoverTiles = {
 
 // document.addEventListener("keydown", handlePlayerMovement);
 endTurnBtn.addEventListener("click", handleEndOfTurn);
+
+viewCardsBtn.addEventListener("click", () => {
+  playerCardsDisplay.classList.remove("hidden");
+});
+
+exitCardsBtn.addEventListener("click", () => {
+  playerCardsDisplay.classList.add("hidden");
+});
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Enter" && document.activeElement.tagName === "BUTTON") {
