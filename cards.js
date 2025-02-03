@@ -203,3 +203,5 @@ let cards = [
     ability: "On your turn, you may bury the Strange Medicine. If you do, heal your Might and your Speed.",
   },
 ];
+
+export default cards;

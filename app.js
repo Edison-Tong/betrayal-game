@@ -1,5 +1,6 @@
 import tiles from "./tiles.js";
 import playerInfo from "./playerInfo.js";
+import cards from "./cards.js";
 
 let boards = document.querySelectorAll(".board");
 let dice = document.querySelectorAll(".die");
@@ -270,6 +271,7 @@ function positionPlayers(time, floor, rowCol) {
           knowledge: playerInfo[i].stats.knowledge.slider[playerInfo[i].stats.knowledge.index],
           sanity: playerInfo[i].stats.sanity.slider[playerInfo[i].stats.sanity.index],
         },
+        cards: [],
         movesThisTurn: 0,
         row: rowCol[0],
         col: rowCol[1],
@@ -321,6 +323,20 @@ function renderPlayerStats() {
       container.appendChild(document.createTextNode(" "));
     });
   }
+}
+
+function renderPlayerCards() {
+  Array.from(playerCardsDisplay.children).forEach((child) => {
+    if (!child.classList.contains("exit-btn")) {
+      child.remove();
+    }
+  });
+  activePlayer.cards.forEach((card) => {
+    let newCard = document.createElement("div");
+    newCard.classList.add("card");
+    newCard.innerHTML = card.name;
+    playerCardsDisplay.append(newCard);
+  });
 }
 
 async function handlePlayerMovement() {
@@ -408,7 +424,19 @@ async function handlePlayerMovement() {
     endTurnBtn.removeEventListener("click", handleEndOfTurn);
 
     await handleRotateTile(newTile);
-
+    if (movingToTile.symbol !== "none" && movingToTile.symbol !== "event") {
+      let availableCards = [];
+      let usedCard;
+      cards.forEach((card) => {
+        if (card.type === movingToTile.symbol) {
+          availableCards.push(card);
+        }
+      });
+      usedCard = availableCards.splice(Math.floor(Math.random() * availableCards.length), 1)[0];
+      activePlayer.cards.push(usedCard);
+      cards.splice(cards.indexOf(usedCard), 1);
+      renderPlayerCards();
+    }
     if (movingToTile.type === "discover") {
       movingToTile.effect(playerInfo, activePlayer);
       renderPlayerStats();
@@ -532,6 +560,7 @@ async function handleEndOfTurn() {
   activePlayer = players[playerTurnCounter];
   switchBoards(activePlayer.currentFloor);
   renderPlayerStats();
+  renderPlayerCards();
   symbolFound = false;
   endTurnBtn.addEventListener("click", handleEndOfTurn);
 }

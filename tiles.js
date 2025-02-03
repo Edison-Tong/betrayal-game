@@ -99,10 +99,7 @@ let tiles = [
     symbol: "omen",
     message: `When you discover this tile, gain 1 Sanity`,
     effect: (playerInfo, activePlayer) => {
-      console.log("gain 1 Sanity");
-
       let playerStatsInfo = playerInfo[activePlayer.id.replace("p", "")].stats;
-      console.log(playerStatsInfo.sanity.index);
       playerStatsInfo.sanity.index++;
       activePlayer.stats.sanity = playerStatsInfo.sanity.slider[playerStatsInfo.sanity.index];
     },
@@ -226,10 +223,7 @@ let tiles = [
     symbol: "none",
     message: `When you discover this tile, gain 1 Speed`,
     effect: (playerInfo, activePlayer) => {
-      console.log("gain 1 speed");
-
       let playerStatsInfo = playerInfo[activePlayer.id.replace("p", "")].stats;
-      console.log(playerStatsInfo.speed.index);
       playerStatsInfo.speed.index++;
       activePlayer.stats.speed = playerStatsInfo.speed.slider[playerStatsInfo.speed.index];
     },
@@ -243,7 +237,7 @@ let tiles = [
     symbol: "item",
     message: `When you discover this tile, place an Obstacle token on it`,
     effect: () => {
-      conosle.log("JUNK ROOM");
+      console.log("JUNK ROOM");
     },
   },
   {
@@ -273,10 +267,7 @@ let tiles = [
     symbol: "none",
     message: `When you discover this tile, gain 1 Might`,
     effect: (playerInfo, activePlayer) => {
-      console.log("gain 1 might");
-
       let playerStatsInfo = playerInfo[activePlayer.id.replace("p", "")].stats;
-      console.log(playerStatsInfo.might.index);
       playerStatsInfo.might.index++;
       activePlayer.stats.might = playerStatsInfo.might.slider[playerStatsInfo.might.index];
     },
@@ -301,10 +292,7 @@ let tiles = [
     symbol: "omen",
     message: `When you discover this tile, gain 1 Knowledge`,
     effect: (playerInfo, activePlayer) => {
-      console.log("gain 1 knowledge");
-
       let playerStatsInfo = playerInfo[activePlayer.id.replace("p", "")].stats;
-      console.log(playerStatsInfo.knowledge.index);
       playerStatsInfo.knowledge.index++;
       activePlayer.stats.knowledge = playerStatsInfo.knowledge.slider[playerStatsInfo.knowledge.index];
     },
