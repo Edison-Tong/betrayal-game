@@ -439,9 +439,9 @@ async function handlePlayerMovement() {
           availableCards.push(card);
         }
       });
-      if (!availableCards) {
-        return;
+      if (!availableCards[0]) {
       } else {
+        console.log(availableCards);
         usedCard = availableCards.splice(Math.floor(Math.random() * availableCards.length), 1)[0];
         activePlayer.cards.push(usedCard);
         cards.splice(cards.indexOf(usedCard), 1);
