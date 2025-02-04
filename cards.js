@@ -1,56 +1,56 @@
 let cards = [
-  {
-    name: "armor",
-    type: "omen",
-    ability:
-      "Whenever you take any physical damage, reduce that damage by 1. <br> (the Armor doesn't prevent General damage or the direct loss of Might and/or Speed)",
-  },
-  {
-    name: "book",
-    type: "omen",
-    ability: "Add 1 to the result of your knowledge rolls",
-    special:
-      "Once during your turn, you may use the book to lose 1 Sanity. On the next trait roll you make this turn that isn't an attack, you may use your knowledge in place of the named trait.",
-  },
-  {
-    name: "dagger",
-    type: "omen",
-    ability: "When you use the Dagger to attack, lose one speed. Roll 2 extra dice on the attack.",
-  },
-  {
-    name: "dog",
-    type: "omen",
-    ability: "Add 1 to the result of your speed rolls",
-    special:
-      "Once during your turn, you may use the Dog to trade any number of Items or Omens with another player up to 4 tiles away, using normal trading rulles.",
-  },
-  {
-    name: "holy Symbol",
-    type: "omen",
-    ability: "Add 1 to the result of your Sanity rolls.",
-    special:
-      "Whenever you discover a tile, you may choose to bury it and discover the next tile instead. <br> If you do this, do not resolve any effects for the first tile.",
-  },
-  {
-    name: "idol",
-    type: "omen",
-    ability: "Add 1 to the result of your Might rolls",
-    special: "When you discover a tile with an Event symbol, you may choose to not draw an Event card.",
-  },
-  {
-    name: "mask",
-    type: "omen",
-    ability: "Add 1 to the result of your speed rolls",
-    spceial:
-      "Once during your turn, you may use the Mask to move everyone else on your tile (explorers and monsters) to any adjacent tiles. This effect may not be used to discover new tiles",
-  },
-  {
-    name: "ring",
-    type: "omen",
-    ability: "add one to the result of your sanity rolls",
-    special:
-      "When you use the ring to attack, you and the defender each roll Sanity instead of might. The loser takes Mental damage.",
-  },
+  // {
+  //   name: "armor",
+  //   type: "omen",
+  //   ability:
+  //     "Whenever you take any physical damage, reduce that damage by 1. <br> (the Armor doesn't prevent General damage or the direct loss of Might and/or Speed)",
+  // },
+  // {
+  //   name: "book",
+  //   type: "omen",
+  //   ability: "Add 1 to the result of your knowledge rolls",
+  //   special:
+  //     "Once during your turn, you may use the book to lose 1 Sanity. On the next trait roll you make this turn that isn't an attack, you may use your knowledge in place of the named trait.",
+  // },
+  // {
+  //   name: "dagger",
+  //   type: "omen",
+  //   ability: "When you use the Dagger to attack, lose one speed. Roll 2 extra dice on the attack.",
+  // },
+  // {
+  //   name: "dog",
+  //   type: "omen",
+  //   ability: "Add 1 to the result of your speed rolls",
+  //   special:
+  //     "Once during your turn, you may use the Dog to trade any number of Items or Omens with another player up to 4 tiles away, using normal trading rulles.",
+  // },
+  // {
+  //   name: "holy Symbol",
+  //   type: "omen",
+  //   ability: "Add 1 to the result of your Sanity rolls.",
+  //   special:
+  //     "Whenever you discover a tile, you may choose to bury it and discover the next tile instead. <br> If you do this, do not resolve any effects for the first tile.",
+  // },
+  // {
+  //   name: "idol",
+  //   type: "omen",
+  //   ability: "Add 1 to the result of your Might rolls",
+  //   special: "When you discover a tile with an Event symbol, you may choose to not draw an Event card.",
+  // },
+  // {
+  //   name: "mask",
+  //   type: "omen",
+  //   ability: "Add 1 to the result of your speed rolls",
+  //   spceial:
+  //     "Once during your turn, you may use the Mask to move everyone else on your tile (explorers and monsters) to any adjacent tiles. This effect may not be used to discover new tiles",
+  // },
+  // {
+  //   name: "ring",
+  //   type: "omen",
+  //   ability: "add one to the result of your sanity rolls",
+  //   special:
+  //     "When you use the ring to attack, you and the defender each roll Sanity instead of might. The loser takes Mental damage.",
+  // },
   {
     name: "skull",
     type: "omen",

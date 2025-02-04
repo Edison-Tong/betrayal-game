@@ -333,9 +333,16 @@ function renderPlayerCards() {
   });
   activePlayer.cards.forEach((card) => {
     let newCard = document.createElement("div");
+    let cardAbility = document.createElement("div");
+    let cardBtn = document.createElement("button");
     newCard.classList.add("card");
     newCard.innerHTML = card.name;
     playerCardsDisplay.append(newCard);
+    cardAbility.classList.add("card-ability");
+    cardAbility.innerHTML = card.ability;
+    newCard.append(cardAbility);
+    cardBtn.innerHTML = "use";
+    newCard.append(cardBtn);
   });
 }
 
@@ -432,10 +439,14 @@ async function handlePlayerMovement() {
           availableCards.push(card);
         }
       });
-      usedCard = availableCards.splice(Math.floor(Math.random() * availableCards.length), 1)[0];
-      activePlayer.cards.push(usedCard);
-      cards.splice(cards.indexOf(usedCard), 1);
-      renderPlayerCards();
+      if (!availableCards) {
+        return;
+      } else {
+        usedCard = availableCards.splice(Math.floor(Math.random() * availableCards.length), 1)[0];
+        activePlayer.cards.push(usedCard);
+        cards.splice(cards.indexOf(usedCard), 1);
+        renderPlayerCards();
+      }
     }
     if (movingToTile.type === "discover") {
       movingToTile.effect(playerInfo, activePlayer);
