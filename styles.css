@@ -32,7 +32,7 @@ body {
   font-weight: bold;
   text-align: center;
   cursor: pointer;
-  z-index: 999;
+  z-index: 9999;
 }
 
 .roll-btn {
