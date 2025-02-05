@@ -316,3 +316,13 @@ button.hidden {
   background-color: silver;
   color: black;
 }
+
+.choice-modal {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  height: 100px;
+  width: 100px;
+}
