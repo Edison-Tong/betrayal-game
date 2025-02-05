@@ -309,10 +309,9 @@ function positionPlayers(time, floor, rowCol) {
     displayedFloor.append(activePlayer.marker);
 }
 
-export function renderPlayerStats() {
+export function renderPlayerStats(trait) {
     let playerNameElement = document.querySelector("#player-name");
     playerNameElement.innerHTML = activePlayer.name;
-
     let playerStatsInfo = playerInfo[activePlayer.id.replace("p", "")].stats;
 
     for (let key in playerStatsInfo) {
@@ -750,7 +749,7 @@ export function handleTraitChange(type, amount, gainOrLose) {
                 playerStatsInfo[trait].index++;
                 activePlayer.stats[trait] =
                     playerStatsInfo[trait].slider[playerStatsInfo[trait].index];
-                renderPlayerStats();
+                renderPlayerStats(trait);
             }
 
             function lowerTrait(event) {
@@ -768,7 +767,7 @@ export function handleTraitChange(type, amount, gainOrLose) {
                 playerStatsInfo[trait].index--;
                 activePlayer.stats[trait] =
                     playerStatsInfo[trait].slider[playerStatsInfo[trait].index];
-                renderPlayerStats();
+                renderPlayerStats(trait);
             }
 
             function confirmTraits() {
