@@ -29,10 +29,12 @@ body {
     border-radius: 8px; /* Rounded corners */
     padding: 10px 20px; /* Padding for better aesthetics */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
-    font-weight: bold;
     text-align: center;
-    cursor: pointer;
     z-index: 9999;
+}
+
+.total-display {
+    font-weight: bold;
 }
 
 .roll-btn {
