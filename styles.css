@@ -1,88 +1,88 @@
 body {
-  margin: 0;
-  padding: 0;
-  display: flex;
-  background-color: #8b4513; /* Brown background for the game table */
-  height: 100vh;
-  justify-content: center;
-  align-items: center;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    background-color: #8b4513; /* Brown background for the game table */
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
 }
 
 .game-table {
-  background-color: #8b4513; /* Brown color for the table */
-  border: 15px solid #654321; /* Dark brown border for the game table */
-  border-radius: 10px; /* Rounded edges */
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Add a shadow for depth */
-  text-align: center;
-  height: auto;
-  max-height: 90vh; /* Slightly less than the full height for spacing */
-  max-width: 90vw;
-  overflow: auto;
+    background-color: #8b4513; /* Brown color for the table */
+    border: 15px solid #654321; /* Dark brown border for the game table */
+    border-radius: 10px; /* Rounded edges */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Add a shadow for depth */
+    text-align: center;
+    height: auto;
+    max-height: 90vh; /* Slightly less than the full height for spacing */
+    max-width: 90vw;
+    overflow: auto;
 }
 
 .dice {
-  position: fixed; /* Keeps the dice always visible on top */
-  top: 10px; /* Distance from the top of the screen */
-  left: 5%; /* Centers horizontally */
-  background-color: #f2f2f2; /* Background color for visibility */
-  border: 2px solid #333; /* Optional border for styling */
-  border-radius: 8px; /* Rounded corners */
-  padding: 10px 20px; /* Padding for better aesthetics */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
-  font-weight: bold;
-  text-align: center;
-  cursor: pointer;
-  z-index: 9999;
+    position: fixed; /* Keeps the dice always visible on top */
+    top: 10px; /* Distance from the top of the screen */
+    left: 5%; /* Centers horizontally */
+    background-color: #f2f2f2; /* Background color for visibility */
+    border: 2px solid #333; /* Optional border for styling */
+    border-radius: 8px; /* Rounded corners */
+    padding: 10px 20px; /* Padding for better aesthetics */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    z-index: 9999;
 }
 
 .roll-btn {
-  display: none;
+    display: none;
 }
 
 .board {
-  display: none;
-  background-color: grey;
-  border: 5px solid #000;
-  height: auto;
-  width: auto;
-  margin: auto;
+    display: none;
+    background-color: grey;
+    border: 5px solid #000;
+    height: auto;
+    width: auto;
+    margin: auto;
 }
 
 .board.active {
-  display: grid;
+    display: grid;
 }
 
 .tile {
-  height: 200px;
-  width: 200px;
-  background-color: #ddd;
-  display: grid;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 10px;
-  font-weight: bold;
-  box-sizing: border-box;
-  overflow: hidden;
-  position: relative; /* Ensure child elements can be positioned */
-  background-size: 100%;
+    height: 200px;
+    width: 200px;
+    background-color: #ddd;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative; /* Ensure child elements can be positioned */
+    background-size: 100%;
 }
 
 .tile::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover; /* Adjust as needed */
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover; /* Adjust as needed */
 }
 
 .tile.highlight {
-  border: 3px solid yellow;
-  box-shadow: 0 0 10px 5px rgba(255, 255, 0, 0.8);
-  z-index: 10; /* Ensure it appears above other elements */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 3px solid yellow;
+    box-shadow: 0 0 10px 5px rgba(255, 255, 0, 0.8);
+    z-index: 10; /* Ensure it appears above other elements */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .entrance-hall,
@@ -90,239 +90,279 @@ body {
 .ground-floor-staircase,
 .upper-landing,
 .basement-landing {
-  color: green;
+    color: green;
 }
 
 /* Wrapper for the buttons */
 .button-container {
-  display: flex;
-  justify-content: center;
-  gap: 10px; /* Add spacing between buttons */
-  position: sticky;
-  bottom: -1px; /* Stick to the bottom of the container */
-  background-color: #8b4513; /* Match the table background */
-  padding: 10px;
-  z-index: 1000; /* Ensure the buttons are above other elements */
-  border-top: 5px solid #654321; /* Optional: visually separate from the board */
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Add spacing between buttons */
+    position: sticky;
+    bottom: -1px; /* Stick to the bottom of the container */
+    background-color: #8b4513; /* Match the table background */
+    padding: 10px;
+    z-index: 1000; /* Ensure the buttons are above other elements */
+    border-top: 5px solid #654321; /* Optional: visually separate from the board */
 }
 
 /* Level buttons styling */
 .level-btn {
-  padding: 10px 20px;
-  margin: 20px 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+    padding: 10px 20px;
+    margin: 20px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 .level-btn:hover {
-  background-color: #0056b3;
+    background-color: #0056b3;
 }
 
 /* Hide the active floor button */
 .level-btn#current {
-  background-color: #ccc;
-  cursor: default;
+    background-color: #ccc;
+    cursor: default;
 }
 
 .endTurnBtn {
-  padding: 10px 20px;
-  margin: 20px 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+    padding: 10px 20px;
+    margin: 20px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 .endTurnBtn:hover {
-  background-color: #0056b3;
+    background-color: #0056b3;
 }
 
 .tile-message {
-  display: none;
-  background-color: white;
-  padding: 5px;
-  width: 210px;
+    display: none;
+    background-color: white;
+    padding: 5px;
+    width: 210px;
 }
 
 .sidebar {
-  width: 300px;
-  background-color: #f4f4f4;
-  padding: 15px;
-  border-right: 1px solid #ddd;
+    width: 300px;
+    background-color: #f4f4f4;
+    padding: 15px;
+    border-right: 1px solid #ddd;
 }
 
 .player-stats {
-  margin: 5px 0;
-  font-size: 20px;
+    margin: 5px 0;
+    font-size: 20px;
 }
 
 .player {
-  background-color: #ff0;
-  border: 2px solid #000;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  margin: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-  font-size: 10px;
+    background-color: #ff0;
+    border: 2px solid #000;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    font-size: 10px;
 }
 
 .player#p0 {
-  transform: translate(-50px, -50px);
+    transform: translate(-50px, -50px);
 }
 
 .player#p1 {
-  transform: translate(0px, -50px);
+    transform: translate(0px, -50px);
 }
 
 .player#p2 {
-  transform: translate(50px, -50px);
+    transform: translate(50px, -50px);
 }
 .player#p3 {
-  transform: translate(-50px, 50px);
+    transform: translate(-50px, 50px);
 }
 .player#p4 {
-  transform: translate(0px, 50px);
+    transform: translate(0px, 50px);
 }
 .player#p5 {
-  transform: translate(50px, 50px);
+    transform: translate(50px, 50px);
 }
 
 .sidebar {
-  box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.3), 4px 7px 15px rgba(0, 0, 0, 0.2), 9px 15px 25px rgba(0, 0, 0, 0.2);
-  border-radius: 15px;
+    box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.3), 4px 7px 15px rgba(0, 0, 0, 0.2),
+        9px 15px 25px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
 }
 
 .current-stat {
-  font-weight: bold;
-  font-size: 25px;
+    font-weight: bold;
+    font-size: 25px;
 }
 
 .base-stat {
-  color: green;
+    color: green;
 }
 
 .dead-stat {
-  color: red;
+    color: red;
 }
 
 .increment,
 .decrement {
-  cursor: pointer;
-  outline: none;
-  padding: 2px;
-  font-size: 15px;
+    cursor: pointer;
+    outline: none;
+    padding: 2px;
+    font-size: 15px;
 }
 
 .increment:nth-last-child(1),
 .decrement:nth-last-child(1) {
-  border-bottom-right-radius: 15px;
-  border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-top-right-radius: 15px;
 }
 .increment:nth-child(2),
 .decrement:nth-child(2) {
-  border-bottom-left-radius: 15px;
-  border-top-left-radius: 15px;
-  padding: 2px 4px;
+    border-bottom-left-radius: 15px;
+    border-top-left-radius: 15px;
+    padding: 2px 4px;
 }
 
 .increment:hover,
 .decrement:hover {
-  background-color: #e6e6e6;
+    background-color: #e6e6e6;
 }
 .increment:nth-last-child(1):active,
 .decrement:nth-last-child(1):active {
-  box-shadow: inset -4px 5px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: inset -4px 5px 10px rgba(0, 0, 0, 0.5);
 }
 .increment:nth-child(2):active,
 .decrement:nth-child(2):active {
-  box-shadow: inset 4px 5px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 4px 5px 10px rgba(0, 0, 0, 0.5);
 }
 
 button.hidden {
-  display: none;
+    display: none;
 }
 
 .player-cards {
-  position: absolute;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  text-align: center;
-  align-items: center;
-  width: auto;
-  height: auto;
-  min-width: 200px;
-  min-height: 200px;
-  background-color: rgba(244, 0, 0, 0.7); /* Slightly see-through background */
-  z-index: 9999;
-  padding-top: 20px;
+    position: absolute;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    text-align: center;
+    align-items: center;
+    width: auto;
+    height: auto;
+    min-width: 200px;
+    min-height: 200px;
+    background-color: rgba(
+        244,
+        0,
+        0,
+        0.7
+    ); /* Slightly see-through background */
+    z-index: 9999;
+    padding-top: 20px;
 }
 .player-cards.hidden {
-  display: none;
+    display: none;
 }
 
 .exit-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 24px;
-  color: black;
-  cursor: pointer;
-  font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: black;
+    cursor: pointer;
+    font-weight: bold;
 }
 
 .exit-btn:hover {
-  color: red;
+    color: red;
 }
 
 .card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 20px;
-  margin: 20px;
-  background-color: grey;
-  height: 400px;
-  width: 150px;
-  font-weight: bold;
-  font-size: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    margin: 20px;
+    background-color: grey;
+    height: 400px;
+    width: 150px;
+    font-weight: bold;
+    font-size: 30px;
 }
 
 .card-ability {
-  margin: 10px;
-  font-weight: normal;
-  font-size: 18px;
+    margin: 10px;
+    font-weight: normal;
+    font-size: 18px;
 }
 
 .card button {
-  background-color: black;
-  color: white;
-  width: 100px;
-  margin-bottom: 10px;
+    background-color: black;
+    color: white;
+    width: 100px;
+    margin-bottom: 10px;
 }
 
 .card button:hover {
-  background-color: silver;
-  color: black;
+    background-color: silver;
+    color: black;
 }
 
 .choice-modal {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  top: 0;
-  height: 100px;
-  width: 100px;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    padding: 5px;
+    background-color: yellow;
+}
+
+.choice-modal button {
+    margin: 10px;
+}
+
+.tracker {
+    position: absolute;
+    left: 10px;
+    padding: 5px;
+    background-color: crimson;
+    height: 20px;
+    text-align: center;
+}
+
+.event-display {
+    text-align: center;
+    height: 400px;
+    width: 200px;
+    background-color: sandybrown;
+    padding: 10px;
+}
+
+.event-display.hidden {
+    display: none;
+}
+
+.event.name {
+    font-weight: bold;
+    font-size: 35px;
+}
+
+.event.todo {
+    padding: 10px;
+    font-weight: bold;
 }
