@@ -23,15 +23,13 @@ let playerCount = 3;
 let players = [];
 let activePlayer;
 let playerTurnCounter = 0;
-let playerStatsInfo;
-let laundryChute;
-let secretStaircase;
 let isRotating = false;
 let movingToTile;
 let usedTiles = [];
 let direction;
 let tileMessageBox = document.querySelector(".tile-message");
 let symbolFound;
+let canEndTurn = true;
 
 let movementTiles = {
     groundFloorStaircase: {
@@ -618,20 +616,36 @@ function handlePlayerMovesTiles(tileName) {
 }
 
 async function handleEndOfTurn() {
-    endTurnBtn.removeEventListener("click", handleEndOfTurn);
-    await handleEndOfTurnEvents();
-    activePlayer.movesThisTurn = 0;
-    playerTurnCounter++;
-    if (playerTurnCounter === playerCount) {
-        playerTurnCounter = 0;
-    }
+    if (canEndTurn) {
+        endTurnBtn.removeEventListener("click", handleEndOfTurn);
+        await handleEndOfTurnEvents();
+        activePlayer.movesThisTurn = 0;
+        playerTurnCounter++;
+        if (playerTurnCounter === playerCount) {
+            playerTurnCounter = 0;
+        }
+        document.querySelector(
+            ".dice"
+        ).innerHTML = `<image class="die" src="./images/dice/1.png"></image>
+    <image class="die" src="./images/dice/1.png"></image>
+    <image class="die" src="./images/dice/1.png"></image>
+    <image class="die" src="./images/dice/1.png"></image>
+    <br />
+    <image class="die" src="./images/dice/2.png"></image>
+    <image class="die" src="./images/dice/2.png"></image>
+    <image class="die" src="./images/dice/0.png"></image>
+    <image class="die" src="./images/dice/0.png"></image>
+    <br />
+    <div class="total-display"></div>
 
-    activePlayer = players[playerTurnCounter];
-    switchBoards(activePlayer.currentFloor);
-    renderPlayerStats();
-    renderPlayerCards();
-    symbolFound = false;
-    endTurnBtn.addEventListener("click", handleEndOfTurn);
+    <button class="roll-btn">Roll Dice</button>`;
+        activePlayer = players[playerTurnCounter];
+        switchBoards(activePlayer.currentFloor);
+        renderPlayerStats();
+        renderPlayerCards();
+        symbolFound = false;
+        endTurnBtn.addEventListener("click", handleEndOfTurn);
+    }
 }
 
 function handleEndOfTurnEvents() {
@@ -650,6 +664,7 @@ function handleEndOfTurnEvents() {
 }
 
 export async function handleDiceRoll(diceAmount) {
+    canEndTurn = false;
     rollBtn.style.display = "inline";
     totalDisplay.innerHTML = "Rolling...";
 
@@ -688,11 +703,13 @@ export async function handleDiceRoll(diceAmount) {
             { once: true }
         ); // Ensure the event fires only once
     });
+    canEndTurn = true;
 
     return total;
 }
 
 export function handleTraitChange(type, amount, gainOrLose) {
+    canEndTurn = false;
     return new Promise((resolve, reject) => {
         try {
             let playerStatsInfo =
@@ -771,6 +788,7 @@ export function handleTraitChange(type, amount, gainOrLose) {
                     });
                     resolve({ change });
                 }
+                canEndTurn = true;
             }
         } catch (error) {
             reject(error); // In case of an error

@@ -661,13 +661,12 @@ let cards = [
         result: "2+: Nothing happens. <br><br> 0-1: Lose 1 from that trait. <br><br><br> If you roll 2+ on all four rolls, gain 1 in any trait.",
         effect: async (player) => {
             let rollCount = 0;
-            let rollsDisplay = document.querySelector(".total-display");
+            let rollsDisplay = document.querySelector(".dice");
             for (let key in player.stats) {
                 let roll = await handleDiceRoll(player.stats[key]);
                 let traitRollDisplay = document.createElement("div");
                 traitRollDisplay.classList.add("total-display");
                 traitRollDisplay.innerHTML = `${key} roll: ${roll}`;
-                console.log(traitRollDisplay.innerHTML);
                 rollsDisplay.append(traitRollDisplay);
                 if (roll <= 1) {
                     let playerStatsInfo =
@@ -679,7 +678,7 @@ let cards = [
                 }
             }
             if (rollCount === 4) {
-                handleTraitChange("general", 1, "gain");
+                await handleTraitChange("general", 1, "gain");
             }
         },
     },
