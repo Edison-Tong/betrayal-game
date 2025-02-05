@@ -450,7 +450,9 @@ let cards = [
         todo: "Make a Might roll",
         result: "5+: Gain 1 Might or Speed. <br><br> 1-4: Gain 1 Speed and lose 1 Sanity. <br><br> 0: Take 2 General damage.",
         effect: async (player) => {
-            let roll = await handleDiceRoll(player.stats.might);
+            // let roll = await handleDiceRoll(player.stats.might); // TESTING
+            let roll = await handleDiceRoll(8);
+
             if (roll === 0) {
                 handleTraitChange("general", 2, "lose");
             } else if (roll <= 4) {
@@ -461,7 +463,7 @@ let cards = [
 
                 renderPlayerStats();
             } else {
-                handleTraitChange("physical", 2, "gain");
+                handleTraitChange("physical", 1, "gain");
             }
         },
     },

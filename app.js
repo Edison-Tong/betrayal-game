@@ -697,7 +697,7 @@ export function handleTraitChange(type, amount, gainOrLose) {
         try {
             let playerStatsInfo =
                 playerInfo[activePlayer.id.replace("p", "")].stats;
-            let damage = 0;
+            let change = 0;
             let initialStats = {
                 speed: playerStatsInfo.speed.index,
                 might: playerStatsInfo.might.index,
@@ -722,12 +722,14 @@ export function handleTraitChange(type, amount, gainOrLose) {
             function raiseTrait(event) {
                 let trait = event.target.classList[1].replace("-btn", "");
                 if (
-                    gainOrLose === "lose" &&
-                    playerStatsInfo[trait].index === initialStats[trait]
+                    (gainOrLose === "lose" &&
+                        initialStats[trait] === playerStatsInfo[trait].index) ||
+                    change === -amount
                 ) {
                     return;
                 }
-                damage--;
+
+                change--;
                 playerStatsInfo[trait].index++;
                 activePlayer.stats[trait] =
                     playerStatsInfo[trait].slider[playerStatsInfo[trait].index];
@@ -736,10 +738,16 @@ export function handleTraitChange(type, amount, gainOrLose) {
 
             function lowerTrait(event) {
                 let trait = event.target.classList[1].replace("-btn", "");
-                if (damage === amount) {
+
+                if (
+                    (gainOrLose === "gain" &&
+                        initialStats[trait] === playerStatsInfo[trait].index) ||
+                    change === amount
+                ) {
                     return;
                 }
-                damage++;
+
+                change++;
                 playerStatsInfo[trait].index--;
                 activePlayer.stats[trait] =
                     playerStatsInfo[trait].slider[playerStatsInfo[trait].index];
@@ -747,23 +755,22 @@ export function handleTraitChange(type, amount, gainOrLose) {
             }
 
             function confirmTraits() {
-                if (damage !== amount) {
-                    return;
+                if (change === amount || change === -amount) {
+                    buttons.forEach((button) => {
+                        button.classList.add("hidden");
+                        if (button.classList.contains("increment")) {
+                            button.removeEventListener("click", raiseTrait);
+                        } else {
+                            button.removeEventListener("click", lowerTrait);
+                        }
+                        confirmTraitsBtn.classList.add("hidden");
+                        confirmTraitsBtn.removeEventListener(
+                            "click",
+                            confirmTraits
+                        );
+                    });
+                    resolve({ change });
                 }
-                buttons.forEach((button) => {
-                    button.classList.add("hidden");
-                    if (button.classList.contains("increment")) {
-                        button.removeEventListener("click", raiseTrait);
-                    } else {
-                        button.removeEventListener("click", lowerTrait);
-                    }
-                    confirmTraitsBtn.classList.add("hidden");
-                    confirmTraitsBtn.removeEventListener(
-                        "click",
-                        confirmTraits
-                    );
-                });
-                resolve({ damage });
             }
         } catch (error) {
             reject(error); // In case of an error
