@@ -1132,32 +1132,41 @@ let cards = [
     //         }
     //     },
     // },
-    // {
-    //     name: "The stars at night",
-    //     type: "event",
-    //     todo: "Choose a trait to roll",
-    //     result: "5+: Gain 1 in the chosen trait. <br><br> 4: Lose 1 in the chosen trait. <br><br> 0-3: Heal the chosen trait.",
-    //     effect: async (player, hauntValue, hauntStarted) => {
-    //         let answer = await getPlayerChoice(
-    //             ["speed", "might", "knowledge", "sanity"],
-    //             "Choose a trait to roll."
-    //         );
-    //         let roll = await handleDiceRoll(player.stats[answer]);
-    //         if (roll <= 3) {
-    //             console.log("Heal chosen stat"); // UNFINISHED
-    //         } else if (roll === 4) {
-    //             let playerStatsInfo =
-    //                 playerInfo[player.id.replace("p", "")].stats;
-    //             playerStatsInfo[answer].index--;
-    //             renderPlayerStats();
-    //         } else {
-    //             let playerStatsInfo =
-    //                 playerInfo[player.id.replace("p", "")].stats;
-    //             playerStatsInfo[answer].index++;
-    //             renderPlayerStats();
-    //         }
-    //     },
-    // },
+    {
+        name: "The stars at night",
+        type: "event",
+        todo: "Choose a trait to roll",
+        result: "5+: Gain 1 in the chosen trait. <br><br> 4: Lose 1 in the chosen trait. <br><br> 0-3: Heal the chosen trait.",
+        effect: async (player, hauntValue, hauntStarted) => {
+            let answer = await getPlayerChoice(
+                ["speed", "might", "knowledge", "sanity"],
+                "Choose a trait to roll."
+            );
+            let roll = await handleDiceRoll(player.stats[answer]);
+            if (roll <= 10) {
+                let playerStatsInfo =
+                    playerInfo[player.id.replace("p", "")].stats;
+                if (
+                    playerStatsInfo[answer].index <
+                    playerStatsInfo[answer].startingIndex
+                ) {
+                    playerStatsInfo[answer].index =
+                        playerStatsInfo[answer].startingIndex;
+                    renderPlayerStats();
+                }
+            } else if (roll === 4) {
+                let playerStatsInfo =
+                    playerInfo[player.id.replace("p", "")].stats;
+                playerStatsInfo[answer].index--;
+                renderPlayerStats();
+            } else {
+                let playerStatsInfo =
+                    playerInfo[player.id.replace("p", "")].stats;
+                playerStatsInfo[answer].index++;
+                renderPlayerStats();
+            }
+        },
+    },
     // {
     //     name: "tiny robot",
     //     type: "event",
@@ -1173,28 +1182,28 @@ let cards = [
     //         }
     //     },
     // },
-    {
-        name: "wandering ghost",
-        type: "event",
-        todo: "You may bury one of your items. If you do, gain 1 in any trait. Otherwise, make a Sanity roll.",
-        result: "4+: Draw an Item card <br><br> 0-3: Take 1 General damage.",
-        effect: async (player, hauntValue, hauntStarted) => {
-            let answer = await getPlayerChoice(
-                ["yes", "no"],
-                "Do you want to bury an Item?"
-            );
-            if (answer === "yes") {
-                handleTraitChange("general", 1, "gain"); //UNFINISHED CANNOT BURY ITEMS YET
-            } else {
-                let roll = await handleDiceRoll(player.stats.sanity);
-                if (roll <= 3) {
-                    handleTraitChange("general", 1, "lose");
-                } else {
-                    handlePlayerGainsCard();
-                }
-            }
-        },
-    },
+    // {
+    //     name: "wandering ghost",
+    //     type: "event",
+    //     todo: "You may bury one of your items. If you do, gain 1 in any trait. Otherwise, make a Sanity roll.",
+    //     result: "4+: Draw an Item card <br><br> 0-3: Take 1 General damage.",
+    //     effect: async (player, hauntValue, hauntStarted) => {
+    //         let answer = await getPlayerChoice(
+    //             ["yes", "no"],
+    //             "Do you want to bury an Item?"
+    //         );
+    //         if (answer === "yes") {
+    //             handleTraitChange("general", 1, "gain"); //UNFINISHED CANNOT BURY ITEMS YET
+    //         } else {
+    //             let roll = await handleDiceRoll(player.stats.sanity);
+    //             if (roll <= 3) {
+    //                 handleTraitChange("general", 1, "lose");
+    //             } else {
+    //                 handlePlayerGainsCard();
+    //             }
+    //         }
+    //     },
+    // },
 ];
 
 export default cards;

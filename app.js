@@ -495,6 +495,15 @@ async function handlePlayerMovement() {
     activePlayer.marker.style.gridColumn = column;
 }
 
+// FOR TESTING
+// document.addEventListener("keydown", () => {
+//     if (event.key === "t") {
+//         handleTraitChange("general", 5, "lose");
+//     } else if (event.key === "y") {
+//         handleTraitChange("general", 5, "gain");
+//     }
+// });
+
 export function handlePlayerGainsCard(tile) {
     if (!tile) {
         tile = { symbol: "item" };
