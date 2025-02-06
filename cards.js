@@ -572,31 +572,31 @@ let cards = [
     //         }
     //     },
     // },
-    {
-        name: "eerie mirror",
-        type: "event",
-        todo: "If the haunt has not started, you may make a haunt roll",
-        result: "5+: Turn to haunt 7 in the SECRETS OF SURVIVAL book. this haunt has no traitor. you are the haunt revealer. <br><br> 0-4: Gain 1 Sanity. <br><br><br> If the haunt has started or if you choose not to make a haunt roll, draw an item card.",
-        effect: async (player, hauntValue, hauntStarted) => {
-            let answer = await getPlayerChoice(
-                ["yes", "no"],
-                "Do you want to make a haunt roll?"
-            );
-            if (hauntStarted === true || answer === "no") {
-                handlePlayerGainsCard();
-            } else if (true) {
-                let roll = await handleDiceRoll(hauntValue);
-                if (roll <= 4) {
-                    let playerStatsInfo =
-                        playerInfo[player.id.replace("p", "")].stats;
-                    playerStatsInfo.sanity.index++;
-                    renderPlayerStats();
-                } else {
-                    console.log("Start Haunt #7"); // UNFINISHED
-                }
-            }
-        },
-    },
+    // {
+    //     name: "eerie mirror",
+    //     type: "event",
+    //     todo: "If the haunt has not started, you may make a haunt roll",
+    //     result: "5+: Turn to haunt 7 in the SECRETS OF SURVIVAL book. this haunt has no traitor. you are the haunt revealer. <br><br> 0-4: Gain 1 Sanity. <br><br><br> If the haunt has started or if you choose not to make a haunt roll, draw an item card.",
+    //     effect: async (player, hauntValue, hauntStarted) => {
+    //         let answer = await getPlayerChoice(
+    //             ["yes", "no"],
+    //             "Do you want to make a haunt roll?"
+    //         );
+    //         if (hauntStarted === true || answer === "no") {
+    //             handlePlayerGainsCard();
+    //         } else if (true) {
+    //             let roll = await handleDiceRoll(hauntValue);
+    //             if (roll <= 4) {
+    //                 let playerStatsInfo =
+    //                     playerInfo[player.id.replace("p", "")].stats;
+    //                 playerStatsInfo.sanity.index++;
+    //                 renderPlayerStats();
+    //             } else {
+    //                 console.log("Start Haunt #7"); // UNFINISHED
+    //             }
+    //         }
+    //     },
+    // },
     // {
     //     name: "flickering lights",
     //     type: "event",
@@ -723,23 +723,23 @@ let cards = [
     //         }
     //     },
     // },
-    // {
-    //     name: "jar of organs",
-    //     type: "event",
-    //     todo: "Make a Sanity roll",
-    //     result: "4+: Draw an Item card. <br><br> 0-3: Lose 1 Might.",
-    //     effect: async (player) => {
-    //         let roll = await handleDiceRoll(player.stats.sanity);
-    //         if (roll <= 3) {
-    //             let playerStatsInfo =
-    //                 playerInfo[player.id.replace("p", "")].stats;
-    //             playerStatsInfo.might.index--;
-    //             renderPlayerStats();
-    //         } else {
-    //             console.log("draw an item card "); //UNFINISHED
-    //         }
-    //     },
-    // },
+    {
+        name: "jar of organs",
+        type: "event",
+        todo: "Make a Sanity roll",
+        result: "4+: Draw an Item card. <br><br> 0-3: Lose 1 Might.",
+        effect: async (player) => {
+            let roll = await handleDiceRoll(player.stats.sanity);
+            if (roll <= 3) {
+                let playerStatsInfo =
+                    playerInfo[player.id.replace("p", "")].stats;
+                playerStatsInfo.might.index--;
+                renderPlayerStats();
+            } else {
+                handlePlayerGainsCard();
+            }
+        },
+    },
     // {
     //     name: "jonah's turn",
     //     type: "event",
