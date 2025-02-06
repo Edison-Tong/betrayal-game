@@ -34,7 +34,7 @@ let tileMessageBox = document.querySelector(".tile-message");
 let symbolFound;
 let canEndTurn = true;
 
-let movementTiles = {
+export let movementTiles = {
     groundFloorStaircase: {
         opposite: "upperLanding",
         connectingFloor: "upper",
@@ -75,6 +75,11 @@ let movementTiles = {
         opposite: "undergroundCavern",
         connectingFloor: "basement",
         data: tiles[20],
+    },
+
+    entranceHall: {
+        data: tiles[1],
+        element: document.querySelector(".entrance-hall"),
     },
 };
 
@@ -604,11 +609,18 @@ function checkDoorAlignment() {
     return allowPassage;
 }
 
-function handlePlayerMovesTiles(tileName) {
-    let moveTo = movementTiles[tileName].opposite;
-    let floor = movementTiles[tileName].connectingFloor;
-    activePlayer.currentTile = movementTiles[moveTo].data;
+export function handlePlayerMovesTiles(tileName, opposite, level) {
+    let moveTo;
+    let floor;
+    if (opposite && level) {
+        moveTo = opposite;
+        floor = level;
+    } else {
+        moveTo = movementTiles[tileName].opposite;
+        floor = movementTiles[tileName].connectingFloor;
+    }
 
+    activePlayer.currentTile = movementTiles[moveTo].data;
     switchBoards(floor);
     positionPlayers("mid", floor, [
         movementTiles[moveTo].element.style.gridRow,
