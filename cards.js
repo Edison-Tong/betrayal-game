@@ -1051,28 +1051,28 @@ let cards = [
     //         }, 0);
     //     },
     // },
-    {
-        name: "the deepest closet",
-        type: "event",
-        todo: "Make a Speed roll",
-        result: " 4+: Draw an Item card. <br><br> 1-3: Take 1 Mental damage. <br><br> 0: Take one die of Physical damage. place your explorer on the Basement Landing.",
-        effect: async (player, hauntValue, hauntStarted) => {
-            let roll = await handleDiceRoll(player.stats.speed);
-            if (roll === 0) {
-                handlePlayerMovesTiles(
-                    player.currentTile.name.replaceAll(" ", ""),
-                    "basementLanding",
-                    "basement"
-                );
-                let roll = await handleDiceRoll(1);
-                handleTraitChange("physical", roll, "lose");
-            } else if (roll <= 3) {
-                handleTraitChange("mental", 1, "lose");
-            } else {
-                handlePlayerGainsCard();
-            }
-        },
-    },
+    // {
+    //     name: "the deepest closet",
+    //     type: "event",
+    //     todo: "Make a Speed roll",
+    //     result: " 4+: Draw an Item card. <br><br> 1-3: Take 1 Mental damage. <br><br> 0: Take one die of Physical damage. place your explorer on the Basement Landing.",
+    //     effect: async (player, hauntValue, hauntStarted) => {
+    //         let roll = await handleDiceRoll(player.stats.speed);
+    //         if (roll === 0) {
+    //             handlePlayerMovesTiles(
+    //                 player.currentTile.name.replaceAll(" ", ""),
+    //                 "basementLanding",
+    //                 "basement"
+    //             );
+    //             let roll = await handleDiceRoll(1);
+    //             handleTraitChange("physical", roll, "lose");
+    //         } else if (roll <= 3) {
+    //             handleTraitChange("mental", 1, "lose");
+    //         } else {
+    //             handlePlayerGainsCard();
+    //         }
+    //     },
+    // },
     // {
     //     name: "the flowering",
     //     type: "event",
@@ -1158,21 +1158,21 @@ let cards = [
     //         }
     //     },
     // },
-    // {
-    //     name: "tiny robot",
-    //     type: "event",
-    //     todo: "Make a knowledge roll",
-    //     result: "5+: Draw an Item card <br><br> 0-4: Take one die of Physical damage.",
-    //     effect: async (player, hauntValue, hauntStarted) => {
-    //         let roll = await handleDiceRoll(player.stats.knowledge);
-    //         if (roll <= 4) {
-    //             let roll = await handleDiceRoll(1);
-    //             handleTraitChange("physical", roll, "lose");
-    //         } else {
-    //             console.log("Draw an Item card"); // UNFINISHED
-    //         }
-    //     },
-    // },
+    {
+        name: "tiny robot",
+        type: "event",
+        todo: "Make a knowledge roll",
+        result: "5+: Draw an Item card <br><br> 0-4: Take one die of Physical damage.",
+        effect: async (player, hauntValue, hauntStarted) => {
+            let roll = await handleDiceRoll(player.stats.knowledge);
+            if (roll <= 4) {
+                let roll = await handleDiceRoll(1);
+                handleTraitChange("physical", roll, "lose");
+            } else {
+                handlePlayerGainsCard();
+            }
+        },
+    },
     // {
     //     name: "wandering ghost",
     //     type: "event",
