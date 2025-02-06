@@ -495,7 +495,10 @@ async function handlePlayerMovement() {
     activePlayer.marker.style.gridColumn = column;
 }
 
-function handlePlayerGainsCard(tile) {
+export function handlePlayerGainsCard(tile) {
+    if (!tile) {
+        tile = { symbol: "item" };
+    }
     if (tile.symbol !== "none" && tile.symbol !== "event") {
         let availableCards = [];
         let usedCard;

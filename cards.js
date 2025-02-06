@@ -4,6 +4,7 @@ import {
     getPlayerChoice,
     renderPlayerStats,
     handlePlayerMovesTiles,
+    handlePlayerGainsCard,
 } from "./app.js";
 import playerInfo from "./playerInfo.js";
 
@@ -571,31 +572,31 @@ let cards = [
     //         }
     //     },
     // },
-    // {
-    //     name: "eerie mirror",
-    //     type: "event",
-    //     todo: "If the haunt has not started, you may make a haunt roll",
-    //     result: "5+: Turn to haunt 7 in the SECRETS OF SURVIVAL book. this haunt has no traitor. you are the haunt revealer. <br><br> 0-4: Gain 1 Sanity. <br><br><br> If the haunt has started or if you choose not to make a haunt roll, draw an item card.",
-    //     effect: async (player, hauntValue, hauntStarted) => {
-    //         let answer = await getPlayerChoice(
-    //             ["yes", "no"],
-    //             "Do you want to make a haunt roll?"
-    //         );
-    //         if (hauntStarted === true || answer === "no") {
-    //             console.log("Draw an item card"); // UNFINISHED
-    //         } else if (true) {
-    //             let roll = await handleDiceRoll(hauntValue);
-    //             if (roll <= 4) {
-    //                 let playerStatsInfo =
-    //                     playerInfo[player.id.replace("p", "")].stats;
-    //                 playerStatsInfo.sanity.index++;
-    //                 renderPlayerStats();
-    //             } else {
-    //                 console.log("Start Haunt #7"); // UNFINISHED
-    //             }
-    //         }
-    //     },
-    // },
+    {
+        name: "eerie mirror",
+        type: "event",
+        todo: "If the haunt has not started, you may make a haunt roll",
+        result: "5+: Turn to haunt 7 in the SECRETS OF SURVIVAL book. this haunt has no traitor. you are the haunt revealer. <br><br> 0-4: Gain 1 Sanity. <br><br><br> If the haunt has started or if you choose not to make a haunt roll, draw an item card.",
+        effect: async (player, hauntValue, hauntStarted) => {
+            let answer = await getPlayerChoice(
+                ["yes", "no"],
+                "Do you want to make a haunt roll?"
+            );
+            if (hauntStarted === true || answer === "no") {
+                handlePlayerGainsCard();
+            } else if (true) {
+                let roll = await handleDiceRoll(hauntValue);
+                if (roll <= 4) {
+                    let playerStatsInfo =
+                        playerInfo[player.id.replace("p", "")].stats;
+                    playerStatsInfo.sanity.index++;
+                    renderPlayerStats();
+                } else {
+                    console.log("Start Haunt #7"); // UNFINISHED
+                }
+            }
+        },
+    },
     // {
     //     name: "flickering lights",
     //     type: "event",
@@ -1050,29 +1051,28 @@ let cards = [
     //         }, 0);
     //     },
     // },
-    {
-        name: "the deepest closet",
-        type: "event",
-        todo: "Make a Speed roll",
-        result: " 4+: Draw an Item card. <br><br> 1-3: Take 1 Mental damage. <br><br> 0: Take one die of Physical damage. place your explorer on the Basement Landing.",
-        effect: async (player, hauntValue, hauntStarted) => {
-            let roll = await handleDiceRoll(player.stats.speed);
-            if (roll === 0) {
-                console.log("Place your explorer on the Basement Landing");
-                handlePlayerMovesTiles(
-                    player.currentTile.name.replaceAll(" ", ""),
-                    "basementLanding",
-                    "basement"
-                );
-                let roll = await handleDiceRoll(1);
-                handleTraitChange("physical", roll, "lose");
-            } else if (roll <= 3) {
-                handleTraitChange("mental", 1, "lose");
-            } else {
-                console.log("draw an item card"); // UNFINISHED
-            }
-        },
-    },
+    // {
+    //     name: "the deepest closet",
+    //     type: "event",
+    //     todo: "Make a Speed roll",
+    //     result: " 4+: Draw an Item card. <br><br> 1-3: Take 1 Mental damage. <br><br> 0: Take one die of Physical damage. place your explorer on the Basement Landing.",
+    //     effect: async (player, hauntValue, hauntStarted) => {
+    //         let roll = await handleDiceRoll(player.stats.speed);
+    //         if (roll === 0) {
+    //             handlePlayerMovesTiles(
+    //                 player.currentTile.name.replaceAll(" ", ""),
+    //                 "basementLanding",
+    //                 "basement"
+    //             );
+    //             let roll = await handleDiceRoll(1);
+    //             handleTraitChange("physical", roll, "lose");
+    //         } else if (roll <= 3) {
+    //             handleTraitChange("mental", 1, "lose");
+    //         } else {
+    //             console.log("draw an item card"); // UNFINISHED
+    //         }
+    //     },
+    // },
     // {
     //     name: "the flowering",
     //     type: "event",
