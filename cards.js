@@ -519,7 +519,7 @@ let cards = [
         handleTraitChange("mental", 1, "lose");
       } else {
         let playerStatsInfo = playerInfo[player.id.replace("p", "")].stats;
-        playerStatsInfo.knowledge.index++;
+        playerStatsInfo.sanity.index++;
         renderPlayerStats();
       }
     },
