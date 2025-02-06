@@ -1158,43 +1158,43 @@ let cards = [
     //         }
     //     },
     // },
-    {
-        name: "tiny robot",
-        type: "event",
-        todo: "Make a knowledge roll",
-        result: "5+: Draw an Item card <br><br> 0-4: Take one die of Physical damage.",
-        effect: async (player, hauntValue, hauntStarted) => {
-            let roll = await handleDiceRoll(player.stats.knowledge);
-            if (roll <= 4) {
-                let roll = await handleDiceRoll(1);
-                handleTraitChange("physical", roll, "lose");
-            } else {
-                handlePlayerGainsCard();
-            }
-        },
-    },
     // {
-    //     name: "wandering ghost",
+    //     name: "tiny robot",
     //     type: "event",
-    //     todo: "You may bury one of your items. If you do, gain 1 in any trait. Otherwise, make a Sanity roll.",
-    //     result: "4+: Draw an Item card <br><br> 0-3: Take 1 General damage.",
+    //     todo: "Make a knowledge roll",
+    //     result: "5+: Draw an Item card <br><br> 0-4: Take one die of Physical damage.",
     //     effect: async (player, hauntValue, hauntStarted) => {
-    //         let answer = await getPlayerChoice(
-    //             ["yes", "no"],
-    //             "Do you want to bury an Item?"
-    //         );
-    //         if (answer === "yes") {
-    //             handleTraitChange("general", 1, "gain"); //UNFINISHED CANNOT BURY ITEMS YET
+    //         let roll = await handleDiceRoll(player.stats.knowledge);
+    //         if (roll <= 4) {
+    //             let roll = await handleDiceRoll(1);
+    //             handleTraitChange("physical", roll, "lose");
     //         } else {
-    //             let roll = await handleDiceRoll(player.stats.sanity);
-    //             if (roll <= 3) {
-    //                 handleTraitChange("general", 1, "lose");
-    //             } else {
-    //                 console.log("Draw an Item card"); //UNFINISHED
-    //             }
+    //             handlePlayerGainsCard();
     //         }
     //     },
     // },
+    {
+        name: "wandering ghost",
+        type: "event",
+        todo: "You may bury one of your items. If you do, gain 1 in any trait. Otherwise, make a Sanity roll.",
+        result: "4+: Draw an Item card <br><br> 0-3: Take 1 General damage.",
+        effect: async (player, hauntValue, hauntStarted) => {
+            let answer = await getPlayerChoice(
+                ["yes", "no"],
+                "Do you want to bury an Item?"
+            );
+            if (answer === "yes") {
+                handleTraitChange("general", 1, "gain"); //UNFINISHED CANNOT BURY ITEMS YET
+            } else {
+                let roll = await handleDiceRoll(player.stats.sanity);
+                if (roll <= 3) {
+                    handleTraitChange("general", 1, "lose");
+                } else {
+                    handlePlayerGainsCard();
+                }
+            }
+        },
+    },
 ];
 
 export default cards;
