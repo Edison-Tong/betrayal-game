@@ -911,28 +911,28 @@ let cards = [
     //         }
     //     },
     // },
-    {
-        name: "say cheese",
-        type: "event",
-        todo: "If the haunt has not started, you may make a haunt roll.",
-        result: "5+: Turn to haunt 33 in the TRAITOR'S TOME. If a hero has the Magic Camera, they are the traitor. Otherwise, you are the traitor. <br><br> 0-4: Draw an Item card. <br><br><br> If the haunt has started, or you chose not to make a haunt roll, draw an Item card.",
-        effect: async (player, hauntValue, hauntStarted) => {
-            let answer = await getPlayerChoice(
-                ["yes", "no"],
-                "Do you want to make a haunt roll?"
-            );
-            if (hauntStarted === true || answer === "no") {
-                handlePlayerGainsCard();
-            } else {
-                let roll = await handleDiceRoll(hauntValue);
-                if (roll <= 4) {
-                    handlePlayerGainsCard();
-                } else {
-                    console.log("Start Haunt #7"); // UNFINISHED
-                }
-            }
-        },
-    },
+    // {
+    //     name: "say cheese",
+    //     type: "event",
+    //     todo: "If the haunt has not started, you may make a haunt roll.",
+    //     result: "5+: Turn to haunt 33 in the TRAITOR'S TOME. If a hero has the Magic Camera, they are the traitor. Otherwise, you are the traitor. <br><br> 0-4: Draw an Item card. <br><br><br> If the haunt has started, or you chose not to make a haunt roll, draw an Item card.",
+    //     effect: async (player, hauntValue, hauntStarted) => {
+    //         let answer = await getPlayerChoice(
+    //             ["yes", "no"],
+    //             "Do you want to make a haunt roll?"
+    //         );
+    //         if (hauntStarted === true || answer === "no") {
+    //             handlePlayerGainsCard();
+    //         } else {
+    //             let roll = await handleDiceRoll(hauntValue);
+    //             if (roll <= 4) {
+    //                 handlePlayerGainsCard();
+    //             } else {
+    //                 console.log("Start Haunt #7"); // UNFINISHED
+    //             }
+    //         }
+    //     },
+    // },
     // {
     //     name: "secret elevator",
     //     type: "event",
@@ -948,22 +948,22 @@ let cards = [
     //         }
     //     },
     // },
-    // {
-    //     name: "severed hand",
-    //     type: "event",
-    //     todo: "You may take 2 Physical damage.",
-    //     result: "If you do, draw an Item card.",
-    //     effect: async (player, hauntValue, hauntStarted) => {
-    //         let answer = await getPlayerChoice(
-    //             ["yes", "no"],
-    //             "Do you want to take 2 Physical damage?"
-    //         );
-    //         if (answer === "yes") {
-    //             handleTraitChange("physical", 2, "lose");
-    //             console.log("draw an item card"); // UNFINISHED
-    //         }
-    //     },
-    // },
+    {
+        name: "severed hand",
+        type: "event",
+        todo: "You may take 2 Physical damage.",
+        result: "If you do, draw an Item card.",
+        effect: async (player, hauntValue, hauntStarted) => {
+            let answer = await getPlayerChoice(
+                ["yes", "no"],
+                "Do you want to take 2 Physical damage?"
+            );
+            if (answer === "yes") {
+                handleTraitChange("physical", 2, "lose");
+                handlePlayerGainsCard();
+            }
+        },
+    },
     // {
     //     name: "spiders",
     //     type: "event",
