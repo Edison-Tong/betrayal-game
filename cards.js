@@ -1013,61 +1013,66 @@ let cards = [
     //         }
     //     },
     // },
-    {
-        name: "technical difficulties",
-        type: "event",
-        todo: "Place your explorer on the Landing of the Floor below. If you are already in the Basement, place your explorer on the Upper Landing instead and take 1 Mental damage.",
-        result: "",
-        effect: async (player, hauntValue, hauntStarted) => {
-            let currentFloor = player.currentFloor;
-
-            // let roll = await handleDiceRoll(player.stats.knowledge); // PLAYER WILL NOT DSPALY CORRECTLY UNLESS THERE IS AN DELAY....
-            setTimeout(() => {
-                console.log("wait");
-                if (currentFloor === "upper") {
-                    console.log("place explorer on entrance hall");
-                    handlePlayerMovesTiles(
-                        player.currentTile.name.replaceAll(" ", ""),
-                        "entranceHall",
-                        "ground"
-                    );
-                } else if (currentFloor === "ground") {
-                    console.log("place explorer on basement Landing");
-                    handlePlayerMovesTiles(
-                        player.currentTile.name.replaceAll(" ", ""),
-                        "basementLanding",
-                        "basement"
-                    );
-                } else if (currentFloor === "basement") {
-                    console.log("place explorer on Upper Landing");
-                    handlePlayerMovesTiles(
-                        player.currentTile.name.replaceAll(" ", ""),
-                        "upperLanding",
-                        "upper"
-                    );
-                    handleTraitChange("mental", 1, "lose");
-                }
-            }, 0);
-        },
-    },
     // {
-    //     name: "the deepest closet",
+    //     name: "technical difficulties",
     //     type: "event",
-    //     todo: "Make a Speed roll",
-    //     result: " 4+: Draw an Item card. <br><br> 1-3: Take 1 Mental damage. <br><br> 0: Take one die of Physical damage. place your explorer on the Basement Landing.",
+    //     todo: "Place your explorer on the Landing of the Floor below. If you are already in the Basement, place your explorer on the Upper Landing instead and take 1 Mental damage.",
+    //     result: "",
     //     effect: async (player, hauntValue, hauntStarted) => {
-    //         let roll = await handleDiceRoll(player.stats.speed);
-    //         if (roll === 0) {
-    //             let roll = await handleDiceRoll(1);
-    //             handleTraitChange("physical", roll, "lose");
-    //             console.log("Place your explorer on the Basement Landing"); // UNFINISHED
-    //         } else if (roll <= 3) {
-    //             handleTraitChange("mental", 1, "lose");
-    //         } else {
-    //             console.log("draw an item card"); // UNFINISHED
-    //         }
+    //         let currentFloor = player.currentFloor;
+
+    //         // let roll = await handleDiceRoll(player.stats.knowledge); // PLAYER WILL NOT DSPALY CORRECTLY UNLESS THERE IS AN DELAY....
+    //         setTimeout(() => {
+    //             console.log("wait");
+    //             if (currentFloor === "upper") {
+    //                 console.log("place explorer on entrance hall");
+    //                 handlePlayerMovesTiles(
+    //                     player.currentTile.name.replaceAll(" ", ""),
+    //                     "entranceHall",
+    //                     "ground"
+    //                 );
+    //             } else if (currentFloor === "ground") {
+    //                 console.log("place explorer on basement Landing");
+    //                 handlePlayerMovesTiles(
+    //                     player.currentTile.name.replaceAll(" ", ""),
+    //                     "basementLanding",
+    //                     "basement"
+    //                 );
+    //             } else if (currentFloor === "basement") {
+    //                 console.log("place explorer on Upper Landing");
+    //                 handlePlayerMovesTiles(
+    //                     player.currentTile.name.replaceAll(" ", ""),
+    //                     "upperLanding",
+    //                     "upper"
+    //                 );
+    //                 handleTraitChange("mental", 1, "lose");
+    //             }
+    //         }, 0);
     //     },
     // },
+    {
+        name: "the deepest closet",
+        type: "event",
+        todo: "Make a Speed roll",
+        result: " 4+: Draw an Item card. <br><br> 1-3: Take 1 Mental damage. <br><br> 0: Take one die of Physical damage. place your explorer on the Basement Landing.",
+        effect: async (player, hauntValue, hauntStarted) => {
+            let roll = await handleDiceRoll(player.stats.speed);
+            if (roll === 0) {
+                console.log("Place your explorer on the Basement Landing");
+                handlePlayerMovesTiles(
+                    player.currentTile.name.replaceAll(" ", ""),
+                    "basementLanding",
+                    "basement"
+                );
+                let roll = await handleDiceRoll(1);
+                handleTraitChange("physical", roll, "lose");
+            } else if (roll <= 3) {
+                handleTraitChange("mental", 1, "lose");
+            } else {
+                console.log("draw an item card"); // UNFINISHED
+            }
+        },
+    },
     // {
     //     name: "the flowering",
     //     type: "event",
