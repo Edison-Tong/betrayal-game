@@ -473,33 +473,33 @@ let cards = [
     //         }
     //     },
     // },
-    {
-        name: "burning figure",
-        type: "event",
-        todo: "Make a Sanity roll",
-        result: "4+: Gain 1 Sanity. <br><br> 2-3: Place your explorer on the Entrance Hall. <br><br> 0-1: Take 1 die of Physical damage and 1 die of Mental damage.",
-        effect: async (player) => {
-            let roll = await handleDiceRoll(player.stats.sanity);
+    // {
+    //     name: "burning figure",
+    //     type: "event",
+    //     todo: "Make a Sanity roll",
+    //     result: "4+: Gain 1 Sanity. <br><br> 2-3: Place your explorer on the Entrance Hall. <br><br> 0-1: Take 1 die of Physical damage and 1 die of Mental damage.",
+    //     effect: async (player) => {
+    //         let roll = await handleDiceRoll(player.stats.sanity);
 
-            if (roll <= 1) {
-                let roll = await handleDiceRoll(1);
-                await handleTraitChange("physical", roll, "lose");
-                roll = await handleDiceRoll(1);
-                await handleTraitChange("mental", roll, "lose");
-            } else if (roll <= 10) {
-                handlePlayerMovesTiles(
-                    player.currentTile.name.replaceAll(" ", ""),
-                    "entranceHall",
-                    "ground"
-                );
-            } else {
-                let playerStatsInfo =
-                    playerInfo[player.id.replace("p", "")].stats;
-                playerStatsInfo.sanity.index++;
-                renderPlayerStats();
-            }
-        },
-    },
+    //         if (roll <= 1) {
+    //             let roll = await handleDiceRoll(1);
+    //             await handleTraitChange("physical", roll, "lose");
+    //             roll = await handleDiceRoll(1);
+    //             await handleTraitChange("mental", roll, "lose");
+    //         } else if (roll <= 3) {
+    //             handlePlayerMovesTiles(
+    //                 player.currentTile.name.replaceAll(" ", ""),
+    //                 "entranceHall",
+    //                 "ground"
+    //             );
+    //         } else {
+    //             let playerStatsInfo =
+    //                 playerInfo[player.id.replace("p", "")].stats;
+    //             playerStatsInfo.sanity.index++;
+    //             renderPlayerStats();
+    //         }
+    //     },
+    // },
     // {
     //     name: "cassette player",
     //     type: "event",
@@ -533,23 +533,28 @@ let cards = [
     //         }
     //     },
     // },
-    // {
-    //     name: "creaking door",
-    //     type: "event",
-    //     todo: "Make a Knowledge roll",
-    //     result: "6+: Place your explorer on any Upper or Ground Floor tile. <br><br> 4-5: Place your explorer on any Ground Floor tile. <br><br> 0-3: Place your explorer on the Basement Landing tile.",
-    //     effect: async (player) => {
-    //         let roll = await handleDiceRoll(player.stats.knowledge);
+    {
+        name: "creaking door",
+        type: "event",
+        todo: "Make a Knowledge roll",
+        result: "6+: Place your explorer on any Upper or Ground Floor tile. <br><br> 4-5: Place your explorer on any Ground Floor tile. <br><br> 0-3: Place your explorer on the Basement Landing tile.",
+        effect: async (player) => {
+            let roll = await handleDiceRoll(player.stats.knowledge);
 
-    //         if (roll <= 3) {
-    //             console.log("Place explorer on the basement landing tile"); // UNFINISHED
-    //         } else if (roll <= 5) {
-    //             console.log("Place explorer on any Ground Floor tile"); // UNFINISHED
-    //         } else {
-    //             console.log("Place explorer on any Upper or Ground Floor tile"); // UNFINISHED
-    //         }
-    //     },
-    // },
+            if (roll <= 3) {
+                console.log("Place explorer on the basement landing tile");
+                handlePlayerMovesTiles(
+                    player.currentTile.name.replaceAll(" ", ""),
+                    "basementLanding",
+                    "basement"
+                );
+            } else if (roll <= 5) {
+                console.log("Place explorer on any Ground Floor tile"); // UNFINISHED
+            } else {
+                console.log("Place explorer on any Upper or Ground Floor tile"); // UNFINISHED
+            }
+        },
+    },
     // {
     //     name: "dark and stormy night",
     //     type: "event",
