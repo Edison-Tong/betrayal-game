@@ -948,22 +948,22 @@ let cards = [
     //         }
     //     },
     // },
-    {
-        name: "severed hand",
-        type: "event",
-        todo: "You may take 2 Physical damage.",
-        result: "If you do, draw an Item card.",
-        effect: async (player, hauntValue, hauntStarted) => {
-            let answer = await getPlayerChoice(
-                ["yes", "no"],
-                "Do you want to take 2 Physical damage?"
-            );
-            if (answer === "yes") {
-                handleTraitChange("physical", 2, "lose");
-                handlePlayerGainsCard();
-            }
-        },
-    },
+    // {
+    //     name: "severed hand",
+    //     type: "event",
+    //     todo: "You may take 2 Physical damage.",
+    //     result: "If you do, draw an Item card.",
+    //     effect: async (player, hauntValue, hauntStarted) => {
+    //         let answer = await getPlayerChoice(
+    //             ["yes", "no"],
+    //             "Do you want to take 2 Physical damage?"
+    //         );
+    //         if (answer === "yes") {
+    //             handleTraitChange("physical", 2, "lose");
+    //             handlePlayerGainsCard();
+    //         }
+    //     },
+    // },
     // {
     //     name: "spiders",
     //     type: "event",
@@ -1051,28 +1051,28 @@ let cards = [
     //         }, 0);
     //     },
     // },
-    // {
-    //     name: "the deepest closet",
-    //     type: "event",
-    //     todo: "Make a Speed roll",
-    //     result: " 4+: Draw an Item card. <br><br> 1-3: Take 1 Mental damage. <br><br> 0: Take one die of Physical damage. place your explorer on the Basement Landing.",
-    //     effect: async (player, hauntValue, hauntStarted) => {
-    //         let roll = await handleDiceRoll(player.stats.speed);
-    //         if (roll === 0) {
-    //             handlePlayerMovesTiles(
-    //                 player.currentTile.name.replaceAll(" ", ""),
-    //                 "basementLanding",
-    //                 "basement"
-    //             );
-    //             let roll = await handleDiceRoll(1);
-    //             handleTraitChange("physical", roll, "lose");
-    //         } else if (roll <= 3) {
-    //             handleTraitChange("mental", 1, "lose");
-    //         } else {
-    //             console.log("draw an item card"); // UNFINISHED
-    //         }
-    //     },
-    // },
+    {
+        name: "the deepest closet",
+        type: "event",
+        todo: "Make a Speed roll",
+        result: " 4+: Draw an Item card. <br><br> 1-3: Take 1 Mental damage. <br><br> 0: Take one die of Physical damage. place your explorer on the Basement Landing.",
+        effect: async (player, hauntValue, hauntStarted) => {
+            let roll = await handleDiceRoll(player.stats.speed);
+            if (roll === 0) {
+                handlePlayerMovesTiles(
+                    player.currentTile.name.replaceAll(" ", ""),
+                    "basementLanding",
+                    "basement"
+                );
+                let roll = await handleDiceRoll(1);
+                handleTraitChange("physical", roll, "lose");
+            } else if (roll <= 3) {
+                handleTraitChange("mental", 1, "lose");
+            } else {
+                handlePlayerGainsCard();
+            }
+        },
+    },
     // {
     //     name: "the flowering",
     //     type: "event",
