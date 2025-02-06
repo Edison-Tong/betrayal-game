@@ -4,7 +4,6 @@ import {
     getPlayerChoice,
     renderPlayerStats,
     handlePlayerMovesTiles,
-    movementTiles,
 } from "./app.js";
 import playerInfo from "./playerInfo.js";
 
@@ -533,28 +532,27 @@ let cards = [
     //         }
     //     },
     // },
-    {
-        name: "creaking door",
-        type: "event",
-        todo: "Make a Knowledge roll",
-        result: "6+: Place your explorer on any Upper or Ground Floor tile. <br><br> 4-5: Place your explorer on any Ground Floor tile. <br><br> 0-3: Place your explorer on the Basement Landing tile.",
-        effect: async (player) => {
-            let roll = await handleDiceRoll(player.stats.knowledge);
-
-            if (roll <= 3) {
-                console.log("Place explorer on the basement landing tile");
-                handlePlayerMovesTiles(
-                    player.currentTile.name.replaceAll(" ", ""),
-                    "basementLanding",
-                    "basement"
-                );
-            } else if (roll <= 5) {
-                console.log("Place explorer on any Ground Floor tile"); // UNFINISHED
-            } else {
-                console.log("Place explorer on any Upper or Ground Floor tile"); // UNFINISHED
-            }
-        },
-    },
+    // {
+    //     name: "creaking door",
+    //     type: "event",
+    //     todo: "Make a Knowledge roll",
+    //     result: "6+: Place your explorer on any Upper or Ground Floor tile. <br><br> 4-5: Place your explorer on any Ground Floor tile. <br><br> 0-3: Place your explorer on the Basement Landing tile.",
+    //     effect: async (player) => {
+    //         let roll = await handleDiceRoll(player.stats.knowledge);
+    //         if (roll <= 3) {
+    //             console.log("Place explorer on the basement landing tile");
+    //             handlePlayerMovesTiles(
+    //                 player.currentTile.name.replaceAll(" ", ""),
+    //                 "basementLanding",
+    //                 "basement"
+    //             );
+    //         } else if (roll <= 5) {
+    //             console.log("Place explorer on any Ground Floor tile"); // UNFINISHED
+    //         } else {
+    //             console.log("Place explorer on any Upper or Ground Floor tile"); // UNFINISHED
+    //         }
+    //     },
+    // },
     // {
     //     name: "dark and stormy night",
     //     type: "event",
@@ -1015,23 +1013,43 @@ let cards = [
     //         }
     //     },
     // },
-    // {
-    //     name: "technical difficulties",
-    //     type: "event",
-    //     todo: "Place your explorer on the Landing of the Floor below. If you are already in the Basement, place your explorer on the Upper Landing instead and take 1 Mental damage.",
-    //     result: "",
-    //     effect: async (player, hauntValue, hauntStarted) => {
-    //         let currentFloor = player.currentFloor;
-    //         if (currentFloor === "upper") {
-    //             console.log("place explorer on entrance hall"); // UNFINISHED
-    //         } else if (currentFloor === "ground") {
-    //             console.log("place explorer on basement Landing"); // UNFINISHED
-    //         } else if (currentFloor === "basement") {
-    //             console.log("place explorer on Upper Landing"); // UNFINISHED
-    //             handleTraitChange("mental", 1, "lose");
-    //         }
-    //     },
-    // },
+    {
+        name: "technical difficulties",
+        type: "event",
+        todo: "Place your explorer on the Landing of the Floor below. If you are already in the Basement, place your explorer on the Upper Landing instead and take 1 Mental damage.",
+        result: "",
+        effect: async (player, hauntValue, hauntStarted) => {
+            let currentFloor = player.currentFloor;
+
+            // let roll = await handleDiceRoll(player.stats.knowledge); // PLAYER WILL NOT DSPALY CORRECTLY UNLESS THERE IS AN DELAY....
+            setTimeout(() => {
+                console.log("wait");
+                if (currentFloor === "upper") {
+                    console.log("place explorer on entrance hall");
+                    handlePlayerMovesTiles(
+                        player.currentTile.name.replaceAll(" ", ""),
+                        "entranceHall",
+                        "ground"
+                    );
+                } else if (currentFloor === "ground") {
+                    console.log("place explorer on basement Landing");
+                    handlePlayerMovesTiles(
+                        player.currentTile.name.replaceAll(" ", ""),
+                        "basementLanding",
+                        "basement"
+                    );
+                } else if (currentFloor === "basement") {
+                    console.log("place explorer on Upper Landing");
+                    handlePlayerMovesTiles(
+                        player.currentTile.name.replaceAll(" ", ""),
+                        "upperLanding",
+                        "upper"
+                    );
+                    handleTraitChange("mental", 1, "lose");
+                }
+            }, 0);
+        },
+    },
     // {
     //     name: "the deepest closet",
     //     type: "event",

@@ -310,11 +310,13 @@ function positionPlayers(time, floor, rowCol) {
         activePlayer = players[playerTurnCounter];
         return;
     }
+    console.log(activePlayer.marker);
     activePlayer.marker.remove();
     activePlayer.currentFloor = floor;
     activePlayer.marker.style.gridRow = rowCol[0];
     activePlayer.marker.style.gridColumn = rowCol[1];
     displayedFloor.append(activePlayer.marker);
+    console.log(activePlayer.marker);
 }
 
 export function renderPlayerStats(trait) {
@@ -621,6 +623,7 @@ export function handlePlayerMovesTiles(tileName, opposite, level) {
     }
 
     activePlayer.currentTile = movementTiles[moveTo].data;
+
     switchBoards(floor);
     positionPlayers("mid", floor, [
         movementTiles[moveTo].element.style.gridRow,
