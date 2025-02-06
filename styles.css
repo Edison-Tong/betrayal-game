@@ -266,6 +266,7 @@ button.hidden {
   background-color: rgba(244, 0, 0, 0.7); /* Slightly see-through background */
   z-index: 9999;
   padding-top: 20px;
+  right: 10px;
 }
 .player-cards.hidden {
   display: none;
