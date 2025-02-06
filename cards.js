@@ -723,23 +723,23 @@ let cards = [
     //         }
     //     },
     // },
-    {
-        name: "jar of organs",
-        type: "event",
-        todo: "Make a Sanity roll",
-        result: "4+: Draw an Item card. <br><br> 0-3: Lose 1 Might.",
-        effect: async (player) => {
-            let roll = await handleDiceRoll(player.stats.sanity);
-            if (roll <= 3) {
-                let playerStatsInfo =
-                    playerInfo[player.id.replace("p", "")].stats;
-                playerStatsInfo.might.index--;
-                renderPlayerStats();
-            } else {
-                handlePlayerGainsCard();
-            }
-        },
-    },
+    // {
+    //     name: "jar of organs",
+    //     type: "event",
+    //     todo: "Make a Sanity roll",
+    //     result: "4+: Draw an Item card. <br><br> 0-3: Lose 1 Might.",
+    //     effect: async (player) => {
+    //         let roll = await handleDiceRoll(player.stats.sanity);
+    //         if (roll <= 3) {
+    //             let playerStatsInfo =
+    //                 playerInfo[player.id.replace("p", "")].stats;
+    //             playerStatsInfo.might.index--;
+    //             renderPlayerStats();
+    //         } else {
+    //             handlePlayerGainsCard();
+    //         }
+    //     },
+    // },
     // {
     //     name: "jonah's turn",
     //     type: "event",
@@ -911,28 +911,28 @@ let cards = [
     //         }
     //     },
     // },
-    // {
-    //     name: "say cheese",
-    //     type: "event",
-    //     todo: "If the haunt has not started, you may make a haunt roll.",
-    //     result: "5+: Turn to haunt 33 in the TRAITOR'S TOME. If a hero has the Magic Camera, they are the traitor. Otherwise, you are the traitor. <br><br> 0-4: Draw an Item card. <br><br><br> If the haunt has started, or you chose not to make a haunt roll, draw an Item card.",
-    //     effect: async (player, hauntValue, hauntStarted) => {
-    //         let answer = await getPlayerChoice(
-    //             ["yes", "no"],
-    //             "Do you want to make a haunt roll?"
-    //         );
-    //         if (hauntStarted === true || answer === "no") {
-    //             console.log("Draw an item card"); // UNFINISHED
-    //         } else {
-    //             let roll = await handleDiceRoll(hauntValue);
-    //             if (roll <= 4) {
-    //                 console.log("Draw an item card"); // UNFINISHED
-    //             } else {
-    //                 console.log("Start Haunt #7"); // UNFINISHED
-    //             }
-    //         }
-    //     },
-    // },
+    {
+        name: "say cheese",
+        type: "event",
+        todo: "If the haunt has not started, you may make a haunt roll.",
+        result: "5+: Turn to haunt 33 in the TRAITOR'S TOME. If a hero has the Magic Camera, they are the traitor. Otherwise, you are the traitor. <br><br> 0-4: Draw an Item card. <br><br><br> If the haunt has started, or you chose not to make a haunt roll, draw an Item card.",
+        effect: async (player, hauntValue, hauntStarted) => {
+            let answer = await getPlayerChoice(
+                ["yes", "no"],
+                "Do you want to make a haunt roll?"
+            );
+            if (hauntStarted === true || answer === "no") {
+                handlePlayerGainsCard();
+            } else {
+                let roll = await handleDiceRoll(hauntValue);
+                if (roll <= 4) {
+                    handlePlayerGainsCard();
+                } else {
+                    console.log("Start Haunt #7"); // UNFINISHED
+                }
+            }
+        },
+    },
     // {
     //     name: "secret elevator",
     //     type: "event",
