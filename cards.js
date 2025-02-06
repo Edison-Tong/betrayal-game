@@ -375,7 +375,8 @@ let cards = [
                 "Do you want to make a haunt roll?"
             );
             if (hauntStarted === true || answer === "no") {
-                handleTraitChange("physical", 1, "lose");
+                let roll = await handleDiceRoll(1);
+                handleTraitChange("physical", roll, "lose");
             } else if (true) {
                 let roll = await handleDiceRoll(hauntValue);
                 if (roll <= 4) {
@@ -413,7 +414,7 @@ let cards = [
                     playerStatsInfo.sanity.index++;
                     renderPlayerStats();
                 } else {
-                    console.log("Start Haunt #1"); // UNFINISHED
+                    console.log("Start Haunt #3"); // UNFINISHED
                 }
             }
         },
@@ -599,7 +600,7 @@ let cards = [
             let roll = await handleDiceRoll(player.stats[trait]);
             if (roll <= 4) {
                 let roll = await handleDiceRoll(1);
-                handleTraitChange("mental", roll, "lose");
+                handleTraitChange("physical", roll, "lose");
             } else {
                 let playerStatsInfo =
                     playerInfo[player.id.replace("p", "")].stats;
@@ -639,7 +640,9 @@ let cards = [
         result: "4+: Gain 1 Sanity. <br><br> 2-3 Lose 1 Sanity. <br><br> 0-1: Lose 1 Sanity and 1 Might. <br><br><br> If the Graveyard or Catacombs tiles have been discovered, place your explorer on one of those tiles.",
         effect: async (player) => {
             let roll = await handleDiceRoll(player.stats.sanity);
-
+            console.log(
+                "If the Graveyard or Catacombs tiles have been discovered, place your explorer on one of those tiles."
+            ); //UNFINISHED
             if (roll <= 1) {
                 let playerStatsInfo =
                     playerInfo[player.id.replace("p", "")].stats;
@@ -723,7 +726,7 @@ let cards = [
                 playerStatsInfo.might.index--;
                 renderPlayerStats();
             } else {
-                console.log("draw an item card "); //UNFINISHED MAYBE
+                console.log("draw an item card "); //UNFINISHED
             }
         },
     },
@@ -979,6 +982,7 @@ let cards = [
                 );
                 playerStatsInfo[answer].index++;
                 renderPlayerStats();
+                console.log("Place your explorer on an adjacent tile."); //UNFINISHED
             }
         },
     },
@@ -1041,7 +1045,7 @@ let cards = [
         todo: "Take one General damage. Place your explorer on any Basement or Ground floor tile. If the Conservatory tile has been discovered, you must place your explorer there.",
         result: "",
         effect: async (player, hauntValue, hauntStarted) => {
-            handleTraitChange("physical", 1, "lose");
+            handleTraitChange("general", 1, "lose");
             console.log(
                 "Place your explorer on any Basement or Ground floor tile. If the Conservatory tile has been discovered, you must place your explorer there."
             ); // UNFINISHED
@@ -1095,7 +1099,7 @@ let cards = [
         },
     },
     {
-        name: "The stars ar night",
+        name: "The stars at night",
         type: "event",
         todo: "Choose a trait to roll",
         result: "5+: Gain 1 in the chosen trait. <br><br> 4: Lose 1 in the chosen trait. <br><br> 0-3: Heal the chosen trait.",
