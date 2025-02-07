@@ -19,7 +19,7 @@ let viewCardsBtn = document.querySelector(".view-cards-btn");
 let exitCardsBtn = document.querySelector(".exit-btn");
 let playerCardsDisplay = document.querySelector(".player-cards");
 let eventDisplay = document.querySelector(".event-display");
-let playerCount = 3;
+let playerCount = 2;
 let players = [];
 let activePlayer;
 let playerTurnCounter = 0;
@@ -255,8 +255,7 @@ function positionStartingTiles() {
       usedTiles.push(tile);
     }
   });
-  let initTiles = document.querySelectorAll(".tile.start");
-  initTiles.forEach((tile, i) => {
+  document.querySelectorAll(".tile.start").forEach((tile, i) => {
     tile.style.backgroundImage = `url(./images/${tiles[i].image})`;
     tile.style.gridRow = tiles[i].row;
     tile.style.gridColumn = tiles[i].col;
@@ -377,15 +376,19 @@ async function handlePlayerMovement() {
       direction = "left";
       column -= 1;
     } else if (key === "Enter") {
-      handlePlayerMovesTiles(activePlayer.currentTile.name.replaceAll(" ", ""));
+      direction = "vertical";
+      if (handlePlayerMovesTiles(activePlayer.currentTile.name.replaceAll(" ", "")) === false) {
+        return; // MOVEMENT BETWEEN SECRET STAIRCASE AND HALLWAY HAS A BUG. MAYBE OTHERS
+      }
       column = activePlayer.currentTile.col;
       row = activePlayer.currentTile.row;
     }
   }
-
-  if (!activePlayer.currentTile.doors.some((door) => door === direction)) {
+  if (!activePlayer.currentTile.doors.some((door) => door === direction) && direction !== "vertical") {
     return;
   }
+  console.log(1);
+
   let existingTile = Array.from(displayedFloor.children).find((child) => {
     return (
       child.classList.contains("tile") &&
@@ -393,6 +396,7 @@ async function handlePlayerMovement() {
       parseInt(child.style.gridRow) === row
     );
   });
+  console.log(2);
 
   if (!existingTile) {
     let previousTile = movingToTile;
@@ -402,7 +406,15 @@ async function handlePlayerMovement() {
       movingToTile = previousTile;
       return;
     }
+
+    let newTile = document.createElement("div");
+    newTile.classList.add("tile", movingToTile.name.replaceAll(" ", "-").toLowerCase());
+    newTile.style.backgroundImage = `url(./images/${movingToTile.image})`;
+    newTile.style.gridRow = row;
+    newTile.style.gridColumn = column;
+    movingToTile.element = newTile;
     usedTiles.push(movingToTile);
+
     if (column === 0) {
       handleBoardExpanding("left");
       column = 1;
@@ -417,11 +429,6 @@ async function handlePlayerMovement() {
     if (movingToTile.symbol !== "none") {
       symbolFound = true;
     }
-    let newTile = document.createElement("div");
-    newTile.classList.add("tile", movingToTile.name.replaceAll(" ", "-").toLowerCase());
-    newTile.style.backgroundImage = `url(./images/${movingToTile.image})`;
-    newTile.style.gridRow = row;
-    newTile.style.gridColumn = column;
 
     if (newTile.classList.contains("laundry-chute")) {
       laundryChute = newTile;
@@ -451,11 +458,10 @@ async function handlePlayerMovement() {
         movingToTile = tile;
       }
     });
-    if (!checkDoorAlignment()) {
+    if (!checkDoorAlignment() && direction !== "vertical") {
       return;
     }
   }
-
   activePlayer.movesThisTurn += 1;
   movingToTile.message === "none"
     ? (tileMessageBox.style.display = "none")
@@ -476,6 +482,12 @@ async function handlePlayerMovement() {
 //         handleTraitChange("general", 5, "gain");
 //     }
 // });
+
+document.addEventListener("keydown", () => {
+  if (event.key === "q") {
+    console.log(usedTiles);
+  }
+});
 
 export function handlePlayerGainsCard(tile) {
   if (!tile) {
@@ -596,6 +608,10 @@ export function handlePlayerMovesTiles(tileName, opposite, level) {
   } else {
     moveTo = movementTiles[tileName].opposite;
     floor = movementTiles[tileName].connectingFloor;
+  }
+
+  if (!movementTiles[moveTo].element) {
+    return false;
   }
 
   activePlayer.currentTile = movementTiles[moveTo].data;

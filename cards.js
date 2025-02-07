@@ -489,8 +489,6 @@ let cards = [
 
       if (roll <= 3) {
         handleTraitChange("mental", 2, "lose");
-      } else {
-        console.log("nothing happens"); // UNFINISHED SORTA
       }
     },
   },
@@ -603,6 +601,7 @@ let cards = [
       console.log(
         "If the Graveyard or Catacombs tiles have been discovered, place your explorer on one of those tiles."
       ); //UNFINISHED
+
       if (roll <= 1) {
         let playerStatsInfo = playerInfo[player.id.replace("p", "")].stats;
         playerStatsInfo.sanity.index--;
