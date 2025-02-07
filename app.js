@@ -122,6 +122,9 @@ let endOfTurnTiles = {
 };
 
 let discoverTiles = {
+  armory: {
+    data: tiles[5],
+  },
   chapel: {
     data: tiles[9],
   },
@@ -328,7 +331,7 @@ export function renderPlayerStats(trait) {
   }
 }
 
-function renderPlayerCards() {
+export function renderPlayerCards() {
   Array.from(playerCardsDisplay.children).forEach((child) => {
     if (!child.classList.contains("exit-btn")) {
       child.remove();
@@ -481,7 +484,7 @@ export function handlePlayerGainsCard(tile) {
     let availableCards = [];
     let usedCard;
     cards.forEach((card) => {
-      if (card.type === tile.symbol) {
+      if (card.weapon === true) {
         availableCards.push(card);
       }
     });
