@@ -146,6 +146,9 @@ let discoverTiles = {
   panicRoom: {
     data: tiles[34],
   },
+  vault: {
+    data: tiles[45],
+  },
 };
 
 // document.addEventListener("keydown", handlePlayerMovement);
@@ -294,13 +297,11 @@ function positionPlayers(time, floor, rowCol) {
     activePlayer = players[playerTurnCounter];
     return;
   }
-  console.log(activePlayer.marker);
   activePlayer.marker.remove();
   activePlayer.currentFloor = floor;
   activePlayer.marker.style.gridRow = rowCol[0];
   activePlayer.marker.style.gridColumn = rowCol[1];
   displayedFloor.append(activePlayer.marker);
-  console.log(activePlayer.marker);
 }
 
 export function renderPlayerStats(trait) {
@@ -484,7 +485,7 @@ export function handlePlayerGainsCard(tile) {
     let availableCards = [];
     let usedCard;
     cards.forEach((card) => {
-      if (card.weapon === true) {
+      if (card.type === tile.symbol) {
         availableCards.push(card);
       }
     });

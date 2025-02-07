@@ -1,4 +1,4 @@
-import { renderPlayerCards } from "./app.js";
+import { renderPlayerCards, handlePlayerGainsCard } from "./app.js";
 import cards from "./cards.js";
 
 let tiles = [
@@ -52,33 +52,33 @@ let tiles = [
     col: 2,
     message: `Leads to the Ground Floor Staircase`,
   },
-  {
-    name: "armory",
-    type: "discover",
-    floors: { basement: true, ground: true, upper: false },
-    doors: ["top", "right"],
-    image: "Armory.png",
-    symbol: "none",
-    message: `When you discover this tile,
-              reveal cards from the top of the item deck until you reveal a weapon. <br>
-                  Take it and bury the rest`,
-    effect: (playerInfo, activePlayer) => {
-      let availableCards = [];
-      let usedCard;
-      cards.forEach((card) => {
-        if (card.weapon === true) {
-          availableCards.push(card);
-        }
-      });
-      if (!availableCards[0]) {
-      } else {
-        usedCard = availableCards.splice(Math.floor(Math.random() * availableCards.length), 1)[0];
-        activePlayer.cards.push(usedCard);
-        cards.splice(cards.indexOf(usedCard), 1);
-        renderPlayerCards();
-      }
-    },
-  },
+  //   {
+  //     name: "armory",
+  //     type: "discover",
+  //     floors: { basement: true, ground: true, upper: false },
+  //     doors: ["top", "right"],
+  //     image: "Armory.png",
+  //     symbol: "none",
+  //     message: `When you discover this tile,
+  //               reveal cards from the top of the item deck until you reveal a weapon. <br>
+  //                   Take it and bury the rest`,
+  //     effect: (playerInfo, activePlayer) => {
+  //       let availableCards = [];
+  //       let usedCard;
+  //       cards.forEach((card) => {
+  //         if (card.weapon === true) {
+  //           availableCards.push(card);
+  //         }
+  //       });
+  //       if (!availableCards[0]) {
+  //       } else {
+  //         usedCard = availableCards.splice(Math.floor(Math.random() * availableCards.length), 1)[0];
+  //         activePlayer.cards.push(usedCard);
+  //         cards.splice(cards.indexOf(usedCard), 1);
+  //         renderPlayerCards();
+  //       }
+  //     },
+  //   },
   //   {
   //     name: "ballroom",
   //     type: "normal",
@@ -288,17 +288,17 @@ let tiles = [
   //       activePlayer.stats.might = playerStatsInfo.might.slider[playerStatsInfo.might.index];
   //     },
   //   },
-  //   {
-  //     name: "laundry Chute",
-  //     type: "normal",
-  //     floors: { basement: false, ground: true, upper: false },
-  //     doors: ["top"],
-  //     image: "Laundry_Chute.png",
-  //     symbol: "none",
-  //     message: `Leads to the Basement Landing. <br>
-  //                 If you end your turn on this tile,
-  //                 place your explorer on the Basement Landing`,
-  //   },
+  {
+    name: "laundry Chute",
+    type: "normal",
+    floors: { basement: false, ground: true, upper: false },
+    doors: ["top"],
+    image: "Laundry_Chute.png",
+    symbol: "none",
+    message: `Leads to the Basement Landing. <br>
+                  If you end your turn on this tile,
+                  place your explorer on the Basement Landing`,
+  },
   //   {
   //     name: "library",
   //     type: "discover",
@@ -468,15 +468,18 @@ let tiles = [
   //     symbol: "event",
   //     message: "none",
   //   },
-  //   {
-  //     name: "vault",
-  //     type: "normal",
-  //     floors: { basement: true, ground: false, upper: false },
-  //     doors: ["top"],
-  //     image: "Vault.png",
-  //     symbol: "item",
-  //     message: "none",
-  //   },
+  {
+    name: "vault",
+    type: "discover",
+    floors: { basement: true, ground: false, upper: false },
+    doors: ["top"],
+    image: "Vault.png",
+    symbol: "item",
+    message: "none",
+    effect: () => {
+      handlePlayerGainsCard();
+    },
+  },
   //   {
   //     name: "winter Bedroom",
   //     type: "normal",
