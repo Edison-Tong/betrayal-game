@@ -263,9 +263,8 @@ button.hidden {
   height: auto;
   min-width: 200px;
   min-height: 200px;
-  background-color: rgba(244, 0, 0, 0.7); /* Slightly see-through background */
-  z-index: 9999;
-  padding-top: 20px;
+  background-color: rgba(148, 148, 148, 0.7); /* Slightly see-through background */
+  z-index: 99999;
   right: 10px;
 }
 .player-cards.hidden {
@@ -293,13 +292,19 @@ button.hidden {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding-top: 20px;
-  margin: 20px;
-  background-color: grey;
-  height: 400px;
-  width: 150px;
+  margin: 5px;
+  height: 450px;
+  width: 200px;
   font-weight: bold;
   font-size: 30px;
+}
+
+.card.omen {
+  background-color: green;
+}
+
+.card.item {
+  background-color: orangered;
 }
 
 .card-ability {
