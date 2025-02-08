@@ -221,8 +221,6 @@ let cards = [
   //   todo: "Make a Might roll",
   //   result: "4+: Nothing happens. <br><br> 2-3: Take 1 Physical damage. <br><br> 0-1: Take 3 Physical damage.",
   //   effect: async (player) => {
-  //     let test = await handleDiceRoll(player.stats.might);
-
   //     let roll = await handleDiceRoll(player.stats.might);
   //     if (roll <= 1) {
   //       handleTraitChange("physical", 3, "lose");
@@ -976,20 +974,20 @@ let cards = [
   //     }
   //   },
   // },
-  {
-    name: "the flowering",
-    type: "event",
-    todo: "Take one General damage. Place your explorer on any Basement or Ground floor tile. If the Conservatory tile has been discovered, you must place your explorer there.",
-    result: "",
-    effect: async (player, hauntValue, hauntStarted) => {
-      handleTraitChange("general", 1, "lose");
-      console.log(
-        "Place your explorer on any Basement or Ground floor tile. If the Conservatory tile has been discovered, you must place your explorer there."
-      ); // UNFINISHED
-      await makeTilesButtons(["basement", "ground"]);
-      removeTileButton();
-    },
-  },
+  // {
+  //   name: "the flowering",
+  //   type: "event",
+  //   todo: "Take one General damage. Place your explorer on any Basement or Ground floor tile. If the Conservatory tile has been discovered, you must place your explorer there.",
+  //   result: "",
+  //   effect: async (player, hauntValue, hauntStarted) => {
+  //     handleTraitChange("general", 1, "lose");
+  //     console.log(
+  //       "Place your explorer on any Basement or Ground floor tile. If the Conservatory tile has been discovered, you must place your explorer there."
+  //     ); // UNFINISHED
+  //     await makeTilesButtons(["basement", "ground"]);
+  //     removeTileButton();
+  //   },
+  // },
   // {
   //   name: "the house is hungry",
   //   type: "event",
@@ -1012,32 +1010,32 @@ let cards = [
   //     }
   //   },
   // },
-  {
-    name: "the oldest hosue",
-    type: "event",
-    todo: "Make a Speed or Might roll",
-    result:
-      "5+: Place your explorer on any tile. <br><br> 3-4: Place your explorer on any Ground Floor tile. Take 1 General damage. <br><br> 0-2: Place your explorer on any Basement tile. Take 1 Mental damage.",
-    effect: async (player, hauntValue, hauntStarted) => {
-      let answer = await getPlayerChoice(["speed", "might"], "Do you want to roll with Speed or Might?");
-      let roll = await handleDiceRoll(player.stats[answer]);
-      if (roll <= 2) {
-        handleTraitChange("mental", 1, "lose");
-        console.log("Place your explorer on any Basement tile");
-        await makeTilesButtons(["basement"]);
-        removeTileButton();
-      } else if (roll <= 4) {
-        handleTraitChange("general", 1, "lose");
-        console.log("Place your explorer on any Ground Floor tile");
-        await makeTilesButtons(["ground"]);
-        removeTileButton();
-      } else {
-        console.log("Place your explorer on any tile");
-        await makeTilesButtons(["basement", "ground", "upper"]);
-        removeTileButton();
-      }
-    },
-  },
+  // {
+  //   name: "the oldest hosue",
+  //   type: "event",
+  //   todo: "Make a Speed or Might roll",
+  //   result:
+  //     "5+: Place your explorer on any tile. <br><br> 3-4: Place your explorer on any Ground Floor tile. Take 1 General damage. <br><br> 0-2: Place your explorer on any Basement tile. Take 1 Mental damage.",
+  //   effect: async (player, hauntValue, hauntStarted) => {
+  //     let answer = await getPlayerChoice(["speed", "might"], "Do you want to roll with Speed or Might?");
+  //     let roll = await handleDiceRoll(player.stats[answer]);
+  //     if (roll <= 2) {
+  //       handleTraitChange("mental", 1, "lose");
+  //       console.log("Place your explorer on any Basement tile");
+  //       await makeTilesButtons(["basement"]);
+  //       removeTileButton();
+  //     } else if (roll <= 4) {
+  //       handleTraitChange("general", 1, "lose");
+  //       console.log("Place your explorer on any Ground Floor tile");
+  //       await makeTilesButtons(["ground"]);
+  //       removeTileButton();
+  //     } else {
+  //       console.log("Place your explorer on any tile");
+  //       await makeTilesButtons(["basement", "ground", "upper"]);
+  //       removeTileButton();
+  //     }
+  //   },
+  // },
   // {
   //   name: "The stars at night",
   //   type: "event",

@@ -32,7 +32,9 @@ let usedTiles = [];
 let direction;
 let tileMessageBox = document.querySelector(".tile-message");
 let symbolFound;
-let canEndTurn = true;
+let diceRolling = false;
+let traitChanging = false;
+let tileChoosing = false;
 
 export let movementTiles = {
   groundFloorStaircase: {
@@ -616,7 +618,7 @@ export function handlePlayerMovesTiles(tileName, opposite, level) {
 }
 
 async function handleEndOfTurn() {
-  if (canEndTurn) {
+  if (!diceRolling && !traitChanging && !tileChoosing) {
     endTurnBtn.removeEventListener("click", handleEndOfTurn);
     await handleEndOfTurnEvents();
     activePlayer.movesThisTurn = 0;
@@ -650,7 +652,7 @@ function handleEndOfTurnEvents() {
 }
 
 export async function handleDiceRoll(diceAmount) {
-  canEndTurn = false;
+  diceRolling = true;
   rollBtn.style.display = "inline";
   totalDisplay.innerHTML = "Rolling...";
 
@@ -689,13 +691,13 @@ export async function handleDiceRoll(diceAmount) {
       { once: true }
     ); // Ensure the event fires only once
   });
-  canEndTurn = true;
+  diceRolling = false;
 
   return total;
 }
 
 export function handleTraitChange(type, amount, gainOrLose) {
-  canEndTurn = false;
+  traitChanging = true;
   return new Promise((resolve, reject) => {
     try {
       let playerStatsInfo = playerInfo[activePlayer.id.replace("p", "")].stats;
@@ -760,7 +762,7 @@ export function handleTraitChange(type, amount, gainOrLose) {
           });
           resolve({ change });
         }
-        canEndTurn = true;
+        traitChanging = false;
       }
     } catch (error) {
       reject(error); // In case of an error
@@ -790,6 +792,7 @@ export function getPlayerChoice(options, message) {
 
 // Modify makeTilesButtons to store the handler on the tile object
 export function makeTilesButtons(floors) {
+  tileChoosing = true;
   return new Promise((resolve, reject) => {
     usedTiles.forEach((tile) => {
       for (let i = 0; i < floors.length; i++) {
@@ -827,6 +830,7 @@ export function removeTileButton() {
       delete tile.clickHandler;
     }
   });
+  tileChoosing = false;
 }
 
 function displayEventInfo(eventInfo) {
