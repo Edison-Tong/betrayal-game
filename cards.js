@@ -5,6 +5,8 @@ import {
   renderPlayerStats,
   handlePlayerMovesTiles,
   handlePlayerGainsCard,
+  makeTilesButtons,
+  removeTileButton,
 } from "./app.js";
 import playerInfo from "./playerInfo.js";
 
@@ -439,29 +441,29 @@ let cards = [
   //     }
   //   },
   // },
-  {
-    name: "burning figure",
-    type: "event",
-    todo: "Make a Sanity roll",
-    result:
-      "4+: Gain 1 Sanity. <br><br> 2-3: Place your explorer on the Entrance Hall. <br><br> 0-1: Take 1 die of Physical damage and 1 die of Mental damage.",
-    effect: async (player) => {
-      let roll = await handleDiceRoll(player.stats.sanity);
+  // {
+  //   name: "burning figure",
+  //   type: "event",
+  //   todo: "Make a Sanity roll",
+  //   result:
+  //     "4+: Gain 1 Sanity. <br><br> 2-3: Place your explorer on the Entrance Hall. <br><br> 0-1: Take 1 die of Physical damage and 1 die of Mental damage.",
+  //   effect: async (player) => {
+  //     let roll = await handleDiceRoll(player.stats.sanity);
 
-      if (roll <= 1) {
-        let roll = await handleDiceRoll(1);
-        await handleTraitChange("physical", roll, "lose");
-        roll = await handleDiceRoll(1);
-        await handleTraitChange("mental", roll, "lose");
-      } else if (roll <= 3) {
-        handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "entranceHall", "ground");
-      } else {
-        let playerStatsInfo = playerInfo[player.id.replace("p", "")].stats;
-        playerStatsInfo.sanity.index++;
-        renderPlayerStats();
-      }
-    },
-  },
+  //     if (roll <= 1) {
+  //       let roll = await handleDiceRoll(1);
+  //       await handleTraitChange("physical", roll, "lose");
+  //       roll = await handleDiceRoll(1);
+  //       await handleTraitChange("mental", roll, "lose");
+  //     } else if (roll <= 3) {
+  //       handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "entranceHall", "ground");
+  //     } else {
+  //       let playerStatsInfo = playerInfo[player.id.replace("p", "")].stats;
+  //       playerStatsInfo.sanity.index++;
+  //       renderPlayerStats();
+  //     }
+  //   },
+  // },
   // {
   //   name: "cassette player",
   //   type: "event",
@@ -492,24 +494,28 @@ let cards = [
   //     }
   //   },
   // },
-  // {
-  //   name: "creaking door",
-  //   type: "event",
-  //   todo: "Make a Knowledge roll",
-  //   result:
-  //     "6+: Place your explorer on any Upper or Ground Floor tile. <br><br> 4-5: Place your explorer on any Ground Floor tile. <br><br> 0-3: Place your explorer on the Basement Landing tile.",
-  //   effect: async (player) => {
-  //     let roll = await handleDiceRoll(player.stats.knowledge);
-  //     if (roll <= 3) {
-  //       console.log("Place explorer on the basement landing tile");
-  //       handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "basementLanding", "basement");
-  //     } else if (roll <= 5) {
-  //       console.log("Place explorer on any Ground Floor tile"); // UNFINISHED
-  //     } else {
-  //       console.log("Place explorer on any Upper or Ground Floor tile"); // UNFINISHED
-  //     }
-  //   },
-  // },
+  {
+    name: "creaking door",
+    type: "event",
+    todo: "Make a Knowledge roll",
+    result:
+      "6+: Place your explorer on any Upper or Ground Floor tile. <br><br> 4-5: Place your explorer on any Ground Floor tile. <br><br> 0-3: Place your explorer on the Basement Landing tile.",
+    effect: async (player) => {
+      let roll = await handleDiceRoll(player.stats.knowledge);
+      if (roll <= 3) {
+        console.log("Place explorer on the basement landing tile");
+        handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "basementLanding", "basement");
+      } else if (roll <= 5) {
+        console.log("Place explorer on any Ground Floor tile");
+        await makeTilesButtons(["ground"]);
+        removeTileButton();
+      } else {
+        console.log("Place explorer on any Upper or Ground Floor tile");
+        await makeTilesButtons(["ground", "upper"]);
+        removeTileButton();
+      }
+    },
+  },
   // {
   //   name: "dark and stormy night",
   //   type: "event",
@@ -926,62 +932,64 @@ let cards = [
   //     }
   //   },
   // },
-  {
-    name: "technical difficulties",
-    type: "event",
-    todo: "Place your explorer on the Landing of the Floor below. If you are already in the Basement, place your explorer on the Upper Landing instead and take 1 Mental damage.",
-    result: "",
-    effect: async (player, hauntValue, hauntStarted) => {
-      let currentFloor = player.currentFloor;
-
-      // let roll = await handleDiceRoll(player.stats.knowledge); // PLAYER WILL NOT DSPALY CORRECTLY UNLESS THERE IS AN DELAY....
-      setTimeout(() => {
-        console.log("wait");
-        if (currentFloor === "upper") {
-          console.log("place explorer on entrance hall");
-          handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "entranceHall", "ground");
-        } else if (currentFloor === "ground") {
-          console.log("place explorer on basement Landing");
-          handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "basementLanding", "basement");
-        } else if (currentFloor === "basement") {
-          console.log("place explorer on Upper Landing");
-          handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "upperLanding", "upper");
-          handleTraitChange("mental", 1, "lose");
-        }
-      }, 0);
-    },
-  },
-  {
-    name: "the deepest closet",
-    type: "event",
-    todo: "Make a Speed roll",
-    result:
-      " 4+: Draw an Item card. <br><br> 1-3: Take 1 Mental damage. <br><br> 0: Take one die of Physical damage. place your explorer on the Basement Landing.",
-    effect: async (player, hauntValue, hauntStarted) => {
-      let roll = await handleDiceRoll(player.stats.speed);
-      if (roll === 0) {
-        handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "basementLanding", "basement");
-        let roll = await handleDiceRoll(1);
-        handleTraitChange("physical", roll, "lose");
-      } else if (roll <= 3) {
-        handleTraitChange("mental", 1, "lose");
-      } else {
-        handlePlayerGainsCard();
-      }
-    },
-  },
   // {
-  //   name: "the flowering",
+  //   name: "technical difficulties",
   //   type: "event",
-  //   todo: "Take one General damage. Place your explorer on any Basement or Ground floor tile. If the Conservatory tile has been discovered, you must place your explorer there.",
+  //   todo: "Place your explorer on the Landing of the Floor below. If you are already in the Basement, place your explorer on the Upper Landing instead and take 1 Mental damage.",
   //   result: "",
   //   effect: async (player, hauntValue, hauntStarted) => {
-  //     handleTraitChange("general", 1, "lose");
-  //     console.log(
-  //       "Place your explorer on any Basement or Ground floor tile. If the Conservatory tile has been discovered, you must place your explorer there."
-  //     ); // UNFINISHED
+  //     let currentFloor = player.currentFloor;
+
+  //     // let roll = await handleDiceRoll(player.stats.knowledge); // PLAYER WILL NOT DSPALY CORRECTLY UNLESS THERE IS AN DELAY....
+  //     setTimeout(() => {
+  //       console.log("wait");
+  //       if (currentFloor === "upper") {
+  //         console.log("place explorer on entrance hall");
+  //         handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "entranceHall", "ground");
+  //       } else if (currentFloor === "ground") {
+  //         console.log("place explorer on basement Landing");
+  //         handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "basementLanding", "basement");
+  //       } else if (currentFloor === "basement") {
+  //         console.log("place explorer on Upper Landing");
+  //         handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "upperLanding", "upper");
+  //         handleTraitChange("mental", 1, "lose");
+  //       }
+  //     }, 0);
   //   },
   // },
+  // {
+  //   name: "the deepest closet",
+  //   type: "event",
+  //   todo: "Make a Speed roll",
+  //   result:
+  //     " 4+: Draw an Item card. <br><br> 1-3: Take 1 Mental damage. <br><br> 0: Take one die of Physical damage. place your explorer on the Basement Landing.",
+  //   effect: async (player, hauntValue, hauntStarted) => {
+  //     let roll = await handleDiceRoll(player.stats.speed);
+  //     if (roll === 0) {
+  //       handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "basementLanding", "basement");
+  //       let roll = await handleDiceRoll(1);
+  //       handleTraitChange("physical", roll, "lose");
+  //     } else if (roll <= 3) {
+  //       handleTraitChange("mental", 1, "lose");
+  //     } else {
+  //       handlePlayerGainsCard();
+  //     }
+  //   },
+  // },
+  {
+    name: "the flowering",
+    type: "event",
+    todo: "Take one General damage. Place your explorer on any Basement or Ground floor tile. If the Conservatory tile has been discovered, you must place your explorer there.",
+    result: "",
+    effect: async (player, hauntValue, hauntStarted) => {
+      handleTraitChange("general", 1, "lose");
+      console.log(
+        "Place your explorer on any Basement or Ground floor tile. If the Conservatory tile has been discovered, you must place your explorer there."
+      ); // UNFINISHED
+      await makeTilesButtons(["basement", "ground"]);
+      removeTileButton();
+    },
+  },
   // {
   //   name: "the house is hungry",
   //   type: "event",
@@ -1004,26 +1012,32 @@ let cards = [
   //     }
   //   },
   // },
-  // {
-  //   name: "the oldest hosue",
-  //   type: "event",
-  //   todo: "Make a Speed or Might roll",
-  //   result:
-  //     "5+: Place your explorer on any tile. <br><br> 3-4: Place your explorer on any Ground Floor tile. Take 1 General damage. <br><br> 0-2: Place your explorer on any Basement tile. Take 1 Mental damage.",
-  //   effect: async (player, hauntValue, hauntStarted) => {
-  //     let answer = await getPlayerChoice(["speed", "might"], "Do you want to roll with Speed or Might?");
-  //     let roll = await handleDiceRoll(player.stats[answer]);
-  //     if (roll <= 2) {
-  //       handleTraitChange("mental", 1, "lose");
-  //       console.log("Place your explorer on any Basement tile"); // UNFINISHED
-  //     } else if (roll <= 4) {
-  //       handleTraitChange("general", 1, "lose");
-  //       console.log("Place your explorer on any Ground Floor tile"); // UNFINISHED
-  //     } else {
-  //       console.log("Place your explorer on any tile"); // UNFINISHED
-  //     }
-  //   },
-  // },
+  {
+    name: "the oldest hosue",
+    type: "event",
+    todo: "Make a Speed or Might roll",
+    result:
+      "5+: Place your explorer on any tile. <br><br> 3-4: Place your explorer on any Ground Floor tile. Take 1 General damage. <br><br> 0-2: Place your explorer on any Basement tile. Take 1 Mental damage.",
+    effect: async (player, hauntValue, hauntStarted) => {
+      let answer = await getPlayerChoice(["speed", "might"], "Do you want to roll with Speed or Might?");
+      let roll = await handleDiceRoll(player.stats[answer]);
+      if (roll <= 2) {
+        handleTraitChange("mental", 1, "lose");
+        console.log("Place your explorer on any Basement tile");
+        await makeTilesButtons(["basement"]);
+        removeTileButton();
+      } else if (roll <= 4) {
+        handleTraitChange("general", 1, "lose");
+        console.log("Place your explorer on any Ground Floor tile");
+        await makeTilesButtons(["ground"]);
+        removeTileButton();
+      } else {
+        console.log("Place your explorer on any tile");
+        await makeTilesButtons(["basement", "ground", "upper"]);
+        removeTileButton();
+      }
+    },
+  },
   // {
   //   name: "The stars at night",
   //   type: "event",

@@ -248,23 +248,6 @@ function switchBoards(targetFloor) {
   displayedFloor = document.querySelector(".board.active");
 }
 
-document.addEventListener("keydown", () => {
-  if (event.key === "q") {
-    usedTiles.forEach((tile) => {
-      tile.element.classList.add("tile-button");
-      tile.element.addEventListener("click", () => {
-        let movingToTile = event.target.classList[1].replace(/-([a-z])/g, (match, letter) => letter.toUpperCase());
-
-        handlePlayerMovesTiles(
-          activePlayer.currentTile.name.replaceAll(" ", ""),
-          movingToTile,
-          event.target.parentElement.classList[1]
-        );
-      });
-    });
-  }
-});
-
 function positionStartingTiles() {
   tiles.forEach((tile) => {
     if (tile.type === "starting") {
@@ -802,6 +785,47 @@ export function getPlayerChoice(options, message) {
     });
 
     document.body.appendChild(modal);
+  });
+}
+
+// Modify makeTilesButtons to store the handler on the tile object
+export function makeTilesButtons(floors) {
+  return new Promise((resolve, reject) => {
+    usedTiles.forEach((tile) => {
+      for (let i = 0; i < floors.length; i++) {
+        if (tile.element.parentElement.classList[1] === floors[i]) {
+          tile.element.classList.add("tile-button");
+
+          // Define the click handler and store it on the tile for later removal
+          const handler = (event) => {
+            // Use the event parameter explicitly rather than relying on a global event variable
+            let movingToTile = event.target.classList[1].replace(/-([a-z])/g, (match, letter) => letter.toUpperCase());
+            handlePlayerMovesTiles(
+              activePlayer.currentTile.name.replaceAll(" ", ""),
+              movingToTile,
+              event.target.parentElement.classList[1]
+            );
+            // Resolve the promise with the computed value
+            resolve(movingToTile);
+          };
+          // Save the handler reference on the tile object
+          tile.clickHandler = handler;
+          tile.element.addEventListener("click", handler);
+        }
+      }
+    });
+  });
+}
+
+export function removeTileButton() {
+  usedTiles.forEach((tile) => {
+    tile.element.classList.remove("tile-button");
+    // Only attempt to remove if the handler exists
+    if (tile.clickHandler) {
+      tile.element.removeEventListener("click", tile.clickHandler);
+      // Optionally, delete the property if no longer needed
+      delete tile.clickHandler;
+    }
   });
 }
 
