@@ -7,6 +7,7 @@ import {
   handlePlayerGainsCard,
   makeTilesButtons,
   removeTileButton,
+  usedTiles,
 } from "./app.js";
 import playerInfo from "./playerInfo.js";
 
@@ -226,8 +227,6 @@ let cards = [
   //       handleTraitChange("physical", 3, "lose");
   //     } else if (roll <= 3) {
   //       handleTraitChange("physical", 1, "lose");
-  //     } else if (roll >= 4) {
-  //       console.log("nothing");
   //     }
   //   },
   // },
@@ -242,7 +241,8 @@ let cards = [
   //     if (roll <= 3) {
   //       handleTraitChange("mental", 1, "lose");
   //     } else {
-  //       console.log("Place your explorer on any tile in your region"); //UNFINISHED
+  //       await makeTilesButtons([player.currentFloor]);
+  //       removeTileButton();
   //     }
   //   },
   // },
@@ -492,28 +492,25 @@ let cards = [
   //     }
   //   },
   // },
-  {
-    name: "creaking door",
-    type: "event",
-    todo: "Make a Knowledge roll",
-    result:
-      "6+: Place your explorer on any Upper or Ground Floor tile. <br><br> 4-5: Place your explorer on any Ground Floor tile. <br><br> 0-3: Place your explorer on the Basement Landing tile.",
-    effect: async (player) => {
-      let roll = await handleDiceRoll(player.stats.knowledge);
-      if (roll <= 3) {
-        console.log("Place explorer on the basement landing tile");
-        handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "basementLanding", "basement");
-      } else if (roll <= 5) {
-        console.log("Place explorer on any Ground Floor tile");
-        await makeTilesButtons(["ground"]);
-        removeTileButton();
-      } else {
-        console.log("Place explorer on any Upper or Ground Floor tile");
-        await makeTilesButtons(["ground", "upper"]);
-        removeTileButton();
-      }
-    },
-  },
+  // {
+  //   name: "creaking door",
+  //   type: "event",
+  //   todo: "Make a Knowledge roll",
+  //   result:
+  //     "6+: Place your explorer on any Upper or Ground Floor tile. <br><br> 4-5: Place your explorer on any Ground Floor tile. <br><br> 0-3: Place your explorer on the Basement Landing tile.",
+  //   effect: async (player) => {
+  //     let roll = await handleDiceRoll(player.stats.knowledge);
+  //     if (roll <= 3) {
+  //       handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "basementLanding", "basement");
+  //     } else if (roll <= 5) {
+  //       await makeTilesButtons(["ground"]);
+  //       removeTileButton();
+  //     } else {
+  //       await makeTilesButtons(["ground", "upper"]);
+  //       removeTileButton();
+  //     }
+  //   },
+  // },
   // {
   //   name: "dark and stormy night",
   //   type: "event",
@@ -601,10 +598,31 @@ let cards = [
   //   result:
   //     "4+: Gain 1 Sanity. <br><br> 2-3 Lose 1 Sanity. <br><br> 0-1: Lose 1 Sanity and 1 Might. <br><br><br> If the Graveyard or Catacombs tiles have been discovered, place your explorer on one of those tiles.",
   //   effect: async (player) => {
+  //     let choices = usedTiles
+  //       .filter((tile) => tile.name === "catacombs" || tile.name === "graveyard")
+  //       .map((tile) => ({
+  //         name: tile.name,
+  //         floor: tile.element.parentElement.classList[1],
+  //       }));
+
+  //     if (choices.length > 1) {
+  //       let choiceName = await getPlayerChoice(
+  //         choices.map((c) => c.name),
+  //         "Would you like to go to the Graveyard or the Catacombs?"
+  //       );
+  //       let chosenTile = choices.find((c) => c.name === choiceName);
+
+  //       setTimeout(() => {
+  //         handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), chosenTile.name, chosenTile.floor);
+  //       }, 0);
+  //     } else if (choices.length === 1) {
+  //       let chosenTile = choices[0];
+  //       setTimeout(() => {
+  //         handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), chosenTile.name, chosenTile.floor);
+  //       }, 0);
+  //     }
+
   //     let roll = await handleDiceRoll(player.stats.sanity);
-  //     console.log(
-  //       "If the Graveyard or Catacombs tiles have been discovered, place your explorer on one of those tiles."
-  //     ); //UNFINISHED
 
   //     if (roll <= 1) {
   //       let playerStatsInfo = playerInfo[player.id.replace("p", "")].stats;
@@ -668,8 +686,6 @@ let cards = [
   //     if (roll <= 3) {
   //       let roll = await handleDiceRoll(1);
   //       handleTraitChange("mental", roll, "lose");
-  //     } else {
-  //       console.log("Nothing happens"); //UNFINISHED MAYBE
   //     }
   //   },
   // },
@@ -869,7 +885,10 @@ let cards = [
   //   effect: async (player, hauntValue, hauntStarted) => {
   //     let answer = await getPlayerChoice(["yes", "no"], "Do you want to crawl inside?");
   //     if (answer === "yes") {
-  //       console.log("place yourself on any tile in a different region"); // UNFINISHED
+  //       let floors = ["basement", "ground", "upper"];
+  //       floors.splice(floors.indexOf(player.currentFloor), 1);
+  //       await makeTilesButtons(floors);
+  //       removeTileButton();
   //     }
   //   },
   // },
@@ -937,18 +956,13 @@ let cards = [
   //   result: "",
   //   effect: async (player, hauntValue, hauntStarted) => {
   //     let currentFloor = player.currentFloor;
-
   //     // let roll = await handleDiceRoll(player.stats.knowledge); // PLAYER WILL NOT DSPALY CORRECTLY UNLESS THERE IS AN DELAY....
   //     setTimeout(() => {
-  //       console.log("wait");
   //       if (currentFloor === "upper") {
-  //         console.log("place explorer on entrance hall");
   //         handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "entranceHall", "ground");
   //       } else if (currentFloor === "ground") {
-  //         console.log("place explorer on basement Landing");
   //         handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "basementLanding", "basement");
   //       } else if (currentFloor === "basement") {
-  //         console.log("place explorer on Upper Landing");
   //         handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "upperLanding", "upper");
   //         handleTraitChange("mental", 1, "lose");
   //       }
@@ -981,9 +995,13 @@ let cards = [
   //   result: "",
   //   effect: async (player, hauntValue, hauntStarted) => {
   //     handleTraitChange("general", 1, "lose");
-  //     console.log(
-  //       "Place your explorer on any Basement or Ground floor tile. If the Conservatory tile has been discovered, you must place your explorer there."
-  //     ); // UNFINISHED
+
+  //     let conservatory = usedTiles.filter((tile) => tile.name === "conservatory");
+  //     if (conservatory) {
+  //       setTimeout(() => {
+  //         handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), conservatory[0].name, "ground");
+  //       });
+  //     }
   //     await makeTilesButtons(["basement", "ground"]);
   //     removeTileButton();
   //   },
@@ -1021,16 +1039,13 @@ let cards = [
   //     let roll = await handleDiceRoll(player.stats[answer]);
   //     if (roll <= 2) {
   //       handleTraitChange("mental", 1, "lose");
-  //       console.log("Place your explorer on any Basement tile");
   //       await makeTilesButtons(["basement"]);
   //       removeTileButton();
   //     } else if (roll <= 4) {
   //       handleTraitChange("general", 1, "lose");
-  //       console.log("Place your explorer on any Ground Floor tile");
   //       await makeTilesButtons(["ground"]);
   //       removeTileButton();
   //     } else {
-  //       console.log("Place your explorer on any tile");
   //       await makeTilesButtons(["basement", "ground", "upper"]);
   //       removeTileButton();
   //     }

@@ -28,7 +28,7 @@ let laundryChute;
 let secretStaircase;
 let isRotating = false;
 let movingToTile;
-let usedTiles = [];
+export let usedTiles = [];
 let direction;
 let tileMessageBox = document.querySelector(".tile-message");
 let symbolFound;
@@ -605,11 +605,14 @@ export function handlePlayerMovesTiles(tileName, opposite, level) {
   let row;
   let column;
   let newCurrentTile;
+
   usedTiles.forEach((tile) => {
     if (tile.name.replaceAll(" ", "") === opposite) {
+      console.log(tile.name);
       row = tile.element.style.gridRow;
       column = tile.element.style.gridColumn;
       newCurrentTile = tile;
+      console.log(row, column);
     }
   });
   activePlayer.currentTile = newCurrentTile;
