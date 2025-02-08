@@ -248,6 +248,23 @@ function switchBoards(targetFloor) {
   displayedFloor = document.querySelector(".board.active");
 }
 
+document.addEventListener("keydown", () => {
+  if (event.key === "q") {
+    usedTiles.forEach((tile) => {
+      tile.element.classList.add("tile-button");
+      tile.element.addEventListener("click", () => {
+        let movingToTile = event.target.classList[1].replace(/-([a-z])/g, (match, letter) => letter.toUpperCase());
+
+        handlePlayerMovesTiles(
+          activePlayer.currentTile.name.replaceAll(" ", ""),
+          movingToTile,
+          event.target.parentElement.classList[1]
+        );
+      });
+    });
+  }
+});
+
 function positionStartingTiles() {
   tiles.forEach((tile) => {
     if (tile.type === "starting") {
@@ -259,6 +276,7 @@ function positionStartingTiles() {
     tile.style.backgroundImage = `url(./images/${tiles[i].image})`;
     tile.style.gridRow = tiles[i].row;
     tile.style.gridColumn = tiles[i].col;
+    usedTiles[i].element = tile;
   });
 }
 
@@ -377,8 +395,15 @@ async function handlePlayerMovement() {
       column -= 1;
     } else if (key === "Enter") {
       direction = "vertical";
-      if (handlePlayerMovesTiles(activePlayer.currentTile.name.replaceAll(" ", "")) === false) {
-        return; // MOVEMENT BETWEEN SECRET STAIRCASE AND HALLWAY HAS A BUG. MAYBE OTHERS
+      let moveToTile = activePlayer.currentTile.name.replaceAll(" ", "");
+      if (
+        handlePlayerMovesTiles(
+          moveToTile,
+          movementTiles[moveToTile].opposite,
+          movementTiles[moveToTile].connectingFloor
+        ) === false
+      ) {
+        return;
       }
       column = activePlayer.currentTile.col;
       row = activePlayer.currentTile.row;
@@ -387,7 +412,6 @@ async function handlePlayerMovement() {
   if (!activePlayer.currentTile.doors.some((door) => door === direction) && direction !== "vertical") {
     return;
   }
-  console.log(1);
 
   let existingTile = Array.from(displayedFloor.children).find((child) => {
     return (
@@ -396,7 +420,6 @@ async function handlePlayerMovement() {
       parseInt(child.style.gridRow) === row
     );
   });
-  console.log(2);
 
   if (!existingTile) {
     let previousTile = movingToTile;
@@ -482,12 +505,6 @@ async function handlePlayerMovement() {
 //         handleTraitChange("general", 5, "gain");
 //     }
 // });
-
-document.addEventListener("keydown", () => {
-  if (event.key === "q") {
-    console.log(usedTiles);
-  }
-});
 
 export function handlePlayerGainsCard(tile) {
   if (!tile) {
@@ -600,27 +617,19 @@ function checkDoorAlignment() {
 }
 
 export function handlePlayerMovesTiles(tileName, opposite, level) {
-  let moveTo;
-  let floor;
-  if (opposite && level) {
-    moveTo = opposite;
-    floor = level;
-  } else {
-    moveTo = movementTiles[tileName].opposite;
-    floor = movementTiles[tileName].connectingFloor;
-  }
-
-  if (!movementTiles[moveTo].element) {
-    return false;
-  }
-
-  activePlayer.currentTile = movementTiles[moveTo].data;
-
-  switchBoards(floor);
-  positionPlayers("mid", floor, [
-    movementTiles[moveTo].element.style.gridRow,
-    movementTiles[moveTo].element.style.gridColumn,
-  ]);
+  let row;
+  let column;
+  let newCurrentTile;
+  usedTiles.forEach((tile) => {
+    if (tile.name.replaceAll(" ", "") === opposite) {
+      row = tile.element.style.gridRow;
+      column = tile.element.style.gridColumn;
+      newCurrentTile = tile;
+    }
+  });
+  activePlayer.currentTile = newCurrentTile;
+  switchBoards(level);
+  positionPlayers("mid", level, [row, column]);
 }
 
 async function handleEndOfTurn() {
