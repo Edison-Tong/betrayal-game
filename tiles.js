@@ -1,4 +1,4 @@
-import { renderPlayerCards, handlePlayerGainsCard } from "./app.js";
+import { renderPlayerCards, handlePlayerGainsCard, displayCardInfo } from "./app.js";
 import cards from "./cards.js";
 
 let tiles = [
@@ -52,33 +52,34 @@ let tiles = [
     col: 2,
     message: `Leads to the Ground Floor Staircase`,
   },
-  //   {
-  //     name: "armory",
-  //     type: "discover",
-  //     floors: { basement: true, ground: true, upper: false },
-  //     doors: ["top", "right"],
-  //     image: "Armory.png",
-  //     symbol: "none",
-  //     message: `When you discover this tile,
-  //                 reveal cards from the top of the item deck until you reveal a weapon. <br>
-  //                     Take it and bury the rest`,
-  //     effect: (playerInfo, activePlayer) => {
-  //       let availableCards = [];
-  //       let usedCard;
-  //       cards.forEach((card) => {
-  //         if (card.weapon === true) {
-  //           availableCards.push(card);
-  //         }
-  //       });
-  //       if (!availableCards[0]) {
-  //       } else {
-  //         usedCard = availableCards.splice(Math.floor(Math.random() * availableCards.length), 1)[0];
-  //         activePlayer.cards.push(usedCard);
-  //         cards.splice(cards.indexOf(usedCard), 1);
-  //         renderPlayerCards();
-  //       }
-  //     },
-  //   },
+  {
+    name: "armory",
+    type: "discover",
+    floors: { basement: true, ground: true, upper: false },
+    doors: ["top", "right"],
+    image: "Armory.png",
+    symbol: "none",
+    message: `When you discover this tile,
+                    reveal cards from the top of the item deck until you reveal a weapon. <br>
+                        Take it and bury the rest`,
+    effect: (playerInfo, activePlayer) => {
+      let availableCards = [];
+      let usedCard;
+      cards.forEach((card) => {
+        if (card.weapon === true) {
+          availableCards.push(card);
+        }
+      });
+      if (!availableCards[0]) {
+      } else {
+        usedCard = availableCards.splice(Math.floor(Math.random() * availableCards.length), 1)[0];
+        activePlayer.cards.push(usedCard);
+        cards.splice(cards.indexOf(usedCard), 1);
+        displayCardInfo(usedCard);
+        renderPlayerCards();
+      }
+    },
+  },
   //   {
   //     name: "ballroom",
   //     type: "normal",
@@ -146,27 +147,27 @@ let tiles = [
   //     image: "Collapsed_Room.png",
   //     symbol: "none",
   //     message: `If you end your tur on this tile, make a speed roll. <br>
-  //                     5+: Nothing happens. <br>
-  //                     4-0: Place your explorer on the Basement Landing and take one die of Physical damage`,
+  //                       5+: Nothing happens. <br>
+  //                       4-0: Place your explorer on the Basement Landing and take one die of Physical damage`,
   //   },
-  {
-    name: "conservatory",
-    type: "normal",
-    floors: { basement: false, ground: true, upper: false },
-    doors: ["top", "bottom"],
-    image: "Conservatory.png",
-    symbol: "item",
-    message: "none",
-  },
   //   {
-  //     name: "cramped Passageway",
+  //     name: "conservatory",
   //     type: "normal",
-  //     floors: { basement: true, ground: true, upper: true },
-  //     doors: ["top", "right", "bottom", "left"],
-  //     image: "Cramped_Passageway.png",
-  //     symbol: "event",
+  //     floors: { basement: false, ground: true, upper: false },
+  //     doors: ["top", "bottom"],
+  //     image: "Conservatory.png",
+  //     symbol: "item",
   //     message: "none",
   //   },
+  {
+    name: "cramped Passageway",
+    type: "normal",
+    floors: { basement: true, ground: true, upper: true },
+    doors: ["top", "right", "bottom", "left"],
+    image: "Cramped_Passageway.png",
+    symbol: "event",
+    message: "none",
+  },
   //   {
   //     name: "crawlspace",
   //     type: "normal",
@@ -441,15 +442,15 @@ let tiles = [
   //     symbol: "event",
   //     message: "none",
   //   },
-  {
-    name: "tower",
-    type: "normal",
-    floors: { basement: false, ground: false, upper: true },
-    doors: ["top", "bottom"],
-    image: "Tower.png",
-    symbol: "event",
-    message: "none",
-  },
+  //   {
+  //     name: "tower",
+  //     type: "normal",
+  //     floors: { basement: false, ground: false, upper: true },
+  //     doors: ["top", "bottom"],
+  //     image: "Tower.png",
+  //     symbol: "event",
+  //     message: "none",
+  //   },
   //   {
   //     name: "underground Cavern",
   //     type: "normal",

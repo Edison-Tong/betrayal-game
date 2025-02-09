@@ -8,6 +8,7 @@ import {
   makeTilesButtons,
   removeTileButton,
   usedTiles,
+  handlePlayerDiscardsCard,
 } from "./app.js";
 import playerInfo from "./playerInfo.js";
 
@@ -17,6 +18,7 @@ let cards = [
     type: "omen",
     ability:
       "Whenever you take any physical damage, reduce that damage by 1. <br><br> (the Armor doesn't prevent General damage or the direct loss of Might and/or Speed)",
+    special: "",
   },
   {
     name: "book",
@@ -29,6 +31,7 @@ let cards = [
     name: "dagger",
     type: "omen",
     ability: "When you use the Dagger to attack, lose one speed. Roll 2 extra dice on the attack.",
+    special: "",
   },
   {
     name: "dog",
@@ -78,12 +81,14 @@ let cards = [
     weapon: false,
     ability:
       "When you are required to make a trait roll, you may instead bury the Angles Feather. If you do, choose a number from 0-8. Use that number as the result of the required roll.",
+    special: "",
   },
   {
     name: "brooch",
     type: "item",
     weapon: false,
     ability: "Whenever you take Physical or Mental damage, you may instead take it as General damage.",
+    special: "",
   },
 
   {
@@ -91,6 +96,7 @@ let cards = [
     type: "item",
     weapon: true,
     ability: "When you use the Chainsaw to attack, add one die to your attack.",
+    special: "",
   },
   {
     name: "creepy Doll",
@@ -98,6 +104,7 @@ let cards = [
     weapon: false,
     ability:
       "Once during your turn, you may use the Creep Doll to reroll all dice on a trait roll you just made. <br><br> Then lose one sanity",
+    special: "",
   },
   {
     name: "crossbow",
@@ -105,6 +112,7 @@ let cards = [
     weapon: true,
     ability:
       "When you use the Crossow to attack, you may attack any character on your tile or an adjacet tile. You and the defender each roll Speed. Roll one extra die on attack. If you lose you take no damage. ",
+    special: "",
   },
   {
     name: "dynamite",
@@ -112,6 +120,7 @@ let cards = [
     weapon: true,
     ability:
       "You may use the Dynamite in place of a regular attack. To do so, bury the Dynamite and then choose your tile or an adacent one. Everyone on the chosen tile must make a Speed roll. <br><br> 4+: Nothing happens. <br><br> 0-3: Take 4 physical damage.",
+    special: "",
   },
   {
     name: "first Aid Kit",
@@ -119,12 +128,14 @@ let cards = [
     weapon: false,
     ability:
       "On your turn, you may bury the First Aid Kit. If you do, heal all of your critical traits. You may use the First Aid Kit to heal another explorer on your tile.",
+    special: "",
   },
   {
     name: "flashlight",
     type: "item",
     weapon: false,
     ability: "During Events, you may roll 2 extra dice on trait rolls.",
+    special: "",
   },
   {
     name: "gun",
@@ -132,6 +143,7 @@ let cards = [
     weapon: true,
     ability:
       "When you use the Gun to attck, you may attack any target in line of sight. Your and the defender each roll Speed. If your lose, you take no damage.",
+    special: "",
   },
   {
     name: "headphones",
@@ -139,12 +151,14 @@ let cards = [
     weapon: false,
     ability:
       "Whenever you take mental damage, reduce that damage by 1. <br><br> (the Headphones don't prevent General damage or the direct loss of Knowledge and/or Sanity)",
+    special: "",
   },
   {
     name: "leather Jacket",
     type: "item",
     weapon: false,
     ability: "Roll an extra die whenever you defend against an attack.",
+    special: "",
   },
   {
     name: "lucky Coin",
@@ -152,30 +166,35 @@ let cards = [
     weapon: false,
     ability:
       "Once during your turn, you may use the Lucky Coin to reroll all blank dice on a trait roll that you just made. For each blank die on the reroll, take 1 mental damage.",
+    special: "",
   },
   {
     name: "machete",
     type: "item",
     weapon: true,
     ability: " When you use the Machete to attack, add 1 to the result of your roll.",
+    special: "",
   },
   {
     name: "magic Camera",
     type: "item",
     weapon: false,
     ability: "You may use your Sanity to make Knowledge rolls.",
+    special: "",
   },
   {
     name: "map",
     type: "item",
     weapon: false,
     ability: "On your turn, you may bury the Map. If you do, place your explorer on any tile.",
+    special: "",
   },
   {
     name: "mirror",
     type: "item",
     weapon: false,
     ability: " On your turn, you may bury the Mirror. If you do, heal your Knowledge and Sanity.",
+    special: "",
   },
   {
     name: "mystical Stopwatch",
@@ -183,18 +202,21 @@ let cards = [
     weapon: false,
     ability:
       "On your turn, you may bury the Stopwatch. If you do, take another turn after this one. You may only use this ability after the haunt has started. ",
+    special: "",
   },
   {
     name: "necklace Of Teeth",
     type: "item",
     weapon: false,
     ability: "At the end of your turn, you may gain 1 in  critical trait of your choice.",
+    special: "",
   },
   {
     name: "rabbits Foot",
     type: "item",
     weapon: false,
     ability: "Once during your turn, you may use the Rabbit's Foot to reroll one die that you just rolled.",
+    special: "",
   },
   {
     name: "skeleton Key",
@@ -202,18 +224,21 @@ let cards = [
     weapon: false,
     ability:
       "You may move through walls. Whenever you do so, roll a die. If you roll a blank, bury the Skeleton Key. <br><br> You may not use the Skeleton Key to discover new rooms.",
+    special: "",
   },
   {
     name: "strange Amulet",
     type: "item",
     weapon: false,
     ability: "Whenever you take Physical damage, gain 1 Sanity.",
+    special: "",
   },
   {
     name: "strange Medicine",
     type: "item",
     weapon: false,
     ability: "On your turn, you may bury the Strange Medicine. If you do, heal your Might and your Speed.",
+    special: "",
   },
 
   // {
@@ -1092,25 +1117,27 @@ let cards = [
   //     }
   //   },
   // },
-  // {
-  //   name: "wandering ghost",
-  //   type: "event",
-  //   todo: "You may bury one of your items. If you do, gain 1 in any trait. Otherwise, make a Sanity roll.",
-  //   result: "4+: Draw an Item card <br><br> 0-3: Take 1 General damage.",
-  //   effect: async (player, hauntValue, hauntStarted) => {
-  //     let answer = await getPlayerChoice(["yes", "no"], "Do you want to bury an Item?");
-  //     if (answer === "yes") {
-  //       handleTraitChange("general", 1, "gain"); //UNFINISHED CANNOT BURY ITEMS YET
-  //     } else {
-  //       let roll = await handleDiceRoll(player.stats.sanity);
-  //       if (roll <= 3) {
-  //         handleTraitChange("general", 1, "lose");
-  //       } else {
-  //         handlePlayerGainsCard();
-  //       }
-  //     }
-  //   },
-  // },
+  {
+    name: "wandering ghost",
+    type: "event",
+    todo: "You may bury one of your items. If you do, gain 1 in any trait. Otherwise, make a Sanity roll.",
+    result: "4+: Draw an Item card <br><br> 0-3: Take 1 General damage.",
+    effect: async (player, hauntValue, hauntStarted) => {
+      let answer = await getPlayerChoice(["yes", "no"], "Do you want to bury an Item?");
+
+      if (answer === "yes") {
+        handlePlayerDiscardsCard();
+        handleTraitChange("general", 1, "gain"); //UNFINISHED CANNOT BURY ITEMS YET
+      } else {
+        let roll = await handleDiceRoll(player.stats.sanity);
+        if (roll <= 3) {
+          handleTraitChange("general", 1, "lose");
+        } else {
+          handlePlayerGainsCard();
+        }
+      }
+    },
+  },
 ];
 
 export default cards;

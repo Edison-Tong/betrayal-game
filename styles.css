@@ -356,7 +356,7 @@ button.hidden {
   font-size: 20px;
 }
 
-.event-display {
+.card-display {
   text-align: center;
   height: 450px;
   width: 200px;
@@ -364,16 +364,24 @@ button.hidden {
   padding: 10px;
 }
 
-.event-display.hidden {
+.card-display.item {
+  background-color: orangered;
+}
+
+.card-display.omen {
+  background-color: green;
+}
+
+.card-display.hidden {
   display: none;
 }
 
-.event.name {
+.card-name {
   font-weight: bold;
   font-size: 35px;
 }
 
-.event.todo {
+.card-todo {
   padding: 10px;
   font-weight: bold;
 }

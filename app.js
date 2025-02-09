@@ -18,7 +18,7 @@ let endTurnBtn = document.querySelector(".endTurnBtn");
 let viewCardsBtn = document.querySelector(".view-cards-btn");
 let exitCardsBtn = document.querySelector(".exit-btn");
 let playerCardsDisplay = document.querySelector(".player-cards");
-let eventDisplay = document.querySelector(".event-display");
+let cardDisplay = document.querySelector(".card-display");
 let playerCount = 2;
 let players = [];
 let activePlayer;
@@ -495,9 +495,10 @@ export function handlePlayerGainsCard(tile) {
   if (!tile) {
     tile = { symbol: "item" };
   }
+  let usedCard;
+
   if (tile.symbol !== "none" && tile.symbol !== "event") {
     let availableCards = [];
-    let usedCard;
     cards.forEach((card) => {
       if (card.type === tile.symbol) {
         availableCards.push(card);
@@ -512,6 +513,7 @@ export function handlePlayerGainsCard(tile) {
       if (tile.symbol === "omen") {
         setTracker();
       }
+      displayCardInfo(usedCard);
     }
   } else if (tile.symbol === "event") {
     let availableCards = cards.filter((card) => card.type === tile.symbol);
@@ -520,13 +522,16 @@ export function handlePlayerGainsCard(tile) {
       // Select a random card and remove it from the available cards
       let randomIndex = Math.floor(Math.random() * availableCards.length);
       let usedCard = availableCards[randomIndex];
-
-      displayEventInfo(usedCard);
+      displayCardInfo(usedCard);
 
       cards.splice(cards.indexOf(usedCard), 1); // Remove from deck
       usedCard.effect(activePlayer, trackerValue, hauntStarted); // Apply the card's effect
     }
   }
+}
+
+export function handlePlayerDiscardsCard() {
+  console.log("Discard a card");
 }
 
 function handleRotateTile(tile) {
@@ -608,11 +613,9 @@ export function handlePlayerMovesTiles(tileName, opposite, level) {
 
   usedTiles.forEach((tile) => {
     if (tile.name.replaceAll(" ", "") === opposite) {
-      console.log(tile.name);
       row = tile.element.style.gridRow;
       column = tile.element.style.gridColumn;
       newCurrentTile = tile;
-      console.log(row, column);
     }
   });
   activePlayer.currentTile = newCurrentTile;
@@ -650,6 +653,7 @@ function handleEndOfTurnEvents() {
       }
     }
   }
+  cardDisplay.classList.add("hidden");
 
   return Promise.all(promises); // Ensure all tasks complete
 }
@@ -836,11 +840,25 @@ export function removeTileButton() {
   tileChoosing = false;
 }
 
-function displayEventInfo(eventInfo) {
-  eventDisplay.classList.remove("hidden");
-  Array.from(eventDisplay.children).forEach((child) => {
-    child.innerHTML = eventInfo[child.classList[1]];
-  });
+export function displayCardInfo(eventInfo) {
+  cardDisplay.classList.remove("hidden", "omen", "event", "item");
+  cardDisplay.classList.add(eventInfo.type);
+
+  if (eventInfo.type === "event") {
+    Array.from(cardDisplay.children).forEach((child) => {
+      child.innerHTML = eventInfo[child.classList[0].replace("card-", "")];
+    });
+  } else if (eventInfo.type === "item" || eventInfo.type === "omen") {
+    let info = [];
+    for (let key in eventInfo) {
+      if (key !== "type" && key !== "weapon") {
+        info.push(eventInfo[key]);
+      }
+    }
+    Array.from(cardDisplay.children).forEach((child, i) => {
+      child.innerHTML = info[i];
+    });
+  }
 }
 
 function setTracker() {
