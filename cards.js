@@ -730,24 +730,26 @@ let cards = [
   //     }
   //   },
   // },
-  // {
-  //   name: "jonah's turn",
-  //   type: "event",
-  //   todo: "You may discard any Item card that is not a weapon.",
-  //   result: "If you do, gain 1 Sanity. Otherwise, take one die of Mental damage.",
-  //   effect: async (player) => {
-  //     // UNFINISHED!!! FUNCTION WORKS BUT NO ITEM CARD IS ACTUALLY SWAPPED.
-  //     let choice = await getPlayerChoice(["yes", "no"], "Would you like to discard an item?");
-  //     if (choice === "yes") {
-  //       let playerStatsInfo = playerInfo[player.id.replace("p", "")].stats;
-  //       playerStatsInfo.sanity.index++;
-  //       renderPlayerStats();
-  //     } else if (choice === "no") {
-  //       let roll = await handleDiceRoll(1);
-  //       handleTraitChange("mental", roll, "lose");
-  //     }
-  //   },
-  // },
+  {
+    name: "jonah's turn",
+    type: "event",
+    todo: "You may discard any Item card that is not a weapon.",
+    result: "If you do, gain 1 Sanity. Otherwise, take one die of Mental damage.",
+    effect: async (player) => {
+      if (player.cards[0]) {
+        let choice = await getPlayerChoice(["yes", "no"], "Would you like to discard an item?");
+        if (choice === "yes") {
+          handlePlayerDiscardsCard();
+          let playerStatsInfo = playerInfo[player.id.replace("p", "")].stats;
+          playerStatsInfo.sanity.index++;
+          renderPlayerStats();
+        }
+      } else if (choice === "no") {
+        let roll = await handleDiceRoll(1);
+        handleTraitChange("mental", roll, "lose");
+      }
+    },
+  },
   // {
   //   name: "meat moss",
   //   type: "event",
@@ -1117,29 +1119,29 @@ let cards = [
   //     }
   //   },
   // },
-  {
-    name: "wandering ghost",
-    type: "event",
-    todo: "You may bury one of your items. If you do, gain 1 in any trait. Otherwise, make a Sanity roll.",
-    result: "4+: Draw an Item card <br><br> 0-3: Take 1 General damage.",
-    effect: async (player, hauntValue, hauntStarted) => {
-      if (player.cards[0]) {
-        let answer = await getPlayerChoice(["yes", "no"], "Do you want to bury an Item?");
+  // {
+  //   name: "wandering ghost",
+  //   type: "event",
+  //   todo: "You may bury one of your items. If you do, gain 1 in any trait. Otherwise, make a Sanity roll.",
+  //   result: "4+: Draw an Item card <br><br> 0-3: Take 1 General damage.",
+  //   effect: async (player, hauntValue, hauntStarted) => {
+  //     if (player.cards[0]) {
+  //       let answer = await getPlayerChoice(["yes", "no"], "Do you want to bury an Item?");
 
-        if (answer === "yes") {
-          handlePlayerDiscardsCard();
-          handleTraitChange("general", 1, "gain"); //UNFINISHED CANNOT BURY ITEMS YET
-        }
-      } else {
-        let roll = await handleDiceRoll(player.stats.sanity);
-        if (roll <= 3) {
-          handleTraitChange("general", 1, "lose");
-        } else {
-          handlePlayerGainsCard();
-        }
-      }
-    },
-  },
+  //       if (answer === "yes") {
+  //         handlePlayerDiscardsCard();
+  //         handleTraitChange("general", 1, "gain");
+  //       }
+  //     } else {
+  //       let roll = await handleDiceRoll(player.stats.sanity);
+  //       if (roll <= 3) {
+  //         handleTraitChange("general", 1, "lose");
+  //       } else {
+  //         handlePlayerGainsCard();
+  //       }
+  //     }
+  //   },
+  // },
 ];
 
 export default cards;

@@ -538,8 +538,9 @@ export function handlePlayerDiscardsCard() {
       let removeItemBtn = document.createElement("button");
       removeItemBtn.innerHTML = "Discard";
       card.element.append(removeItemBtn);
+      let cardName = card.name;
       removeItemBtn.addEventListener("click", () => {
-        let itemName = event.target.parentElement.parentElement.children[1].innerHTML.split("<")[0];
+        let itemName = cardName;
         event.target.parentElement.remove();
         activePlayer.cards.forEach((card) => {
           if (card.name === itemName) {
