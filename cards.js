@@ -1129,7 +1129,7 @@ let cards = [
         await makeTilesButtons(tiles);
         removeTileButton();
       } else if (roll <= 4) {
-        handleTraitChange("mental", 1, "lose");
+        handleTraitChange("general", 1, "lose");
         usedTiles.forEach((tile) => {
           for (let i = 0; i < usedTiles.length; i++) {
             if (tile.element.parentElement.classList[1] === "ground") {
@@ -1140,7 +1140,6 @@ let cards = [
         await makeTilesButtons(tiles);
         removeTileButton();
       } else {
-        handleTraitChange("mental", 1, "lose");
         usedTiles.forEach((tile) => {
           for (let i = 0; i < usedTiles.length; i++) {
             if (
