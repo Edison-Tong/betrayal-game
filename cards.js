@@ -1123,11 +1123,13 @@ let cards = [
     todo: "You may bury one of your items. If you do, gain 1 in any trait. Otherwise, make a Sanity roll.",
     result: "4+: Draw an Item card <br><br> 0-3: Take 1 General damage.",
     effect: async (player, hauntValue, hauntStarted) => {
-      let answer = await getPlayerChoice(["yes", "no"], "Do you want to bury an Item?");
+      if (player.cards[0]) {
+        let answer = await getPlayerChoice(["yes", "no"], "Do you want to bury an Item?");
 
-      if (answer === "yes") {
-        handlePlayerDiscardsCard();
-        handleTraitChange("general", 1, "gain"); //UNFINISHED CANNOT BURY ITEMS YET
+        if (answer === "yes") {
+          handlePlayerDiscardsCard();
+          handleTraitChange("general", 1, "gain"); //UNFINISHED CANNOT BURY ITEMS YET
+        }
       } else {
         let roll = await handleDiceRoll(player.stats.sanity);
         if (roll <= 3) {

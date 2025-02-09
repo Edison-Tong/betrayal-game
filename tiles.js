@@ -52,34 +52,34 @@ let tiles = [
     col: 2,
     message: `Leads to the Ground Floor Staircase`,
   },
-  {
-    name: "armory",
-    type: "discover",
-    floors: { basement: true, ground: true, upper: false },
-    doors: ["top", "right"],
-    image: "Armory.png",
-    symbol: "none",
-    message: `When you discover this tile,
-                    reveal cards from the top of the item deck until you reveal a weapon. <br>
-                        Take it and bury the rest`,
-    effect: (playerInfo, activePlayer) => {
-      let availableCards = [];
-      let usedCard;
-      cards.forEach((card) => {
-        if (card.weapon === true) {
-          availableCards.push(card);
-        }
-      });
-      if (!availableCards[0]) {
-      } else {
-        usedCard = availableCards.splice(Math.floor(Math.random() * availableCards.length), 1)[0];
-        activePlayer.cards.push(usedCard);
-        cards.splice(cards.indexOf(usedCard), 1);
-        displayCardInfo(usedCard);
-        renderPlayerCards();
-      }
-    },
-  },
+  //   {
+  //     name: "armory",
+  //     type: "discover",
+  //     floors: { basement: true, ground: true, upper: false },
+  //     doors: ["top", "right"],
+  //     image: "Armory.png",
+  //     symbol: "none",
+  //     message: `When you discover this tile,
+  //                     reveal cards from the top of the item deck until you reveal a weapon. <br>
+  //                         Take it and bury the rest`,
+  //     effect: (playerInfo, activePlayer) => {
+  //       let availableCards = [];
+  //       let usedCard;
+  //       cards.forEach((card) => {
+  //         if (card.weapon === true) {
+  //           availableCards.push(card);
+  //         }
+  //       });
+  //       if (!availableCards[0]) {
+  //       } else {
+  //         usedCard = availableCards.splice(Math.floor(Math.random() * availableCards.length), 1)[0];
+  //         activePlayer.cards.push(usedCard);
+  //         cards.splice(cards.indexOf(usedCard), 1);
+  //         displayCardInfo(usedCard);
+  //         renderPlayerCards();
+  //       }
+  //     },
+  //   },
   //   {
   //     name: "ballroom",
   //     type: "normal",
@@ -89,15 +89,15 @@ let tiles = [
   //     symbol: "omen",
   //     message: "none",
   //   },
-  //   {
-  //     name: "bloody Room",
-  //     type: "normal",
-  //     floors: { basement: false, ground: true, upper: true },
-  //     doors: ["top", "right"],
-  //     image: "Bloody_Room.png",
-  //     symbol: "item",
-  //     message: "none",
-  //   },
+  {
+    name: "bloody Room",
+    type: "normal",
+    floors: { basement: false, ground: true, upper: true },
+    doors: ["top", "right"],
+    image: "Bloody_Room.png",
+    symbol: "item",
+    message: "none",
+  },
   //   {
   //     name: "catacombs",
   //     type: "normal",
@@ -159,24 +159,24 @@ let tiles = [
   //     symbol: "item",
   //     message: "none",
   //   },
-  {
-    name: "cramped Passageway",
-    type: "normal",
-    floors: { basement: true, ground: true, upper: true },
-    doors: ["top", "right", "bottom", "left"],
-    image: "Cramped_Passageway.png",
-    symbol: "event",
-    message: "none",
-  },
   //   {
-  //     name: "crawlspace",
+  //     name: "cramped Passageway",
   //     type: "normal",
-  //     floors: { basement: true, ground: false, upper: true },
-  //     doors: ["top", "right", "left"],
-  //     image: "Crawlspace.png",
+  //     floors: { basement: true, ground: true, upper: true },
+  //     doors: ["top", "right", "bottom", "left"],
+  //     image: "Cramped_Passageway.png",
   //     symbol: "event",
   //     message: "none",
   //   },
+  {
+    name: "crawlspace",
+    type: "normal",
+    floors: { basement: true, ground: false, upper: true },
+    doors: ["top", "right", "left"],
+    image: "Crawlspace.png",
+    symbol: "event",
+    message: "none",
+  },
   //   {
   //     name: "dining Room",
   //     type: "normal",

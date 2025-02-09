@@ -340,7 +340,7 @@ export function renderPlayerCards() {
       child.remove();
     }
   });
-  activePlayer.cards.forEach((card) => {
+  activePlayer.cards.forEach((card, i) => {
     let newCard = document.createElement("div");
     let cardAbility = document.createElement("div");
     let cardBtn = document.createElement("button");
@@ -353,6 +353,7 @@ export function renderPlayerCards() {
     newCard.append(cardAbility);
     cardBtn.innerHTML = "use";
     newCard.append(cardBtn);
+    activePlayer.cards[i].element = newCard;
   });
 }
 
@@ -531,7 +532,24 @@ export function handlePlayerGainsCard(tile) {
 }
 
 export function handlePlayerDiscardsCard() {
-  console.log("Discard a card");
+  playerCardsDisplay.classList.remove("hidden");
+  activePlayer.cards.forEach((card) => {
+    if (card.type === "item") {
+      let removeItemBtn = document.createElement("button");
+      removeItemBtn.innerHTML = "Discard";
+      card.element.append(removeItemBtn);
+      removeItemBtn.addEventListener("click", () => {
+        let itemName = event.target.parentElement.parentElement.children[1].innerHTML.split("<")[0];
+        event.target.parentElement.remove();
+        activePlayer.cards.forEach((card) => {
+          if (card.name === itemName) {
+            let index = activePlayer.cards.indexOf(card);
+            activePlayer.cards.splice(index, 1);
+          }
+        });
+      });
+    }
+  });
 }
 
 function handleRotateTile(tile) {
