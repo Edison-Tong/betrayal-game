@@ -9,6 +9,7 @@ import {
   removeTileButton,
   usedTiles,
   handlePlayerDiscardsCard,
+  checkTileAdjacent,
 } from "./app.js";
 import playerInfo from "./playerInfo.js";
 
@@ -266,7 +267,15 @@ let cards = [
   //     if (roll <= 3) {
   //       handleTraitChange("mental", 1, "lose");
   //     } else {
-  //       await makeTilesButtons([player.currentFloor]);
+  //       let tiles = [];
+  //       usedTiles.forEach((tile) => {
+  //         for (let i = 0; i < usedTiles.length; i++) {
+  //           if (tile.element.parentElement.classList[1] === player.currentFloor) {
+  //             tiles.push(tile);
+  //           }
+  //         }
+  //       });
+  //       await makeTilesButtons(tiles);
   //       removeTileButton();
   //     }
   //   },
@@ -420,10 +429,12 @@ let cards = [
   //   result: "4+: Place your explorer on an adjacent tile. <br><br> 0-3: Take 1 Physical damage.",
   //   effect: async (player) => {
   //     let roll = await handleDiceRoll(player.stats.speed);
-  //     if (roll <= 3) {
+  //     if (roll <= -1) {
+  //       //CHANGED FOR TESTING. UNFINISHED. CHANGE BACK TO 3
   //       handleTraitChange("physical", 1, "lose");
   //     } else {
   //       console.log("place explorer on an adjacent tile"); // UNFINISHED
+  //       checkTileAdjacent(player.currentTile);
   //     }
   //   },
   // },
@@ -528,10 +539,29 @@ let cards = [
   //     if (roll <= 3) {
   //       handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "basementLanding", "basement");
   //     } else if (roll <= 5) {
-  //       await makeTilesButtons(["ground"]);
+  //       let tiles = [];
+  //       usedTiles.forEach((tile) => {
+  //         for (let i = 0; i < usedTiles.length; i++) {
+  //           if (tile.element.parentElement.classList[1] === "ground") {
+  //             tiles.push(tile);
+  //           }
+  //         }
+  //       });
+  //       await makeTilesButtons(tiles);
   //       removeTileButton();
   //     } else {
-  //       await makeTilesButtons(["ground", "upper"]);
+  //       let tiles = [];
+  //       usedTiles.forEach((tile) => {
+  //         for (let i = 0; i < usedTiles.length; i++) {
+  //           if (
+  //             tile.element.parentElement.classList[1] === "ground" ||
+  //             tile.element.parentElement.classList[1] === "upper"
+  //           ) {
+  //             tiles.push(tile);
+  //           }
+  //         }
+  //       });
+  //       await makeTilesButtons(tiles);
   //       removeTileButton();
   //     }
   //   },
@@ -730,26 +760,26 @@ let cards = [
   //     }
   //   },
   // },
-  {
-    name: "jonah's turn",
-    type: "event",
-    todo: "You may discard any Item card that is not a weapon.",
-    result: "If you do, gain 1 Sanity. Otherwise, take one die of Mental damage.",
-    effect: async (player) => {
-      if (player.cards[0]) {
-        let choice = await getPlayerChoice(["yes", "no"], "Would you like to discard an item?");
-        if (choice === "yes") {
-          handlePlayerDiscardsCard();
-          let playerStatsInfo = playerInfo[player.id.replace("p", "")].stats;
-          playerStatsInfo.sanity.index++;
-          renderPlayerStats();
-        }
-      } else if (choice === "no") {
-        let roll = await handleDiceRoll(1);
-        handleTraitChange("mental", roll, "lose");
-      }
-    },
-  },
+  // {
+  //   name: "jonah's turn",
+  //   type: "event",
+  //   todo: "You may discard any Item card that is not a weapon.",
+  //   result: "If you do, gain 1 Sanity. Otherwise, take one die of Mental damage.",
+  //   effect: async (player) => {
+  //     if (player.cards[0]) {
+  //       let choice = await getPlayerChoice(["yes", "no"], "Would you like to discard an item?");
+  //       if (choice === "yes") {
+  //         handlePlayerDiscardsCard();
+  //         let playerStatsInfo = playerInfo[player.id.replace("p", "")].stats;
+  //         playerStatsInfo.sanity.index++;
+  //         renderPlayerStats();
+  //       }
+  //     } else {
+  //       let roll = await handleDiceRoll(1);
+  //       handleTraitChange("mental", roll, "lose");
+  //     }
+  //   },
+  // },
   // {
   //   name: "meat moss",
   //   type: "event",
@@ -914,7 +944,18 @@ let cards = [
   //     if (answer === "yes") {
   //       let floors = ["basement", "ground", "upper"];
   //       floors.splice(floors.indexOf(player.currentFloor), 1);
-  //       await makeTilesButtons(floors);
+  //       let tiles = [];
+  //       usedTiles.forEach((tile) => {
+  //         for (let i = 0; i < usedTiles.length; i++) {
+  //           if (
+  //             tile.element.parentElement.classList[1] === floors[0] ||
+  //             tile.element.parentElement.classList[1] === floors[1]
+  //           ) {
+  //             tiles.push(tile);
+  //           }
+  //         }
+  //       });
+  //       await makeTilesButtons(tiles);
   //       removeTileButton();
   //     }
   //   },
@@ -1024,12 +1065,23 @@ let cards = [
   //     handleTraitChange("general", 1, "lose");
 
   //     let conservatory = usedTiles.filter((tile) => tile.name === "conservatory");
-  //     if (conservatory) {
+  //     if (conservatory[0]) {
   //       setTimeout(() => {
   //         handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), conservatory[0].name, "ground");
   //       });
   //     }
-  //     await makeTilesButtons(["basement", "ground"]);
+  //     let tiles = [];
+  //     usedTiles.forEach((tile) => {
+  //       for (let i = 0; i < usedTiles.length; i++) {
+  //         if (
+  //           tile.element.parentElement.classList[1] === "ground" ||
+  //           tile.element.parentElement.classList[1] === "basement"
+  //         ) {
+  //           tiles.push(tile);
+  //         }
+  //       }
+  //     });
+  //     await makeTilesButtons(tiles);
   //     removeTileButton();
   //   },
   // },
@@ -1055,29 +1107,56 @@ let cards = [
   //     }
   //   },
   // },
-  // {
-  //   name: "the oldest hosue",
-  //   type: "event",
-  //   todo: "Make a Speed or Might roll",
-  //   result:
-  //     "5+: Place your explorer on any tile. <br><br> 3-4: Place your explorer on any Ground Floor tile. Take 1 General damage. <br><br> 0-2: Place your explorer on any Basement tile. Take 1 Mental damage.",
-  //   effect: async (player, hauntValue, hauntStarted) => {
-  //     let answer = await getPlayerChoice(["speed", "might"], "Do you want to roll with Speed or Might?");
-  //     let roll = await handleDiceRoll(player.stats[answer]);
-  //     if (roll <= 2) {
-  //       handleTraitChange("mental", 1, "lose");
-  //       await makeTilesButtons(["basement"]);
-  //       removeTileButton();
-  //     } else if (roll <= 4) {
-  //       handleTraitChange("general", 1, "lose");
-  //       await makeTilesButtons(["ground"]);
-  //       removeTileButton();
-  //     } else {
-  //       await makeTilesButtons(["basement", "ground", "upper"]);
-  //       removeTileButton();
-  //     }
-  //   },
-  // },
+  {
+    name: "the oldest hosue",
+    type: "event",
+    todo: "Make a Speed or Might roll",
+    result:
+      "5+: Place your explorer on any tile. <br><br> 3-4: Place your explorer on any Ground Floor tile. Take 1 General damage. <br><br> 0-2: Place your explorer on any Basement tile. Take 1 Mental damage.",
+    effect: async (player, hauntValue, hauntStarted) => {
+      let answer = await getPlayerChoice(["speed", "might"], "Do you want to roll with Speed or Might?");
+      let roll = await handleDiceRoll(player.stats[answer]);
+      let tiles = [];
+      if (roll <= 2) {
+        handleTraitChange("mental", 1, "lose");
+        usedTiles.forEach((tile) => {
+          for (let i = 0; i < usedTiles.length; i++) {
+            if (tile.element.parentElement.classList[1] === "basement") {
+              tiles.push(tile);
+            }
+          }
+        });
+        await makeTilesButtons(tiles);
+        removeTileButton();
+      } else if (roll <= 4) {
+        handleTraitChange("mental", 1, "lose");
+        usedTiles.forEach((tile) => {
+          for (let i = 0; i < usedTiles.length; i++) {
+            if (tile.element.parentElement.classList[1] === "ground") {
+              tiles.push(tile);
+            }
+          }
+        });
+        await makeTilesButtons(tiles);
+        removeTileButton();
+      } else {
+        handleTraitChange("mental", 1, "lose");
+        usedTiles.forEach((tile) => {
+          for (let i = 0; i < usedTiles.length; i++) {
+            if (
+              tile.element.parentElement.classList[1] === "basement" ||
+              tile.element.parentElement.classList[1] === "ground" ||
+              tile.element.parentElement.classList[1] === "upper"
+            ) {
+              tiles.push(tile);
+            }
+          }
+        });
+        await makeTilesButtons(tiles);
+        removeTileButton();
+      }
+    },
+  },
   // {
   //   name: "The stars at night",
   //   type: "event",

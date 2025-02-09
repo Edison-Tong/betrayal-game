@@ -625,6 +625,42 @@ function checkDoorAlignment() {
   return allowPassage;
 }
 
+export function checkTileAdjacent(tile) {
+  let adjacentCalc = {
+    top: { row: -1, column: 0 },
+    bottom: { row: 1, column: 0 },
+    left: { row: 0, column: -1 },
+    right: { row: 0, column: 1 },
+  };
+
+  tile.doors.forEach((door) => {
+    let row = parseInt(tile.element.style.gridRow);
+    let column = parseInt(tile.element.style.gridColumn);
+    row += adjacentCalc[door].row;
+    column += adjacentCalc[door].column;
+    let adjacentTile;
+    Array.from(displayedFloor.children).find((child) => {
+      if (
+        child.classList.contains("tile") &&
+        parseInt(child.style.gridColumn) === column &&
+        parseInt(child.style.gridRow) === row
+      ) {
+        let tileName = child.classList[1].replaceAll("-", "");
+        console.log(tileName);
+        console.log(usedTiles[1].name.replaceAll(" ", "").toLowerCase());
+      }
+    });
+  });
+}
+
+// let existingTile = Array.from(displayedFloor.children).find((child) => {
+//     return (
+//       child.classList.contains("tile") &&
+//       parseInt(child.style.gridColumn) === column &&
+//       parseInt(child.style.gridRow) === row
+//     );
+//   });
+
 export function handlePlayerMovesTiles(tileName, opposite, level) {
   let row;
   let column;
@@ -816,35 +852,59 @@ export function getPlayerChoice(options, message) {
   });
 }
 
-// Modify makeTilesButtons to store the handler on the tile object
-export function makeTilesButtons(floors) {
+export function makeTilesButtons(tiles) {
   tileChoosing = true;
-  return new Promise((resolve, reject) => {
-    usedTiles.forEach((tile) => {
-      for (let i = 0; i < floors.length; i++) {
-        if (tile.element.parentElement.classList[1] === floors[i]) {
-          tile.element.classList.add("tile-button");
 
-          // Define the click handler and store it on the tile for later removal
-          const handler = (event) => {
-            // Use the event parameter explicitly rather than relying on a global event variable
-            let movingToTile = event.target.classList[1].replace(/-([a-z])/g, (match, letter) => letter.toUpperCase());
-            handlePlayerMovesTiles(
-              activePlayer.currentTile.name.replaceAll(" ", ""),
-              movingToTile,
-              event.target.parentElement.classList[1]
-            );
-            // Resolve the promise with the computed value
-            resolve(movingToTile);
-          };
-          // Save the handler reference on the tile object
-          tile.clickHandler = handler;
-          tile.element.addEventListener("click", handler);
-        }
-      }
+  return new Promise((resolve, reject) => {
+    tiles.forEach((tile) => {
+      tile.element.classList.add("tile-button");
+      // Define the click handler and store it on the tile for later removal
+      const handler = (event) => {
+        // Use the event parameter explicitly rather than relying on a global event variable
+        let movingToTile = event.target.classList[1].replace(/-([a-z])/g, (match, letter) => letter.toUpperCase());
+        handlePlayerMovesTiles(
+          activePlayer.currentTile.name.replaceAll(" ", ""),
+          movingToTile,
+          event.target.parentElement.classList[1]
+        );
+        // Resolve the promise with the computed value
+        resolve(movingToTile);
+      };
+      // Save the handler reference on the tile object
+      tile.clickHandler = handler;
+      tile.element.addEventListener("click", handler);
     });
   });
 }
+
+// export function makeTilesButtons(floors) {
+//     tileChoosing = true;
+//     return new Promise((resolve, reject) => {
+//       usedTiles.forEach((tile) => {
+//         for (let i = 0; i < floors.length; i++) {
+//           if (tile.element.parentElement.classList[1] === floors[i]) {
+//             tile.element.classList.add("tile-button");
+
+//             // Define the click handler and store it on the tile for later removal
+//             const handler = (event) => {
+//               // Use the event parameter explicitly rather than relying on a global event variable
+//               let movingToTile = event.target.classList[1].replace(/-([a-z])/g, (match, letter) => letter.toUpperCase());
+//               handlePlayerMovesTiles(
+//                 activePlayer.currentTile.name.replaceAll(" ", ""),
+//                 movingToTile,
+//                 event.target.parentElement.classList[1]
+//               );
+//               // Resolve the promise with the computed value
+//               resolve(movingToTile);
+//             };
+//             // Save the handler reference on the tile object
+//             tile.clickHandler = handler;
+//             tile.element.addEventListener("click", handler);
+//           }
+//         }
+//       });
+//     });
+//   }
 
 export function removeTileButton() {
   usedTiles.forEach((tile) => {
