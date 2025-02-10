@@ -912,7 +912,8 @@ export function displayCardInfo(eventInfo) {
 }
 
 export function placeToken(type, amount, tiles) {
-  console.log(type, amount, tiles);
+  let token = tokens.filter((token) => token.type === type)[0];
+  token.effect();
 }
 
 function setTracker() {
