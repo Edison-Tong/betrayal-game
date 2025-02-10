@@ -207,6 +207,7 @@ body {
 .sidebar {
   box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.3), 4px 7px 15px rgba(0, 0, 0, 0.2), 9px 15px 25px rgba(0, 0, 0, 0.2);
   border-radius: 15px;
+  min-width: 285px;
 }
 
 .current-stat {
@@ -360,6 +361,7 @@ button.hidden {
   text-align: center;
   height: 450px;
   width: 200px;
+  min-width: 200px;
   background-color: sandybrown;
   padding: 10px;
 }

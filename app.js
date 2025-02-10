@@ -416,14 +416,6 @@ async function handlePlayerMovement() {
       return;
     }
 
-    let newTile = document.createElement("div");
-    newTile.classList.add("tile", movingToTile.name.replaceAll(" ", "-").toLowerCase());
-    newTile.style.backgroundImage = `url(./images/${movingToTile.image})`;
-    newTile.style.gridRow = row;
-    newTile.style.gridColumn = column;
-    movingToTile.element = newTile;
-    usedTiles.push(movingToTile);
-
     if (column === 0) {
       handleBoardExpanding("left");
       column = 1;
@@ -435,6 +427,15 @@ async function handlePlayerMovement() {
     } else if (row > boardSize["ground"].totalRows) {
       handleBoardExpanding("bottom");
     }
+
+    let newTile = document.createElement("div");
+    newTile.classList.add("tile", movingToTile.name.replaceAll(" ", "-").toLowerCase());
+    newTile.style.backgroundImage = `url(./images/${movingToTile.image})`;
+    newTile.style.gridRow = row;
+    newTile.style.gridColumn = column;
+    movingToTile.element = newTile;
+    usedTiles.push(movingToTile);
+
     if (movingToTile.symbol !== "none") {
       symbolFound = true;
     }
@@ -622,6 +623,7 @@ function checkDoorAlignment() {
       allowPassage = true;
     }
   });
+
   return allowPassage;
 }
 
@@ -632,13 +634,13 @@ export function checkTileAdjacent(tile) {
     left: { row: 0, column: -1 },
     right: { row: 0, column: 1 },
   };
+  let adjacentTiles = [];
 
   tile.doors.forEach((door) => {
     let row = parseInt(tile.element.style.gridRow);
     let column = parseInt(tile.element.style.gridColumn);
     row += adjacentCalc[door].row;
     column += adjacentCalc[door].column;
-    let adjacentTile;
     Array.from(displayedFloor.children).find((child) => {
       if (
         child.classList.contains("tile") &&
@@ -646,20 +648,16 @@ export function checkTileAdjacent(tile) {
         parseInt(child.style.gridRow) === row
       ) {
         let tileName = child.classList[1].replaceAll("-", "");
-        console.log(tileName);
-        console.log(usedTiles[1].name.replaceAll(" ", "").toLowerCase());
+        movingToTile = usedTiles.filter((tile) => tile.name.replaceAll(" ", "").toLowerCase() === tileName)[0];
+        direction = door;
+        if (checkDoorAlignment()) {
+          adjacentTiles.push(movingToTile);
+        }
       }
     });
   });
+  makeTilesButtons(adjacentTiles);
 }
-
-// let existingTile = Array.from(displayedFloor.children).find((child) => {
-//     return (
-//       child.classList.contains("tile") &&
-//       parseInt(child.style.gridColumn) === column &&
-//       parseInt(child.style.gridRow) === row
-//     );
-//   });
 
 export function handlePlayerMovesTiles(tileName, opposite, level) {
   let row;
