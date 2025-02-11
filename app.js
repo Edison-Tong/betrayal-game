@@ -29,6 +29,7 @@ let laundryChute;
 let secretStaircase;
 let isRotating = false;
 let movingToTile;
+let previousTile;
 export let usedTiles = [];
 export let selectedTiles = [];
 let direction;
@@ -308,6 +309,7 @@ function positionPlayers(time, floor, rowCol) {
             player.marker.style.gridColumn = 2;
             document.querySelector(".board.ground").append(player.marker);
             players.push(player);
+            movingToTile = tiles[1];
         }
         activePlayer = players[playerTurnCounter];
         return;
@@ -427,7 +429,7 @@ async function handlePlayerMovement() {
     });
 
     if (!existingTile && direction !== "vertical") {
-        let previousTile = movingToTile;
+        previousTile = movingToTile;
         movingToTile = getTileData();
         if (movingToTile === undefined) {
             alert("There are no more tiles for this floor");
@@ -485,6 +487,7 @@ async function handlePlayerMovement() {
             renderPlayerStats();
         }
     } else {
+        previousTile = movingToTile;
         usedTiles.forEach((tile) => {
             if (
                 tile.name.toLowerCase() ===
@@ -497,10 +500,9 @@ async function handlePlayerMovement() {
             return;
         }
     }
-    if (movingToTile.token) {
-        movingToTile.token.effect();
-    }
+    checkForObstacles();
     activePlayer.movesThisTurn += 1;
+    console.log(activePlayer.movesThisTurn);
     movingToTile.message === "none"
         ? (tileMessageBox.style.display = "none")
         : ((tileMessageBox.style.display = "block"),
@@ -511,6 +513,15 @@ async function handlePlayerMovement() {
     activePlayer.col = column;
     activePlayer.marker.style.gridRow = row;
     activePlayer.marker.style.gridColumn = column;
+}
+
+function checkForObstacles() {
+    if (previousTile.token) {
+        if (previousTile.token.type === "obstacle") {
+            console.log(previousTile.token.type);
+            activePlayer.movesThisTurn += 1;
+        }
+    }
 }
 
 // FOR TESTING
@@ -999,13 +1010,17 @@ export function displayCardInfo(eventInfo) {
     }
 }
 
-export function placeToken(type, amount, tiles) {
+export function placeToken(type, tile) {
     let token = tokens.filter((token) => token.type === type)[0];
     let tokenElement = document.createElement("div");
     tokenElement.classList.add("token");
     tokenElement.innerHTML = type;
-    movingToTile.element.append(tokenElement);
-    movingToTile.token = token;
+    if (!tile) {
+        movingToTile.element.append(tokenElement);
+        movingToTile.token = token;
+    } else {
+        tile.element.append(tokenElement);
+    }
 }
 
 document.addEventListener("keydown", () => {

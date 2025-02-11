@@ -330,16 +330,16 @@ let cards = [
     //         }
     //     },
     // },
-    {
-        name: "a moment of hope",
-        type: "event",
-        todo: "Place a blessing token on your tile.",
-        result: "A hero on the same tile as the blessing token must roll an extra die on all trait rolls",
-        effect: async (player) => {
-            console.log("place a blessing token");
-            placeToken("blessing");
-        },
-    },
+    // {
+    //     name: "a moment of hope",
+    //     type: "event",
+    //     todo: "Place a blessing token on your tile.",
+    //     result: "A hero on the same tile as the blessing token must roll an extra die on all trait rolls",
+    //     effect: async (player) => {
+    //         console.log("place a blessing token");
+    //         placeToken("blessing");
+    //     },
+    // },
     //   {
     //     name: "an eerie feeling",
     //     type: "event",
@@ -367,29 +367,83 @@ let cards = [
     //       }
     //     },
     //   },
-    //   {
+    // {
     //     name: "a secret passage",
     //     type: "event",
     //     todo: "Place a secret passage token on your tile. <br><br> Make a Knowledge roll.",
-    //     result:
-    //       "5+: Place another secret Passage token on any other tile. Gain 1 knowledge. <br><br> 3-4: Place another Secret Passage token on any Ground Floor tile. <br><br> 0-2: Place another Secret Passage token on any Basement Tile. Lose 1 Sanity.",
+    //     result: "5+: Place another secret Passage token on any other tile. Gain 1 knowledge. <br><br> 3-4: Place another Secret Passage token on any Ground Floor tile. <br><br> 0-2: Place another Secret Passage token on any Basement Tile. Lose 1 Sanity.",
     //     effect: async (player) => {
-    //       let roll = await handleDiceRoll(player.stats.knowledge);
-    //       if (roll <= 2) {
-    //         console.log("Place another Secret Passage token on any Basement Tile."); // UNFINISHED
-    //         let playerStatsInfo = playerInfo[player.id.replace("p", "")].stats;
-    //         playerStatsInfo.sanity.index--;
-    //         renderPlayerStats();
-    //       } else if (roll <= 4) {
-    //         console.log("Place another Secret Passage token on any Ground Floor tile"); // UNFINISHED
-    //       } else {
-    //         console.log("Place another secret Passage token on any other tile."); // UNFINISHED
-    //         let playerStatsInfo = playerInfo[player.id.replace("p", "")].stats;
-    //         playerStatsInfo.knowledge.index++;
-    //         renderPlayerStats();
-    //       }
+    //         placeToken("secret passage");
+
+    //         let roll = await handleDiceRoll(player.stats.knowledge);
+    //         if (roll <= 2) {
+
+    //             let tiles = [];
+    //             usedTiles.forEach((tile) => {
+    //                 if (
+    //                     tile.element.parentElement.classList[1] === "basement"
+    //                 ) {
+    //                     if (tile.token) {
+    //                         if (tile.token.type === "secret passage") {
+    //                             return;
+    //                         }
+    //                     }
+    //                     tiles.push(tile);
+    //                 }
+    //             });
+    //             let tile = await makeTilesButtons(tiles, 1);
+    //             placeToken("secret passage", tile);
+    //             removeTileButton(tiles);
+
+    //             let playerStatsInfo =
+    //                 playerInfo[player.id.replace("p", "")].stats;
+    //             playerStatsInfo.sanity.index--;
+    //             renderPlayerStats();
+    //         } else if (roll <= 4) {
+
+    //             let tiles = [];
+    //             usedTiles.forEach((tile) => {
+    //                 if (tile.element.parentElement.classList[1] === "ground") {
+    //                     if (tile.token) {
+    //                         if (tile.token.type === "secret passage") {
+    //                             return;
+    //                         }
+    //                     }
+    //                     tiles.push(tile);
+    //                 }
+    //             });
+    //             let tile = await makeTilesButtons(tiles, 1);
+    //             placeToken("secret passage", tile);
+    //             removeTileButton(tiles);
+    //         } else {
+
+    //             let tiles = [];
+    //             usedTiles.forEach((tile) => {
+    //                 if (
+    //                     tile.element.parentElement.classList[1] ===
+    //                         "basement" ||
+    //                     tile.element.parentElement.classList[1] === "ground" ||
+    //                     tile.element.parentElement.classList[1] === "upper"
+    //                 ) {
+    //                     if (tile.token) {
+    //                         if (tile.token.type === "secret passage") {
+    //                             return;
+    //                         }
+    //                     }
+    //                     tiles.push(tile);
+    //                 }
+    //             });
+    //             let tile = await makeTilesButtons(tiles, 1);
+    //             placeToken("secret passage", tile);
+    //             removeTileButton(tiles);
+
+    //             let playerStatsInfo =
+    //                 playerInfo[player.id.replace("p", "")].stats;
+    //             playerStatsInfo.knowledge.index++;
+    //             renderPlayerStats();
+    //         }
     //     },
-    //   },
+    // },
     //   {
     //     name: "a splash of crimson",
     //     type: "event",
@@ -1020,23 +1074,25 @@ let cards = [
     //       }
     //     },
     //   },
-    //   {
-    //     name: "taxidermy",
-    //     type: "event",
-    //     todo: "Make a Might roll",
-    //     result: "5+: Gain 1 Sanity. <br><br> 0-4: Take 1 Physical damage. Place and Obstacle token on this tile.",
-    //     effect: async (player, hauntValue, hauntStarted) => {
-    //       let roll = await handleDiceRoll(player.stats.might);
-    //       if (roll <= 4) {
-    //         handleTraitChange("physical", 1, "lose");
-    //         console.log("Place an obstacle token on this tile"); // UNFINISHED
-    //       } else {
-    //         let playerStatsInfo = playerInfo[player.id.replace("p", "")].stats;
-    //         playerStatsInfo.sanity.index++;
-    //         renderPlayerStats();
-    //       }
-    //     },
-    //   },
+    {
+        name: "taxidermy",
+        type: "event",
+        todo: "Make a Might roll",
+        result: "5+: Gain 1 Sanity. <br><br> 0-4: Take 1 Physical damage. Place and Obstacle token on this tile.",
+        effect: async (player, hauntValue, hauntStarted) => {
+            let roll = await handleDiceRoll(player.stats.might);
+            if (roll <= 4) {
+                handleTraitChange("physical", 1, "lose");
+                console.log("Place an obstacle token on this tile");
+                placeToken("obstacle");
+            } else {
+                let playerStatsInfo =
+                    playerInfo[player.id.replace("p", "")].stats;
+                playerStatsInfo.sanity.index++;
+                renderPlayerStats();
+            }
+        },
+    },
     //   {
     //     name: "technical difficulties",
     //     type: "event",
