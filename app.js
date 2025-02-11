@@ -69,8 +69,12 @@ export let movementTiles = {
         connectingFloor: "ground",
         data: tiles[38],
     },
-    gallery: { oppoite: "ballroom", connectingFloor: "ground", data: tiles[8] },
-    ballroom: { opposite: "gallery", connectingFloor: "upper", data: tiles[5] },
+    gallery: {
+        opposite: "ballroom",
+        connectingFloor: "ground",
+        data: tiles[8],
+    },
+    ballroom: { connectingFloor: "upper", data: tiles[5] },
     undergroundCavern: {
         opposite: "graveyard",
         connectingFloor: "ground",
