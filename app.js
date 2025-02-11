@@ -20,7 +20,7 @@ let viewCardsBtn = document.querySelector(".view-cards-btn");
 let exitCardsBtn = document.querySelector(".exit-btn");
 let playerCardsDisplay = document.querySelector(".player-cards");
 let cardDisplay = document.querySelector(".card-display");
-let playerCount = 2;
+let playerCount = 1;
 let players = [];
 let activePlayer;
 let playerTurnCounter = 0;
@@ -30,6 +30,7 @@ let secretStaircase;
 let isRotating = false;
 let movingToTile;
 export let usedTiles = [];
+export let selectedTiles = [];
 let direction;
 let tileMessageBox = document.querySelector(".tile-message");
 let symbolFound;
@@ -473,6 +474,9 @@ async function handlePlayerMovement() {
       return;
     }
   }
+  if (movingToTile.token) {
+    movingToTile.token.effect();
+  }
   activePlayer.movesThisTurn += 1;
   movingToTile.message === "none"
     ? (tileMessageBox.style.display = "none")
@@ -665,7 +669,6 @@ export function handlePlayerMovesTiles(tileName, opposite, level) {
   let row;
   let column;
   let newCurrentTile;
-
   usedTiles.forEach((tile) => {
     if (tile.name.replaceAll(" ", "") === opposite) {
       row = tile.element.style.gridRow;
@@ -852,43 +855,46 @@ export function getPlayerChoice(options, message) {
   });
 }
 
-export function makeTilesButtons(tiles) {
+function getSelectedTiles(tile) {
+  console.log(tile);
+}
+
+export function makeTilesButtons(tiles, amount) {
   tileChoosing = true;
+  let clickCount = 0;
 
   return new Promise((resolve, reject) => {
     tiles.forEach((tile) => {
       tile.element.classList.add("tile-button");
-      // Define the click handler and store it on the tile for later removal
-      const handler = (event) => {
-        // Use the event parameter explicitly rather than relying on a global event variable
-        let movingToTile = event.target.classList[1].replace(/-([a-z])/g, (match, letter) => letter.toUpperCase());
-        handlePlayerMovesTiles(
-          activePlayer.currentTile.name.replaceAll(" ", ""),
-          movingToTile,
-          event.target.parentElement.classList[1]
-        );
-        // Resolve the promise with the computed value
-        resolve(movingToTile);
+      let handler = (event) => {
+        clickCount++;
+        selectedTiles.push(tile);
+        getSelectedTiles(tile);
+        tile.element.removeEventListener("click", handler);
+        tile.element.classList.remove("tile-button");
+
+        if (clickCount >= amount) {
+          resolve(tile);
+        }
       };
-      // Save the handler reference on the tile object
       tile.clickHandler = handler;
       tile.element.addEventListener("click", handler);
     });
   });
 }
 
-export function removeTileButton() {
-  usedTiles.forEach((tile) => {
+export function removeTileButton(tiles) {
+  tiles.forEach((tile) => {
     tile.element.classList.remove("tile-button");
-    // Only attempt to remove if the handler exists
     if (tile.clickHandler) {
       tile.element.removeEventListener("click", tile.clickHandler);
-      // Optionally, delete the property if no longer needed
       delete tile.clickHandler;
     }
   });
   tileChoosing = false;
 }
+
+export function test(one, two, three) {}
 
 export function displayCardInfo(eventInfo) {
   cardDisplay.classList.remove("hidden", "omen", "event", "item");
@@ -913,7 +919,11 @@ export function displayCardInfo(eventInfo) {
 
 export function placeToken(type, amount, tiles) {
   let token = tokens.filter((token) => token.type === type)[0];
-  token.effect();
+  let tokenElement = document.createElement("div");
+  tokenElement.classList.add("token");
+  tokenElement.innerHTML = type;
+  movingToTile.element.append(tokenElement);
+  movingToTile.token = token;
 }
 
 function setTracker() {

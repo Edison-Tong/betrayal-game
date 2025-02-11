@@ -11,6 +11,7 @@ import {
   handlePlayerDiscardsCard,
   checkTileAdjacent,
   placeToken,
+  selectedTiles,
 } from "./app.js";
 import playerInfo from "./playerInfo.js";
 
@@ -257,7 +258,6 @@ let cards = [
   //     }
   //   },
   // },
-
   // {
   //   name: "a cry for help",
   //   type: "event",
@@ -270,14 +270,17 @@ let cards = [
   //     } else {
   //       let tiles = [];
   //       usedTiles.forEach((tile) => {
-  //         for (let i = 0; i < usedTiles.length; i++) {
-  //           if (tile.element.parentElement.classList[1] === player.currentFloor) {
-  //             tiles.push(tile);
-  //           }
+  //         if (tile.element.parentElement.classList[1] === player.currentFloor) {
+  //           tiles.push(tile);
   //         }
   //       });
-  //       await makeTilesButtons(tiles);
-  //       removeTileButton();
+  //       await makeTilesButtons(tiles, 1);
+  //       handlePlayerMovesTiles(
+  //         player.currentTile.name.replaceAll(" ", ""),
+  //         selectedTiles[0].name.replaceAll(" ", ""),
+  //         selectedTiles[0].element.parentElement.classList[1]
+  //       );
+  //       removeTileButton(tiles);
   //     }
   //   },
   // },
@@ -316,16 +319,16 @@ let cards = [
   //     }
   //   },
   // },
-  {
-    name: "a moment of hope",
-    type: "event",
-    todo: "Place a blessing token on your tile.",
-    result: "A hero on the same tile as the blessing token must roll an extra die on all trait rolls",
-    effect: async (player) => {
-      console.log("place a blessing token"); //UNFINISHED
-      placeToken("blessing", 1, player.currentTile);
-    },
-  },
+  // {
+  //   name: "a moment of hope",
+  //   type: "event",
+  //   todo: "Place a blessing token on your tile.",
+  //   result: "A hero on the same tile as the blessing token must roll an extra die on all trait rolls",
+  //   effect: async (player) => {
+  //     console.log("place a blessing token"); //UNFINISHED. TOKEN IS PLACED BUT IT HAS NO FUNCTION
+  //     placeToken("blessing");
+  //   },
+  // },
   // {
   //   name: "an eerie feeling",
   //   type: "event",
@@ -542,28 +545,34 @@ let cards = [
   //     } else if (roll <= 5) {
   //       let tiles = [];
   //       usedTiles.forEach((tile) => {
-  //         for (let i = 0; i < usedTiles.length; i++) {
-  //           if (tile.element.parentElement.classList[1] === "ground") {
-  //             tiles.push(tile);
-  //           }
+  //         if (tile.element.parentElement.classList[1] === "ground") {
+  //           tiles.push(tile);
   //         }
   //       });
-  //       await makeTilesButtons(tiles);
-  //       removeTileButton();
+  //       await makeTilesButtons(tiles, 1);
+  //       handlePlayerMovesTiles(
+  //         player.currentTile.name.replaceAll(" ", ""),
+  //         selectedTiles[0].name.replaceAll(" ", ""),
+  //         selectedTiles[0].element.parentElement.classList[1]
+  //       );
+  //       removeTileButton(tiles);
   //     } else {
   //       let tiles = [];
   //       usedTiles.forEach((tile) => {
-  //         for (let i = 0; i < usedTiles.length; i++) {
-  //           if (
-  //             tile.element.parentElement.classList[1] === "ground" ||
-  //             tile.element.parentElement.classList[1] === "upper"
-  //           ) {
-  //             tiles.push(tile);
-  //           }
+  //         if (
+  //           tile.element.parentElement.classList[1] === "ground" ||
+  //           tile.element.parentElement.classList[1] === "upper"
+  //         ) {
+  //           tiles.push(tile);
   //         }
   //       });
-  //       await makeTilesButtons(tiles);
-  //       removeTileButton();
+  //       await makeTilesButtons(tiles, 1);
+  //       handlePlayerMovesTiles(
+  //         player.currentTile.name.replaceAll(" ", ""),
+  //         selectedTiles[0].name.replaceAll(" ", ""),
+  //         selectedTiles[0].element.parentElement.classList[1]
+  //       );
+  //       removeTileButton(tiles);
   //     }
   //   },
   // },
@@ -947,17 +956,20 @@ let cards = [
   //       floors.splice(floors.indexOf(player.currentFloor), 1);
   //       let tiles = [];
   //       usedTiles.forEach((tile) => {
-  //         for (let i = 0; i < usedTiles.length; i++) {
-  //           if (
-  //             tile.element.parentElement.classList[1] === floors[0] ||
-  //             tile.element.parentElement.classList[1] === floors[1]
-  //           ) {
-  //             tiles.push(tile);
-  //           }
+  //         if (
+  //           tile.element.parentElement.classList[1] === floors[0] ||
+  //           tile.element.parentElement.classList[1] === floors[1]
+  //         ) {
+  //           tiles.push(tile);
   //         }
   //       });
-  //       await makeTilesButtons(tiles);
-  //       removeTileButton();
+  //       await makeTilesButtons(tiles, 1);
+  //       handlePlayerMovesTiles(
+  //         player.currentTile.name.replaceAll(" ", ""),
+  //         selectedTiles[0].name.replaceAll(" ", ""),
+  //         selectedTiles[0].element.parentElement.classList[1]
+  //       );
+  //       removeTileButton(tiles);
   //     }
   //   },
   // },
@@ -1074,17 +1086,20 @@ let cards = [
   //     }
   //     let tiles = [];
   //     usedTiles.forEach((tile) => {
-  //       for (let i = 0; i < usedTiles.length; i++) {
-  //         if (
-  //           tile.element.parentElement.classList[1] === "ground" ||
-  //           tile.element.parentElement.classList[1] === "basement"
-  //         ) {
-  //           tiles.push(tile);
-  //         }
+  //       if (
+  //         tile.element.parentElement.classList[1] === "ground" ||
+  //         tile.element.parentElement.classList[1] === "basement"
+  //       ) {
+  //         tiles.push(tile);
   //       }
   //     });
-  //     await makeTilesButtons(tiles);
-  //     removeTileButton();
+  //     await makeTilesButtons(tiles, 1);
+  //     handlePlayerMovesTiles(
+  //       player.currentTile.name.replaceAll(" ", ""),
+  //       selectedTiles[0].name.replaceAll(" ", ""),
+  //       selectedTiles[0].element.parentElement.classList[1]
+  //     );
+  //     removeTileButton(tiles);
   //   },
   // },
   // {
@@ -1122,39 +1137,48 @@ let cards = [
   //     if (roll <= 2) {
   //       handleTraitChange("mental", 1, "lose");
   //       usedTiles.forEach((tile) => {
-  //         for (let i = 0; i < usedTiles.length; i++) {
-  //           if (tile.element.parentElement.classList[1] === "basement") {
-  //             tiles.push(tile);
-  //           }
+  //         if (tile.element.parentElement.classList[1] === "basement") {
+  //           tiles.push(tile);
   //         }
   //       });
-  //       await makeTilesButtons(tiles);
-  //       removeTileButton();
+  //       await makeTilesButtons(tiles, 1);
+  //       handlePlayerMovesTiles(
+  //         player.currentTile.name.replaceAll(" ", ""),
+  //         selectedTiles[0].name.replaceAll(" ", ""),
+  //         selectedTiles[0].element.parentElement.classList[1]
+  //       );
+  //       removeTileButton(tiles);
   //     } else if (roll <= 4) {
   //       handleTraitChange("general", 1, "lose");
   //       usedTiles.forEach((tile) => {
-  //         for (let i = 0; i < usedTiles.length; i++) {
-  //           if (tile.element.parentElement.classList[1] === "ground") {
-  //             tiles.push(tile);
-  //           }
+  //         if (tile.element.parentElement.classList[1] === "ground") {
+  //           tiles.push(tile);
   //         }
   //       });
-  //       await makeTilesButtons(tiles);
-  //       removeTileButton();
+  //       await makeTilesButtons(tiles, 1);
+  //       handlePlayerMovesTiles(
+  //         player.currentTile.name.replaceAll(" ", ""),
+  //         selectedTiles[0].name.replaceAll(" ", ""),
+  //         selectedTiles[0].element.parentElement.classList[1]
+  //       );
+  //       removeTileButton(tiles);
   //     } else {
   //       usedTiles.forEach((tile) => {
-  //         for (let i = 0; i < usedTiles.length; i++) {
-  //           if (
-  //             tile.element.parentElement.classList[1] === "basement" ||
-  //             tile.element.parentElement.classList[1] === "ground" ||
-  //             tile.element.parentElement.classList[1] === "upper"
-  //           ) {
-  //             tiles.push(tile);
-  //           }
+  //         if (
+  //           tile.element.parentElement.classList[1] === "basement" ||
+  //           tile.element.parentElement.classList[1] === "ground" ||
+  //           tile.element.parentElement.classList[1] === "upper"
+  //         ) {
+  //           tiles.push(tile);
   //         }
   //       });
-  //       await makeTilesButtons(tiles);
-  //       removeTileButton();
+  //       await makeTilesButtons(tiles, 1);
+  //       handlePlayerMovesTiles(
+  //         player.currentTile.name.replaceAll(" ", ""),
+  //         selectedTiles[0].name.replaceAll(" ", ""),
+  //         selectedTiles[0].element.parentElement.classList[1]
+  //       );
+  //       removeTileButton(tiles);
   //     }
   //   },
   // },
