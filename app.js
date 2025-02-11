@@ -498,7 +498,7 @@ async function handlePlayerMovement() {
 //     }
 // });
 
-export function handlePlayerGainsCard(tile) {
+export async function handlePlayerGainsCard(tile) {
   if (!tile) {
     tile = { symbol: "item" };
   }
@@ -517,10 +517,14 @@ export function handlePlayerGainsCard(tile) {
       activePlayer.cards.push(usedCard);
       cards.splice(cards.indexOf(usedCard), 1);
       renderPlayerCards();
+      displayCardInfo(usedCard);
       if (tile.symbol === "omen") {
         setTracker();
+        let hauntStart = await handleDiceRoll(trackerValue);
+        if (hauntStart >= 5) {
+          console.log("START THE HAUNT");
+        }
       }
-      displayCardInfo(usedCard);
     }
   } else if (tile.symbol === "event") {
     let availableCards = cards.filter((card) => card.type === tile.symbol);
@@ -661,8 +665,13 @@ export async function checkTileAdjacent(tile) {
       }
     });
   });
-  await makeTilesButtons(adjacentTiles);
-  removeTileButton();
+  await makeTilesButtons(adjacentTiles, 1);
+  handlePlayerMovesTiles(
+    activePlayer.currentTile.name.replaceAll(" ", ""),
+    selectedTiles[0].name.replaceAll(" ", ""),
+    selectedTiles[0].element.parentElement.classList[1]
+  );
+  removeTileButton(tiles);
 }
 
 export function handlePlayerMovesTiles(tileName, opposite, level) {
@@ -927,8 +936,12 @@ export function placeToken(type, amount, tiles) {
 }
 
 function setTracker() {
-  trackerValue++;
-  tracker.children[0].innerHTML = trackerValue;
+  if (trackerValue === 8) {
+    console.log("START THE HAUNT");
+  } else {
+    trackerValue++;
+    tracker.children[0].innerHTML = trackerValue;
+  }
 }
 
 makeButtonsActive();
