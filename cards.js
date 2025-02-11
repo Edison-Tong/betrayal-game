@@ -276,7 +276,6 @@ let cards = [
         });
         await makeTilesButtons(tiles, 1);
         handlePlayerMovesTiles(
-          player.currentTile.name.replaceAll(" ", ""),
           selectedTiles[0].name.replaceAll(" ", ""),
           selectedTiles[0].element.parentElement.classList[1]
         );
@@ -493,7 +492,7 @@ let cards = [
         roll = await handleDiceRoll(1);
         await handleTraitChange("mental", roll, "lose");
       } else if (roll <= 3) {
-        handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "entranceHall", "ground");
+        handlePlayerMovesTiles("entranceHall", "ground");
       } else {
         let playerStatsInfo = playerInfo[player.id.replace("p", "")].stats;
         playerStatsInfo.sanity.index++;
@@ -540,7 +539,7 @@ let cards = [
     effect: async (player) => {
       let roll = await handleDiceRoll(player.stats.knowledge);
       if (roll <= 3) {
-        handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "basementLanding", "basement");
+        handlePlayerMovesTiles("basementLanding", "basement");
       } else if (roll <= 5) {
         let tiles = [];
         usedTiles.forEach((tile) => {
@@ -550,7 +549,6 @@ let cards = [
         });
         await makeTilesButtons(tiles, 1);
         handlePlayerMovesTiles(
-          player.currentTile.name.replaceAll(" ", ""),
           selectedTiles[0].name.replaceAll(" ", ""),
           selectedTiles[0].element.parentElement.classList[1]
         );
@@ -567,7 +565,6 @@ let cards = [
         });
         await makeTilesButtons(tiles, 1);
         handlePlayerMovesTiles(
-          player.currentTile.name.replaceAll(" ", ""),
           selectedTiles[0].name.replaceAll(" ", ""),
           selectedTiles[0].element.parentElement.classList[1]
         );
@@ -677,12 +674,12 @@ let cards = [
         let chosenTile = choices.find((c) => c.name === choiceName);
 
         setTimeout(() => {
-          handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), chosenTile.name, chosenTile.floor);
+          handlePlayerMovesTiles(chosenTile.name, chosenTile.floor);
         }, 0);
       } else if (choices.length === 1) {
         let chosenTile = choices[0];
         setTimeout(() => {
-          handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), chosenTile.name, chosenTile.floor);
+          handlePlayerMovesTiles(chosenTile.name, chosenTile.floor);
         }, 0);
       }
 
@@ -964,7 +961,6 @@ let cards = [
         });
         await makeTilesButtons(tiles, 1);
         handlePlayerMovesTiles(
-          player.currentTile.name.replaceAll(" ", ""),
           selectedTiles[0].name.replaceAll(" ", ""),
           selectedTiles[0].element.parentElement.classList[1]
         );
@@ -1039,11 +1035,11 @@ let cards = [
       // let roll = await handleDiceRoll(player.stats.knowledge); // PLAYER WILL NOT DSPALY CORRECTLY UNLESS THERE IS AN DELAY....
       setTimeout(() => {
         if (currentFloor === "upper") {
-          handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "entranceHall", "ground");
+          handlePlayerMovesTiles("entranceHall", "ground");
         } else if (currentFloor === "ground") {
-          handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "basementLanding", "basement");
+          handlePlayerMovesTiles("basementLanding", "basement");
         } else if (currentFloor === "basement") {
-          handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "upperLanding", "upper");
+          handlePlayerMovesTiles("upperLanding", "upper");
           handleTraitChange("mental", 1, "lose");
         }
       }, 0);
@@ -1058,7 +1054,7 @@ let cards = [
     effect: async (player, hauntValue, hauntStarted) => {
       let roll = await handleDiceRoll(player.stats.speed);
       if (roll === 0) {
-        handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), "basementLanding", "basement");
+        handlePlayerMovesTiles("basementLanding", "basement");
         let roll = await handleDiceRoll(1);
         handleTraitChange("physical", roll, "lose");
       } else if (roll <= 3) {
@@ -1079,7 +1075,7 @@ let cards = [
       let conservatory = usedTiles.filter((tile) => tile.name === "conservatory");
       if (conservatory[0]) {
         setTimeout(() => {
-          handlePlayerMovesTiles(player.currentTile.name.replaceAll(" ", ""), conservatory[0].name, "ground");
+          handlePlayerMovesTiles(conservatory[0].name, "ground");
         });
       }
       let tiles = [];
@@ -1093,7 +1089,6 @@ let cards = [
       });
       await makeTilesButtons(tiles, 1);
       handlePlayerMovesTiles(
-        player.currentTile.name.replaceAll(" ", ""),
         selectedTiles[0].name.replaceAll(" ", ""),
         selectedTiles[0].element.parentElement.classList[1]
       );
@@ -1141,7 +1136,6 @@ let cards = [
         });
         await makeTilesButtons(tiles, 1);
         handlePlayerMovesTiles(
-          player.currentTile.name.replaceAll(" ", ""),
           selectedTiles[0].name.replaceAll(" ", ""),
           selectedTiles[0].element.parentElement.classList[1]
         );
@@ -1155,7 +1149,6 @@ let cards = [
         });
         await makeTilesButtons(tiles, 1);
         handlePlayerMovesTiles(
-          player.currentTile.name.replaceAll(" ", ""),
           selectedTiles[0].name.replaceAll(" ", ""),
           selectedTiles[0].element.parentElement.classList[1]
         );
@@ -1172,7 +1165,6 @@ let cards = [
         });
         await makeTilesButtons(tiles, 1);
         handlePlayerMovesTiles(
-          player.currentTile.name.replaceAll(" ", ""),
           selectedTiles[0].name.replaceAll(" ", ""),
           selectedTiles[0].element.parentElement.classList[1]
         );
