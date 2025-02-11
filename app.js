@@ -372,9 +372,10 @@ export function renderPlayerCards() {
 
 async function handlePlayerMovement() {
     if (
-        isRotating ||
-        activePlayer.stats.speed === activePlayer.movesThisTurn ||
-        symbolFound
+        isRotating
+        // ||
+        // activePlayer.stats.speed === activePlayer.movesThisTurn ||
+        // symbolFound
     ) {
         return;
     }
@@ -426,7 +427,7 @@ async function handlePlayerMovement() {
         );
     });
 
-    if (!existingTile) {
+    if (!existingTile && direction !== "vertical") {
         let previousTile = movingToTile;
         movingToTile = getTileData();
         if (movingToTile === undefined) {
@@ -478,7 +479,7 @@ async function handlePlayerMovement() {
         endTurnBtn.removeEventListener("click", handleEndOfTurn);
 
         await handleRotateTile(newTile);
-        handlePlayerGainsCard(movingToTile);
+        // handlePlayerGainsCard(movingToTile); //TESTING
 
         if (movingToTile.type === "discover") {
             movingToTile.effect(playerInfo, activePlayer);
@@ -710,11 +711,10 @@ export async function checkTileAdjacent(tile) {
     removeTileButton(tiles);
 }
 
-export function handlePlayerMovesTiles(opposite, level) {
+export async function handlePlayerMovesTiles(opposite, level) {
     if (!opposite) {
         return false;
     }
-    console.log(opposite);
     let row;
     let column;
     let newCurrentTile;
@@ -728,9 +728,11 @@ export function handlePlayerMovesTiles(opposite, level) {
     if (!newCurrentTile) {
         return false;
     }
-    activePlayer.currentTile = newCurrentTile;
-    switchBoards(level);
-    positionPlayers("mid", level, [row, column]);
+    setTimeout(() => {
+        activePlayer.currentTile = newCurrentTile;
+        switchBoards(level);
+        positionPlayers("mid", level, [row, column]);
+    }, 1);
 }
 
 async function handleEndOfTurn() {
