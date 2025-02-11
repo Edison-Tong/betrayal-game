@@ -372,10 +372,9 @@ export function renderPlayerCards() {
 
 async function handlePlayerMovement() {
     if (
-        isRotating
-        // ||
-        // activePlayer.stats.speed === activePlayer.movesThisTurn ||
-        // symbolFound
+        isRotating ||
+        activePlayer.stats.speed === activePlayer.movesThisTurn ||
+        symbolFound
     ) {
         return;
     }
@@ -479,7 +478,7 @@ async function handlePlayerMovement() {
         endTurnBtn.removeEventListener("click", handleEndOfTurn);
 
         await handleRotateTile(newTile);
-        // handlePlayerGainsCard(movingToTile); //TESTING
+        handlePlayerGainsCard(movingToTile);
 
         if (movingToTile.type === "discover") {
             movingToTile.effect(playerInfo, activePlayer);
@@ -771,12 +770,12 @@ function handleEndOfTurnEvents() {
 }
 
 export async function handleDiceRoll(diceAmount) {
+    let extraDice = await getExtraDice();
     diceRolling = true;
     rollBtn.style.display = "inline";
     totalDisplay.innerHTML = "Rolling...";
-
     let interval;
-
+    diceAmount += extraDice;
     // Show only the specified number of dice
     for (let i = 0; i < dice.length; i++) {
         dice[i].style.display = i < diceAmount ? "inline-block" : "none";
@@ -803,7 +802,7 @@ export async function handleDiceRoll(diceAmount) {
                 for (let i = 0; i < diceAmount; i++) {
                     total += parseInt(dice[i].dataset.value, 10);
                 }
-
+                // FUNCTION TO ADD TO THE TOTAL IF CORRESPONDING ITEM OR OMEN IS POSSESSED BY THE PLAYER
                 totalDisplay.innerHTML = `Your roll: ${total}`;
                 resolve(total); // Resolve the promise with the computed total
             },
@@ -811,11 +810,25 @@ export async function handleDiceRoll(diceAmount) {
         ); // Ensure the event fires only once
     });
     diceRolling = false;
-
     return total;
 }
 
+async function getExtraDice() {
+    let extras = await new Promise((resolve) => {
+        let extras = 0;
+        if (activePlayer.currentTile.token) {
+            if (activePlayer.currentTile.token.type === "blessing") {
+                extras = 1;
+            }
+        }
+        // FUNCTION TO ASK PLAYER IF THEY WANT TO USE AN ITEM OR AN OMEN
+        resolve(extras);
+    });
+    return extras;
+}
+
 export function handleTraitChange(type, amount, gainOrLose) {
+    if (amount === 0) return;
     traitChanging = true;
     return new Promise((resolve, reject) => {
         try {
@@ -994,6 +1007,12 @@ export function placeToken(type, amount, tiles) {
     movingToTile.element.append(tokenElement);
     movingToTile.token = token;
 }
+
+document.addEventListener("keydown", () => {
+    if (event.key === "a") {
+        handleDiceRoll(4);
+    }
+});
 
 function setTracker() {
     if (trackerValue === 8) {

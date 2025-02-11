@@ -84,24 +84,24 @@ let tiles = [
     //     }
     //   },
     // },
-    {
-        name: "ballroom",
-        type: "normal",
-        floors: { basement: false, ground: true, upper: false },
-        doors: ["top", "right", "bottom", "left"],
-        image: "Ballroom.png",
-        symbol: "omen",
-        message: "none",
-    },
-    {
-        name: "bloody Room",
-        type: "normal",
-        floors: { basement: false, ground: true, upper: true },
-        doors: ["top", "right"],
-        image: "Bloody_Room.png",
-        symbol: "item",
-        message: "none",
-    },
+    // {
+    //     name: "ballroom",
+    //     type: "normal",
+    //     floors: { basement: false, ground: true, upper: false },
+    //     doors: ["top", "right", "bottom", "left"],
+    //     image: "Ballroom.png",
+    //     symbol: "omen",
+    //     message: "none",
+    // },
+    // {
+    //     name: "bloody Room",
+    //     type: "normal",
+    //     floors: { basement: false, ground: true, upper: true },
+    //     doors: ["top", "right"],
+    //     image: "Bloody_Room.png",
+    //     symbol: "item",
+    //     message: "none",
+    // },
     // {
     //   name: "catacombs",
     //   type: "normal",
@@ -111,31 +111,31 @@ let tiles = [
     //   symbol: "omen",
     //   message: "none",
     // },
-    {
-        name: "chapel",
-        type: "discover",
-        floors: { basement: false, ground: true, upper: false },
-        doors: ["top", "bottom"],
-        image: "Chapel.png",
-        symbol: "omen",
-        message: `When you discover this tile, gain 1 Sanity`,
-        effect: (playerInfo, activePlayer) => {
-            let playerStatsInfo =
-                playerInfo[activePlayer.id.replace("p", "")].stats;
-            playerStatsInfo.sanity.index++;
-            activePlayer.stats.sanity =
-                playerStatsInfo.sanity.slider[playerStatsInfo.sanity.index];
-        },
-    },
-    {
-        name: "charred Room",
-        type: "normal",
-        floors: { basement: false, ground: true, upper: true },
-        doors: ["top", "right"],
-        image: "Charred_Room.png",
-        symbol: "omen",
-        message: "none",
-    },
+    // {
+    //     name: "chapel",
+    //     type: "discover",
+    //     floors: { basement: false, ground: true, upper: false },
+    //     doors: ["top", "bottom"],
+    //     image: "Chapel.png",
+    //     symbol: "omen",
+    //     message: `When you discover this tile, gain 1 Sanity`,
+    //     effect: (playerInfo, activePlayer) => {
+    //         let playerStatsInfo =
+    //             playerInfo[activePlayer.id.replace("p", "")].stats;
+    //         playerStatsInfo.sanity.index++;
+    //         activePlayer.stats.sanity =
+    //             playerStatsInfo.sanity.slider[playerStatsInfo.sanity.index];
+    //     },
+    // },
+    // {
+    //     name: "charred Room",
+    //     type: "normal",
+    //     floors: { basement: false, ground: true, upper: true },
+    //     doors: ["top", "right"],
+    //     image: "Charred_Room.png",
+    //     symbol: "omen",
+    //     message: "none",
+    // },
     // {
     //   name: "chasm",
     //   type: "normal",
@@ -145,35 +145,35 @@ let tiles = [
     //   symbol: "event",
     //   message: "none",
     // },
+    // {
+    //     name: "collapsed Room",
+    //     type: "normal",
+    //     floors: { basement: false, ground: true, upper: true },
+    //     doors: ["top", "right"],
+    //     image: "Collapsed_Room.png",
+    //     symbol: "none",
+    //     message: `If you end your tur on this tile, make a speed roll. <br>
+    //                       5+: Nothing happens. <br>
+    //                       4-0: Place your explorer on the Basement Landing and take one die of Physical damage`,
+    // },
+    // {
+    //     name: "conservatory",
+    //     type: "normal",
+    //     floors: { basement: false, ground: true, upper: false },
+    //     doors: ["top", "bottom"],
+    //     image: "Conservatory.png",
+    //     symbol: "item",
+    //     message: "none",
+    // },
     {
-        name: "collapsed Room",
+        name: "cramped Passageway",
         type: "normal",
-        floors: { basement: false, ground: true, upper: true },
-        doors: ["top", "right"],
-        image: "Collapsed_Room.png",
-        symbol: "none",
-        message: `If you end your tur on this tile, make a speed roll. <br>
-                          5+: Nothing happens. <br>
-                          4-0: Place your explorer on the Basement Landing and take one die of Physical damage`,
-    },
-    {
-        name: "conservatory",
-        type: "normal",
-        floors: { basement: false, ground: true, upper: false },
-        doors: ["top", "bottom"],
-        image: "Conservatory.png",
-        symbol: "item",
+        floors: { basement: true, ground: true, upper: true },
+        doors: ["top", "right", "bottom", "left"],
+        image: "Cramped_Passageway.png",
+        symbol: "event",
         message: "none",
     },
-    // {
-    //   name: "cramped Passageway",
-    //   type: "normal",
-    //   floors: { basement: true, ground: true, upper: true },
-    //   doors: ["top", "right", "bottom", "left"],
-    //   image: "Cramped_Passageway.png",
-    //   symbol: "event",
-    //   message: "none",
-    // },
     // {
     //   name: "crawlspace",
     //   type: "normal",
@@ -183,15 +183,15 @@ let tiles = [
     //   symbol: "event",
     //   message: "none",
     // },
-    {
-        name: "dining Room",
-        type: "normal",
-        floors: { basement: false, ground: true, upper: false },
-        doors: ["top", "right", "bottom", "left"],
-        image: "Dining_Room.png",
-        symbol: "event",
-        message: "none",
-    },
+    // {
+    //     name: "dining Room",
+    //     type: "normal",
+    //     floors: { basement: false, ground: true, upper: false },
+    //     doors: ["top", "right", "bottom", "left"],
+    //     image: "Dining_Room.png",
+    //     symbol: "event",
+    //     message: "none",
+    // },
     // {
     //   name: "furnace Room",
     //   type: "normal",
@@ -201,15 +201,15 @@ let tiles = [
     //   symbol: "event",
     //   message: `If you end your turn on this tile, take one die of Physical damage`,
     // },
-    {
-        name: "gallery",
-        type: "normal",
-        floors: { basement: false, ground: false, upper: true },
-        doors: ["top", "bottom"],
-        image: "Gallery.png",
-        symbol: "event",
-        message: `Leads to Ballroom`,
-    },
+    // {
+    //     name: "gallery",
+    //     type: "normal",
+    //     floors: { basement: false, ground: false, upper: true },
+    //     doors: ["top", "bottom"],
+    //     image: "Gallery.png",
+    //     symbol: "event",
+    //     message: `Leads to Ballroom`,
+    // },
     // {
     //   name: "game Room",
     //   type: "normal",
@@ -219,24 +219,24 @@ let tiles = [
     //   symbol: "item",
     //   message: "none",
     // },
-    {
-        name: "graveyard",
-        type: "normal",
-        floors: { basement: false, ground: true, upper: false },
-        doors: ["top", "right"],
-        image: "Graveyard.png",
-        symbol: "omen",
-        message: `Leads to the Underground Cavern`,
-    },
-    {
-        name: "guest Quarters",
-        type: "normal",
-        floors: { basement: false, ground: true, upper: true },
-        doors: ["top", "right"],
-        image: "Guest_Quarters.png",
-        symbol: "event",
-        message: "none",
-    },
+    // {
+    //     name: "graveyard",
+    //     type: "normal",
+    //     floors: { basement: false, ground: true, upper: false },
+    //     doors: ["top", "right"],
+    //     image: "Graveyard.png",
+    //     symbol: "omen",
+    //     message: `Leads to the Underground Cavern`,
+    // },
+    // {
+    //     name: "guest Quarters",
+    //     type: "normal",
+    //     floors: { basement: false, ground: true, upper: true },
+    //     doors: ["top", "right"],
+    //     image: "Guest_Quarters.png",
+    //     symbol: "event",
+    //     message: "none",
+    // },
     // {
     //   name: "gymnasium",
     //   type: "discover",
@@ -251,81 +251,81 @@ let tiles = [
     //     activePlayer.stats.speed = playerStatsInfo.speed.slider[playerStatsInfo.speed.index];
     //   },
     // },
-    {
-        name: "junk Room",
-        type: "discover",
-        floors: { basement: false, ground: true, upper: true },
-        doors: ["top", "right", "bottom"],
-        image: "Junk_Room.png",
-        symbol: "item",
-        message: `When you discover this tile, place an Obstacle token on it`,
-        effect: () => {
-            console.log("JUNK ROOM");
-        },
-    },
-    {
-        name: "kitchen",
-        type: "normal",
-        floors: { basement: false, ground: true, upper: false },
-        doors: ["top", "bottom"],
-        image: "Kitchen.png",
-        symbol: "event",
-        message: "none",
-    },
-    {
-        name: "laboratory",
-        type: "normal",
-        floors: { basement: false, ground: true, upper: false },
-        doors: ["top", "right"],
-        image: "Laboratory.png",
-        symbol: "event",
-        message: "none",
-    },
-    {
-        name: "larder",
-        type: "discover",
-        floors: { basement: false, ground: true, upper: false },
-        doors: ["top", "left"],
-        image: "Larder.png",
-        symbol: "none",
-        message: `When you discover this tile, gain 1 Might`,
-        effect: (playerInfo, activePlayer) => {
-            let playerStatsInfo =
-                playerInfo[activePlayer.id.replace("p", "")].stats;
-            playerStatsInfo.might.index++;
-            activePlayer.stats.might =
-                playerStatsInfo.might.slider[playerStatsInfo.might.index];
-        },
-    },
-    {
-        name: "laundry Chute",
-        type: "normal",
-        floors: { basement: false, ground: true, upper: false },
-        doors: ["top"],
-        image: "Laundry_Chute.png",
-        symbol: "none",
-        message: `Leads to the Basement Landing. <br>
-                        If you end your turn on this tile,
-                        place your explorer on the Basement Landing`,
-    },
-    {
-        name: "library",
-        type: "discover",
-        floors: { basement: false, ground: true, upper: true },
-        doors: ["top", "right", "bottom"],
-        image: "Library.png",
-        symbol: "omen",
-        message: `When you discover this tile, gain 1 Knowledge`,
-        effect: (playerInfo, activePlayer) => {
-            let playerStatsInfo =
-                playerInfo[activePlayer.id.replace("p", "")].stats;
-            playerStatsInfo.knowledge.index++;
-            activePlayer.stats.knowledge =
-                playerStatsInfo.knowledge.slider[
-                    playerStatsInfo.knowledge.index
-                ];
-        },
-    },
+    // {
+    //     name: "junk Room",
+    //     type: "discover",
+    //     floors: { basement: false, ground: true, upper: true },
+    //     doors: ["top", "right", "bottom"],
+    //     image: "Junk_Room.png",
+    //     symbol: "item",
+    //     message: `When you discover this tile, place an Obstacle token on it`,
+    //     effect: () => {
+    //         console.log("JUNK ROOM");
+    //     },
+    // },
+    // {
+    //     name: "kitchen",
+    //     type: "normal",
+    //     floors: { basement: false, ground: true, upper: false },
+    //     doors: ["top", "bottom"],
+    //     image: "Kitchen.png",
+    //     symbol: "event",
+    //     message: "none",
+    // },
+    // {
+    //     name: "laboratory",
+    //     type: "normal",
+    //     floors: { basement: false, ground: true, upper: false },
+    //     doors: ["top", "right"],
+    //     image: "Laboratory.png",
+    //     symbol: "event",
+    //     message: "none",
+    // },
+    // {
+    //     name: "larder",
+    //     type: "discover",
+    //     floors: { basement: false, ground: true, upper: false },
+    //     doors: ["top", "left"],
+    //     image: "Larder.png",
+    //     symbol: "none",
+    //     message: `When you discover this tile, gain 1 Might`,
+    //     effect: (playerInfo, activePlayer) => {
+    //         let playerStatsInfo =
+    //             playerInfo[activePlayer.id.replace("p", "")].stats;
+    //         playerStatsInfo.might.index++;
+    //         activePlayer.stats.might =
+    //             playerStatsInfo.might.slider[playerStatsInfo.might.index];
+    //     },
+    // },
+    // {
+    //     name: "laundry Chute",
+    //     type: "normal",
+    //     floors: { basement: false, ground: true, upper: false },
+    //     doors: ["top"],
+    //     image: "Laundry_Chute.png",
+    //     symbol: "none",
+    //     message: `Leads to the Basement Landing. <br>
+    //                     If you end your turn on this tile,
+    //                     place your explorer on the Basement Landing`,
+    // },
+    // {
+    //     name: "library",
+    //     type: "discover",
+    //     floors: { basement: false, ground: true, upper: true },
+    //     doors: ["top", "right", "bottom"],
+    //     image: "Library.png",
+    //     symbol: "omen",
+    //     message: `When you discover this tile, gain 1 Knowledge`,
+    //     effect: (playerInfo, activePlayer) => {
+    //         let playerStatsInfo =
+    //             playerInfo[activePlayer.id.replace("p", "")].stats;
+    //         playerStatsInfo.knowledge.index++;
+    //         activePlayer.stats.knowledge =
+    //             playerStatsInfo.knowledge.slider[
+    //                 playerStatsInfo.knowledge.index
+    //             ];
+    //     },
+    // },
     // {
     //   name: "mystic Elevator",
     //   type: "normal",
@@ -349,15 +349,15 @@ let tiles = [
     //   symbol: "omen",
     //   message: "none",
     // },
-    {
-        name: "observatory",
-        type: "normal",
-        floors: { basement: false, ground: false, upper: true },
-        doors: ["top", "right", "bottom"],
-        image: "Observatory.png",
-        symbol: "omen",
-        message: "none",
-    },
+    // {
+    //     name: "observatory",
+    //     type: "normal",
+    //     floors: { basement: false, ground: false, upper: true },
+    //     doors: ["top", "right", "bottom"],
+    //     image: "Observatory.png",
+    //     symbol: "omen",
+    //     message: "none",
+    // },
     // {
     //   name: "operating Theatre",
     //   type: "normal",
@@ -391,15 +391,15 @@ let tiles = [
     //     console.log("PANIC ROOM");
     //   },
     // },
-    {
-        name: "primary Bedroom",
-        type: "normal",
-        floors: { basement: false, ground: true, upper: true },
-        doors: ["top", "right", "bottom"],
-        image: "Primary_Bedroom.png",
-        symbol: "omen",
-        message: "none",
-    },
+    // {
+    //     name: "primary Bedroom",
+    //     type: "normal",
+    //     floors: { basement: false, ground: true, upper: true },
+    //     doors: ["top", "right", "bottom"],
+    //     image: "Primary_Bedroom.png",
+    //     symbol: "omen",
+    //     message: "none",
+    // },
     // {
     //   name: "ritual Room",
     //   type: "normal",
@@ -409,24 +409,24 @@ let tiles = [
     //   symbol: "omen",
     //   message: "none",
     // },
-    {
-        name: "salon",
-        type: "normal",
-        floors: { basement: false, ground: true, upper: true },
-        doors: ["top", "right"],
-        image: "Salon.png",
-        symbol: "event",
-        message: "none",
-    },
-    {
-        name: "secret Staircase",
-        type: "normal",
-        floors: { basement: true, ground: false, upper: false },
-        doors: ["top"],
-        image: "Secret_Staircase.png",
-        symbol: "none",
-        message: `Leads to the Hallway`,
-    },
+    // {
+    //     name: "salon",
+    //     type: "normal",
+    //     floors: { basement: false, ground: true, upper: true },
+    //     doors: ["top", "right"],
+    //     image: "Salon.png",
+    //     symbol: "event",
+    //     message: "none",
+    // },
+    // {
+    //     name: "secret Staircase",
+    //     type: "normal",
+    //     floors: { basement: true, ground: false, upper: false },
+    //     doors: ["top"],
+    //     image: "Secret_Staircase.png",
+    //     symbol: "none",
+    //     message: `Leads to the Hallway`,
+    // },
     // {
     //   name: "soundproofed Room",
     //   type: "normal",
@@ -436,33 +436,33 @@ let tiles = [
     //   symbol: "omen",
     //   message: "none",
     // },
-    {
-        name: "specimen Room",
-        type: "normal",
-        floors: { basement: false, ground: true, upper: true },
-        doors: ["right", "left"],
-        image: "Specimen_Room.png",
-        symbol: "omen",
-        message: "none",
-    },
-    {
-        name: "statuary Corridor",
-        type: "normal",
-        floors: { basement: false, ground: false, upper: true },
-        doors: ["top", "bottom"],
-        image: "Statuary_Corridor.png",
-        symbol: "event",
-        message: "none",
-    },
-    {
-        name: "tower",
-        type: "normal",
-        floors: { basement: false, ground: false, upper: true },
-        doors: ["top", "bottom"],
-        image: "Tower.png",
-        symbol: "event",
-        message: "none",
-    },
+    // {
+    //     name: "specimen Room",
+    //     type: "normal",
+    //     floors: { basement: false, ground: true, upper: true },
+    //     doors: ["right", "left"],
+    //     image: "Specimen_Room.png",
+    //     symbol: "omen",
+    //     message: "none",
+    // },
+    // {
+    //     name: "statuary Corridor",
+    //     type: "normal",
+    //     floors: { basement: false, ground: false, upper: true },
+    //     doors: ["top", "bottom"],
+    //     image: "Statuary_Corridor.png",
+    //     symbol: "event",
+    //     message: "none",
+    // },
+    // {
+    //     name: "tower",
+    //     type: "normal",
+    //     floors: { basement: false, ground: false, upper: true },
+    //     doors: ["top", "bottom"],
+    //     image: "Tower.png",
+    //     symbol: "event",
+    //     message: "none",
+    // },
     // {
     //   name: "underground Cavern",
     //   type: "normal",
@@ -493,15 +493,15 @@ let tiles = [
     //     handlePlayerGainsCard();
     //   },
     // },
-    {
-        name: "winter Bedroom",
-        type: "normal",
-        floors: { basement: false, ground: true, upper: true },
-        doors: ["top", "right"],
-        image: "Winter_Bedroom.png",
-        symbol: "omen",
-        message: "none",
-    },
+    // {
+    //     name: "winter Bedroom",
+    //     type: "normal",
+    //     floors: { basement: false, ground: true, upper: true },
+    //     doors: ["top", "right"],
+    //     image: "Winter_Bedroom.png",
+    //     symbol: "omen",
+    //     message: "none",
+    // },
 ];
 
 export default tiles;
