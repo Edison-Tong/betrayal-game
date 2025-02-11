@@ -502,7 +502,6 @@ async function handlePlayerMovement() {
     }
     checkForObstacles();
     activePlayer.movesThisTurn += 1;
-    console.log(activePlayer.movesThisTurn);
     movingToTile.message === "none"
         ? (tileMessageBox.style.display = "none")
         : ((tileMessageBox.style.display = "block"),
@@ -518,7 +517,6 @@ async function handlePlayerMovement() {
 function checkForObstacles() {
     if (previousTile.token) {
         if (previousTile.token.type === "obstacle") {
-            console.log(previousTile.token.type);
             activePlayer.movesThisTurn += 1;
         }
     }
@@ -721,6 +719,7 @@ export async function checkTileAdjacent(tile) {
     removeTileButton(tiles);
 }
 
+// ISSUE MOVING FROM GALLERY TO BALLROOM
 export async function handlePlayerMovesTiles(opposite, level) {
     if (!opposite) {
         return false;
@@ -949,10 +948,6 @@ export function getPlayerChoice(options, message) {
     });
 }
 
-function getSelectedTiles(tile) {
-    console.log(tile);
-}
-
 export function makeTilesButtons(tiles, amount) {
     tileChoosing = true;
     let clickCount = 0;
@@ -963,7 +958,6 @@ export function makeTilesButtons(tiles, amount) {
             let handler = (event) => {
                 clickCount++;
                 selectedTiles.push(tile);
-                getSelectedTiles(tile);
                 tile.element.removeEventListener("click", handler);
                 tile.element.classList.remove("tile-button");
 
