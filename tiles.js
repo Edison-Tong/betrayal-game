@@ -2,6 +2,7 @@ import {
     renderPlayerCards,
     handlePlayerGainsCard,
     displayCardInfo,
+    placeToken,
 } from "./app.js";
 import cards from "./cards.js";
 
@@ -87,15 +88,15 @@ let tiles = [
     //         }
     //     },
     // },
-    {
-        name: "ballroom",
-        type: "normal",
-        floors: { basement: false, ground: true, upper: false },
-        doors: ["top", "right", "bottom", "left"],
-        image: "Ballroom.png",
-        symbol: "omen",
-        message: "none",
-    },
+    // {
+    //     name: "ballroom",
+    //     type: "normal",
+    //     floors: { basement: false, ground: true, upper: false },
+    //     doors: ["top", "right", "bottom", "left"],
+    //     image: "Ballroom.png",
+    //     symbol: "omen",
+    //     message: "none",
+    // },
     // {
     //     name: "bloody Room",
     //     type: "normal",
@@ -204,15 +205,15 @@ let tiles = [
     //     symbol: "event",
     //     message: `If you end your turn on this tile, take one die of Physical damage`,
     // },
-    {
-        name: "gallery",
-        type: "normal",
-        floors: { basement: false, ground: false, upper: true },
-        doors: ["top", "bottom"],
-        image: "Gallery.png",
-        symbol: "event",
-        message: `Leads to Ballroom`,
-    },
+    // {
+    //     name: "gallery",
+    //     type: "normal",
+    //     floors: { basement: false, ground: false, upper: true },
+    //     doors: ["top", "bottom"],
+    //     image: "Gallery.png",
+    //     symbol: "event",
+    //     message: `Leads to Ballroom`,
+    // },
     // {
     //     name: "game Room",
     //     type: "normal",
@@ -256,18 +257,19 @@ let tiles = [
     //             playerStatsInfo.speed.slider[playerStatsInfo.speed.index];
     //     },
     // },
-    // {
-    //     name: "junk Room",
-    //     type: "discover",
-    //     floors: { basement: false, ground: true, upper: true },
-    //     doors: ["top", "right", "bottom"],
-    //     image: "Junk_Room.png",
-    //     symbol: "item",
-    //     message: `When you discover this tile, place an Obstacle token on it`,
-    //     effect: () => {
-    //         console.log("JUNK ROOM");
-    //     },
-    // },
+    {
+        name: "junk Room",
+        type: "discover",
+        floors: { basement: false, ground: true, upper: true },
+        doors: ["top", "right", "bottom"],
+        image: "Junk_Room.png",
+        symbol: "item",
+        message: `When you discover this tile, place an Obstacle token on it`,
+        effect: () => {
+            console.log("JUNK ROOM");
+            placeToken("obstacle");
+        },
+    },
     // {
     //     name: "kitchen",
     //     type: "normal",

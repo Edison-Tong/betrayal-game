@@ -38,6 +38,7 @@ let symbolFound;
 let diceRolling = false;
 let traitChanging = false;
 let tileChoosing = false;
+let firstMove = true;
 
 export let movementTiles = {
     groundFloorStaircase: {
@@ -506,6 +507,14 @@ async function handlePlayerMovement() {
     }
     checkForObstacles();
     activePlayer.movesThisTurn += 1;
+
+    if (activePlayer.movesThisTurn > activePlayer.stats.speed) {
+        if (!firstMove) {
+            return;
+        }
+    }
+
+    firstMove = false;
     movingToTile.message === "none"
         ? (tileMessageBox.style.display = "none")
         : ((tileMessageBox.style.display = "block"),
@@ -763,6 +772,7 @@ async function handleEndOfTurn() {
         renderPlayerStats();
         renderPlayerCards();
         symbolFound = false;
+        firstMove = true;
         endTurnBtn.addEventListener("click", handleEndOfTurn);
     }
 }
