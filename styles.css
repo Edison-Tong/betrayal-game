@@ -283,6 +283,7 @@ button.hidden {
     right: 10px;
     padding-top: 30px;
 }
+
 .player-cards.hidden {
     display: none;
 }
@@ -304,7 +305,6 @@ button.hidden {
 }
 
 .card {
-    display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;

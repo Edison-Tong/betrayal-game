@@ -122,6 +122,7 @@ let cards = [
     {
         name: "creepy Doll",
         type: "item",
+        subtype: "trait roll",
         weapon: false,
         ability:
             "Once during your turn, you may use the Creep Doll to reroll all dice on a trait roll you just made. <br><br> Then lose one sanity",

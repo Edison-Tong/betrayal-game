@@ -376,6 +376,7 @@ export function renderPlayerCards() {
         cardAbility.innerHTML = card.ability;
         newCard.append(cardAbility);
         cardBtn.innerHTML = "use";
+        cardBtn.classList.add("hidden");
         newCard.append(cardBtn);
         activePlayer.cards[i].element = newCard;
     });
@@ -859,6 +860,7 @@ export async function handleDiceRoll(diceAmount, rollType) {
                         (child) => child.innerHTML === "use"
                     )[0];
                 }
+                button.classList.remove("hidden");
                 button.addEventListener("click", () => {
                     clearInterval(interval);
                     rollBtn.style.display = "none";
