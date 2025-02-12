@@ -406,7 +406,24 @@ async function handlePlayerMovement() {
         } else if (key === "Enter") {
             direction = "vertical";
             let moveToTile = activePlayer.currentTile.name.replaceAll(" ", "");
+            let otherPassage;
+            let nextFloor;
             if (
+                activePlayer.currentTile.token &&
+                activePlayer.currentTile.token.type === "secret passage"
+            ) {
+                usedTiles.forEach((tile) => {
+                    if (
+                        tile.token &&
+                        tile.token.type === "secret passage" &&
+                        tile.name !== activePlayer.currentTile.name
+                    ) {
+                        otherPassage = tile.name.replaceAll(" ", "");
+                        nextFloor = tile.element.parentElement.classList[1];
+                    }
+                });
+                handlePlayerMovesTiles(otherPassage, nextFloor);
+            } else if (
                 handlePlayerMovesTiles(
                     movementTiles[moveToTile].opposite,
                     movementTiles[moveToTile].connectingFloor
@@ -826,6 +843,8 @@ export async function handleDiceRoll(diceAmount) {
                 for (let i = 0; i < diceAmount; i++) {
                     total += parseInt(dice[i].dataset.value, 10);
                 }
+
+                total = 4;
                 // FUNCTION TO ADD TO THE TOTAL IF CORRESPONDING ITEM OR OMEN IS POSSESSED BY THE PLAYER
                 totalDisplay.innerHTML = `Your roll: ${total}`;
                 resolve(total); // Resolve the promise with the computed total
@@ -1028,6 +1047,7 @@ export function placeToken(type, tile) {
         movingToTile.token = token;
     } else {
         tile.element.append(tokenElement);
+        tile.token = token;
     }
 }
 

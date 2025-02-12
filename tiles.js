@@ -169,15 +169,15 @@ let tiles = [
     //     symbol: "item",
     //     message: "none",
     // },
-    // {
-    //     name: "cramped Passageway",
-    //     type: "normal",
-    //     floors: { basement: true, ground: true, upper: true },
-    //     doors: ["top", "right", "bottom", "left"],
-    //     image: "Cramped_Passageway.png",
-    //     symbol: "event",
-    //     message: "none",
-    // },
+    {
+        name: "cramped Passageway",
+        type: "normal",
+        floors: { basement: true, ground: true, upper: true },
+        doors: ["top", "right", "bottom", "left"],
+        image: "Cramped_Passageway.png",
+        symbol: "event",
+        message: "none",
+    },
     // {
     //     name: "crawlspace",
     //     type: "normal",
@@ -257,19 +257,19 @@ let tiles = [
     //             playerStatsInfo.speed.slider[playerStatsInfo.speed.index];
     //     },
     // },
-    {
-        name: "junk Room",
-        type: "discover",
-        floors: { basement: false, ground: true, upper: true },
-        doors: ["top", "right", "bottom"],
-        image: "Junk_Room.png",
-        symbol: "item",
-        message: `When you discover this tile, place an Obstacle token on it`,
-        effect: () => {
-            console.log("JUNK ROOM");
-            placeToken("obstacle");
-        },
-    },
+    // {
+    //     name: "junk Room",
+    //     type: "discover",
+    //     floors: { basement: false, ground: true, upper: true },
+    //     doors: ["top", "right", "bottom"],
+    //     image: "Junk_Room.png",
+    //     symbol: "item",
+    //     message: `When you discover this tile, place an Obstacle token on it`,
+    //     effect: () => {
+    //         console.log("JUNK ROOM");
+    //         placeToken("obstacle");
+    //     },
+    // },
     // {
     //     name: "kitchen",
     //     type: "normal",

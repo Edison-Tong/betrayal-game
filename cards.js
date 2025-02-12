@@ -377,80 +377,80 @@ let cards = [
     //         }
     //     },
     // },
-    // {
-    //     name: "a secret passage",
-    //     type: "event",
-    //     todo: "Place a secret passage token on your tile. <br><br> Make a Knowledge roll.",
-    //     result: "5+: Place another secret Passage token on any other tile. Gain 1 knowledge. <br><br> 3-4: Place another Secret Passage token on any Ground Floor tile. <br><br> 0-2: Place another Secret Passage token on any Basement Tile. Lose 1 Sanity.",
-    //     effect: async (player) => {
-    //         placeToken("secret passage");
+    {
+        name: "a secret passage",
+        type: "event",
+        todo: "Place a secret passage token on your tile. <br><br> Make a Knowledge roll.",
+        result: "5+: Place another secret Passage token on any other tile. Gain 1 knowledge. <br><br> 3-4: Place another Secret Passage token on any Ground Floor tile. <br><br> 0-2: Place another Secret Passage token on any Basement Tile. Lose 1 Sanity.",
+        effect: async (player) => {
+            placeToken("secret passage");
 
-    //         let roll = await handleDiceRoll(player.stats.knowledge);
-    //         if (roll <= 2) {
-    //             let tiles = [];
-    //             usedTiles.forEach((tile) => {
-    //                 if (
-    //                     tile.element.parentElement.classList[1] === "basement"
-    //                 ) {
-    //                     if (tile.token) {
-    //                         if (tile.token.type === "secret passage") {
-    //                             return;
-    //                         }
-    //                     }
-    //                     tiles.push(tile);
-    //                 }
-    //             });
-    //             let tile = await makeTilesButtons(tiles, 1);
-    //             placeToken("secret passage", tile);
-    //             removeTileButton(tiles);
+            let roll = await handleDiceRoll(player.stats.knowledge);
+            if (roll <= 2) {
+                let tiles = [];
+                usedTiles.forEach((tile) => {
+                    if (
+                        tile.element.parentElement.classList[1] === "basement"
+                    ) {
+                        if (tile.token) {
+                            if (tile.token.type === "secret passage") {
+                                return;
+                            }
+                        }
+                        tiles.push(tile);
+                    }
+                });
+                let tile = await makeTilesButtons(tiles, 1);
+                placeToken("secret passage", tile);
+                removeTileButton(tiles);
 
-    //             let playerStatsInfo =
-    //                 playerInfo[player.id.replace("p", "")].stats;
-    //             playerStatsInfo.sanity.index--;
-    //             renderPlayerStats();
-    //         } else if (roll <= 4) {
-    //             let tiles = [];
-    //             usedTiles.forEach((tile) => {
-    //                 if (tile.element.parentElement.classList[1] === "ground") {
-    //                     if (tile.token) {
-    //                         if (tile.token.type === "secret passage") {
-    //                             return;
-    //                         }
-    //                     }
-    //                     tiles.push(tile);
-    //                 }
-    //             });
-    //             let tile = await makeTilesButtons(tiles, 1);
-    //             placeToken("secret passage", tile);
-    //             removeTileButton(tiles);
-    //         } else {
-    //             let tiles = [];
-    //             usedTiles.forEach((tile) => {
-    //                 if (
-    //                     tile.element.parentElement.classList[1] ===
-    //                         "basement" ||
-    //                     tile.element.parentElement.classList[1] === "ground" ||
-    //                     tile.element.parentElement.classList[1] === "upper"
-    //                 ) {
-    //                     if (tile.token) {
-    //                         if (tile.token.type === "secret passage") {
-    //                             return;
-    //                         }
-    //                     }
-    //                     tiles.push(tile);
-    //                 }
-    //             });
-    //             let tile = await makeTilesButtons(tiles, 1);
-    //             placeToken("secret passage", tile);
-    //             removeTileButton(tiles);
+                let playerStatsInfo =
+                    playerInfo[player.id.replace("p", "")].stats;
+                playerStatsInfo.sanity.index--;
+                renderPlayerStats();
+            } else if (roll <= 4) {
+                let tiles = [];
+                usedTiles.forEach((tile) => {
+                    if (tile.element.parentElement.classList[1] === "ground") {
+                        if (tile.token) {
+                            if (tile.token.type === "secret passage") {
+                                return;
+                            }
+                        }
+                        tiles.push(tile);
+                    }
+                });
+                let tile = await makeTilesButtons(tiles, 1);
+                placeToken("secret passage", tile);
+                removeTileButton(tiles);
+            } else {
+                let tiles = [];
+                usedTiles.forEach((tile) => {
+                    if (
+                        tile.element.parentElement.classList[1] ===
+                            "basement" ||
+                        tile.element.parentElement.classList[1] === "ground" ||
+                        tile.element.parentElement.classList[1] === "upper"
+                    ) {
+                        if (tile.token) {
+                            if (tile.token.type === "secret passage") {
+                                return;
+                            }
+                        }
+                        tiles.push(tile);
+                    }
+                });
+                let tile = await makeTilesButtons(tiles, 1);
+                placeToken("secret passage", tile);
+                removeTileButton(tiles);
 
-    //             let playerStatsInfo =
-    //                 playerInfo[player.id.replace("p", "")].stats;
-    //             playerStatsInfo.knowledge.index++;
-    //             renderPlayerStats();
-    //         }
-    //     },
-    // },
+                let playerStatsInfo =
+                    playerInfo[player.id.replace("p", "")].stats;
+                playerStatsInfo.knowledge.index++;
+                renderPlayerStats();
+            }
+        },
+    },
     // {
     //     name: "a splash of crimson",
     //     type: "event",
@@ -1193,40 +1193,40 @@ let cards = [
     //         }
     //     },
     // },
-    {
-        // I DID THIS EVENT BUT WHEN I TRIED TO PLACE MY EXPLORER IN THE SAME TILE I WAS CURRENTLY IN I MOVED TO A DIFFERENT TILE
-        name: "the flowering",
-        type: "event",
-        todo: "Take one General damage. Place your explorer on any Basement or Ground floor tile. If the Conservatory tile has been discovered, you must place your explorer there.",
-        result: "",
-        effect: async (player, hauntValue, hauntStarted) => {
-            handleTraitChange("general", 1, "lose");
+    // {
+    //     // I DID THIS EVENT BUT WHEN I TRIED TO PLACE MY EXPLORER IN THE SAME TILE I WAS CURRENTLY IN I MOVED TO A DIFFERENT TILE
+    //     name: "the flowering",
+    //     type: "event",
+    //     todo: "Take one General damage. Place your explorer on any Basement or Ground floor tile. If the Conservatory tile has been discovered, you must place your explorer there.",
+    //     result: "",
+    //     effect: async (player, hauntValue, hauntStarted) => {
+    //         handleTraitChange("general", 1, "lose");
 
-            let conservatory = usedTiles.filter(
-                (tile) => tile.name === "conservatory"
-            );
-            if (conservatory[0]) {
-                setTimeout(() => {
-                    handlePlayerMovesTiles(conservatory[0].name, "ground");
-                });
-            }
-            let tiles = [];
-            usedTiles.forEach((tile) => {
-                if (
-                    tile.element.parentElement.classList[1] === "ground" ||
-                    tile.element.parentElement.classList[1] === "basement"
-                ) {
-                    tiles.push(tile);
-                }
-            });
-            await makeTilesButtons(tiles, 1);
-            handlePlayerMovesTiles(
-                selectedTiles[0].name.replaceAll(" ", ""),
-                selectedTiles[0].element.parentElement.classList[1]
-            );
-            removeTileButton(tiles);
-        },
-    },
+    //         let conservatory = usedTiles.filter(
+    //             (tile) => tile.name === "conservatory"
+    //         );
+    //         if (conservatory[0]) {
+    //             setTimeout(() => {
+    //                 handlePlayerMovesTiles(conservatory[0].name, "ground");
+    //             });
+    //         }
+    //         let tiles = [];
+    //         usedTiles.forEach((tile) => {
+    //             if (
+    //                 tile.element.parentElement.classList[1] === "ground" ||
+    //                 tile.element.parentElement.classList[1] === "basement"
+    //             ) {
+    //                 tiles.push(tile);
+    //             }
+    //         });
+    //         await makeTilesButtons(tiles, 1);
+    //         handlePlayerMovesTiles(
+    //             selectedTiles[0].name.replaceAll(" ", ""),
+    //             selectedTiles[0].element.parentElement.classList[1]
+    //         );
+    //         removeTileButton(tiles);
+    //     },
+    // },
     // {
     //     name: "the house is hungry",
     //     type: "event",
