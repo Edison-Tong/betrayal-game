@@ -13,8 +13,6 @@ import {
     placeToken,
     selectedTiles,
     diceRolling,
-    alterDiceRoll,
-    selectedNumber,
 } from "./app.js";
 import playerInfo from "./playerInfo.js";
 
@@ -83,26 +81,27 @@ let cards = [
     //         "If someonthing would cause your explorer to die, first roll 3 dice. <br><br> 4-6: Instead of dying, set all your traits to critical. <br><br> 0-3 You die as normal.",
     // },
 
-    {
-        name: "angels Feather",
-        type: "item",
-        weapon: false,
-        ability:
-            "When you are required to make a trait roll, you may instead bury the Angles Feather. If you do, choose a number from 0-8. Use that number as the result of the required roll.",
-        special: "",
-        effect: async (card) => {
-            if (!diceRolling) {
-                return;
-            }
-            handlePlayerDiscardsCard(card);
+    // {
+    //     name: "angels Feather",
+    //     type: "item",
+    //     subtype: "trait roll",
+    //     weapon: false,
+    //     ability:
+    //         "When you are required to make a trait roll, you may instead bury the Angles Feather. If you do, choose a number from 0-8. Use that number as the result of the required roll.",
+    //     special: "",
+    //     effect: async (card) => {
+    //         if (!diceRolling) {
+    //             return;
+    //         }
+    //         handlePlayerDiscardsCard(card);
 
-            let answer = await getPlayerChoice(
-                [0, 1, 2, 3, 4, 5, 6, 7, 8],
-                "Pick a number"
-            );
-            return answer;
-        },
-    },
+    //         let answer = await getPlayerChoice(
+    //             [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    //             "Pick a number"
+    //         );
+    //         return answer;
+    //     },
+    // },
     // {
     //     name: "brooch",
     //     type: "item",
@@ -120,14 +119,17 @@ let cards = [
     //         "When you use the Chainsaw to attack, add one die to your attack.",
     //     special: "",
     // },
-    // {
-    //     name: "creepy Doll",
-    //     type: "item",
-    //     weapon: false,
-    //     ability:
-    //         "Once during your turn, you may use the Creep Doll to reroll all dice on a trait roll you just made. <br><br> Then lose one sanity",
-    //     special: "",
-    // },
+    {
+        name: "creepy Doll",
+        type: "item",
+        weapon: false,
+        ability:
+            "Once during your turn, you may use the Creep Doll to reroll all dice on a trait roll you just made. <br><br> Then lose one sanity",
+        special: "",
+        effect: (card) => {
+            console.log(card);
+        },
+    },
     // {
     //     name: "crossbow",
     //     type: "item",
@@ -275,7 +277,7 @@ let cards = [
         todo: "Make a Might roll",
         result: "4+: Nothing happens. <br><br> 2-3: Take 1 Physical damage. <br><br> 0-1: Take 3 Physical damage.",
         effect: async (player) => {
-            let roll = await handleDiceRoll(player.stats.might);
+            let roll = await handleDiceRoll(player.stats.might, "trait");
             if (roll <= 1) {
                 handleTraitChange("physical", 3, "lose");
             } else if (roll <= 3) {
@@ -289,7 +291,7 @@ let cards = [
     //     todo: "Make a Knowledge roll",
     //     result: "4+: Place your explorer on any tile in your region. <br><br> 0-3: Take 1 Mental damage",
     //     effect: async (player) => {
-    //         let roll = await handleDiceRoll(player.stats.knowledge);
+    //         let roll = await handleDiceRoll(player.stats.knowledge, "trait");
     //         if (roll <= 3) {
     //             handleTraitChange("mental", 1, "lose");
     //         } else {
@@ -321,7 +323,7 @@ let cards = [
     //             ["knowledge", "sanity"],
     //             "Do you want to roll with Knowledge or Sanity?"
     //         );
-    //         let roll = await handleDiceRoll(player.stats[trait]);
+    //         let roll = await handleDiceRoll(player.stats[trait], "trait");
     //         if (roll <= 4) {
     //             handleTraitChange("general", 1, "lose");
     //         } else {
@@ -338,7 +340,7 @@ let cards = [
     //     todo: "Make a Knowledge roll",
     //     result: " 4+: Gain 1 Sanity. <br><br> 0-3: Lose 1 Speed",
     //     effect: async (player) => {
-    //         let roll = await handleDiceRoll(player.stats.knowledge);
+    //         let roll = await handleDiceRoll(player.stats.knowledge, "trait");
     //         if (roll <= 3) {
     //             let playerStatsInfo =
     //                 playerInfo[player.id.replace("p", "")].stats;
@@ -363,12 +365,12 @@ let cards = [
     //     },
     // },
     // {
-    //     name: "an eerie feeling",
+    //     name: "an eerie feeling", // MUST NOT BE AFFECTED BY ITEMS OR OMENS SPECIFIC TO TRAIT ROLLS
     //     type: "event",
     //     todo: "Roll 2 dice.",
     //     result: "4: Nothing happens. <br><br> 3: Lose 1 speed. <br><br> 2: Lose 1 Sanity. <br><br> 1: lose 1 Knowledge. <br><br> 0: Lose 1 Might.",
     //     effect: async (player) => {
-    //         let roll = await handleDiceRoll(2);
+    //         let roll = await handleDiceRoll(2, "amount");
     //         if (roll === 0) {
     //             let playerStatsInfo =
     //                 playerInfo[player.id.replace("p", "")].stats;
@@ -400,7 +402,7 @@ let cards = [
     //     effect: async (player) => {
     //         placeToken("secret passage");
 
-    //         let roll = await handleDiceRoll(player.stats.knowledge);
+    //         let roll = await handleDiceRoll(player.stats.knowledge, "trait");
     //         if (roll <= 2) {
     //             let tiles = [];
     //             usedTiles.forEach((tile) => {
@@ -477,10 +479,10 @@ let cards = [
     //             "Do you want to make a haunt roll?"
     //         );
     //         if (hauntStarted === true || answer === "no") {
-    //             let roll = await handleDiceRoll(1);
+    //             let roll = await handleDiceRoll(1, "amount");
     //             handleTraitChange("physical", roll, "lose");
     //         } else if (true) {
-    //             let roll = await handleDiceRoll(hauntValue);
+    //             let roll = await handleDiceRoll(hauntValue, "haunt");
     //             if (roll <= 4) {
     //                 let playerStatsInfo =
     //                     playerInfo[player.id.replace("p", "")].stats;
@@ -509,7 +511,7 @@ let cards = [
     //             playerStatsInfo.sanity.index++;
     //             renderPlayerStats();
     //         } else if (true) {
-    //             let roll = await handleDiceRoll(hauntValue);
+    //             let roll = await handleDiceRoll(hauntValue, "haunt");
     //             if (roll <= 4) {
     //                 let playerStatsInfo =
     //                     playerInfo[player.id.replace("p", "")].stats;
@@ -527,7 +529,7 @@ let cards = [
     //     todo: "Make a Speed roll",
     //     result: "4+: Place your explorer on an adjacent tile. <br><br> 0-3: Take 1 Physical damage.",
     //     effect: async (player) => {
-    //         let roll = await handleDiceRoll(player.stats.speed);
+    //         let roll = await handleDiceRoll(player.stats.speed, "trait");
     //         if (roll <= 3) {
     //             handleTraitChange("physical", 1, "lose");
     //         } else {
@@ -541,7 +543,7 @@ let cards = [
     //     todo: "Make a Speed roll",
     //     result: "4+: Gain 1 Sanity. <br><br> 0-3: Take 1 Physical damage.",
     //     effect: async (player) => {
-    //         let roll = await handleDiceRoll(player.stats.speed);
+    //         let roll = await handleDiceRoll(player.stats.speed, "trait");
     //         if (roll <= 3) {
     //             handleTraitChange("physical", 1, "lose");
     //         } else {
@@ -558,7 +560,7 @@ let cards = [
     //     todo: "Make a Might roll",
     //     result: "5+: Gain 1 Might or Speed. <br><br> 1-4: Gain 1 Speed and lose 1 Sanity. <br><br> 0: Take 2 General damage.",
     //     effect: async (player) => {
-    //         let roll = await handleDiceRoll(player.stats.might);
+    //         let roll = await handleDiceRoll(player.stats.might, "trait");
 
     //         if (roll === 0) {
     //             handleTraitChange("general", 2, "lose");
@@ -579,12 +581,12 @@ let cards = [
     //     todo: "Make a Sanity roll",
     //     result: "4+: Gain 1 Sanity. <br><br> 2-3: Place your explorer on the Entrance Hall. <br><br> 0-1: Take 1 die of Physical damage and 1 die of Mental damage.",
     //     effect: async (player) => {
-    //         let roll = await handleDiceRoll(player.stats.sanity);
+    //         let roll = await handleDiceRoll(player.stats.sanity, "trait");
 
     //         if (roll <= 1) {
-    //             let roll = await handleDiceRoll(1);
+    //             let roll = await handleDiceRoll(1, "amount");
     //             await handleTraitChange("physical", roll, "lose");
-    //             roll = await handleDiceRoll(1);
+    //             roll = await handleDiceRoll(1, "amount");
     //             await handleTraitChange("mental", roll, "lose");
     //         } else if (roll <= 3) {
     //             handlePlayerMovesTiles("entranceHall", "ground");
@@ -602,7 +604,7 @@ let cards = [
     //     todo: "Make a Sanity roll",
     //     result: "4+: Gain 1 knowledge. <br><br> 0-3: Take 1 Mental damage.",
     //     effect: async (player) => {
-    //         let roll = await handleDiceRoll(player.stats.sanity);
+    //         let roll = await handleDiceRoll(player.stats.sanity, "trait");
 
     //         if (roll <= 3) {
     //             handleTraitChange("mental", 1, "lose");
@@ -620,7 +622,7 @@ let cards = [
     //     todo: "Make a Sanity roll",
     //     result: "4+: Nothing happens. <br><br> 0-3: Take 2 Mental damage.",
     //     effect: async (player) => {
-    //         let roll = await handleDiceRoll(player.stats.sanity);
+    //         let roll = await handleDiceRoll(player.stats.sanity, "trait");
 
     //         if (roll <= 3) {
     //             handleTraitChange("mental", 2, "lose");
@@ -633,7 +635,7 @@ let cards = [
     //     todo: "Make a Knowledge roll",
     //     result: "6+: Place your explorer on any Upper or Ground Floor tile. <br><br> 4-5: Place your explorer on any Ground Floor tile. <br><br> 0-3: Place your explorer on the Basement Landing tile.",
     //     effect: async (player) => {
-    //         let roll = await handleDiceRoll(player.stats.knowledge);
+    //         let roll = await handleDiceRoll(player.stats.knowledge, "trait");
     //         if (roll <= 3) {
     //             handlePlayerMovesTiles("basementLanding", "basement");
     //         } else if (roll <= 5) {
@@ -674,7 +676,7 @@ let cards = [
     //     todo: " Make a Knowledge roll",
     //     result: "4+: Gain 1 Sanity. <br><br> 0-3: Take 1 Mental damage.",
     //     effect: async (player) => {
-    //         let roll = await handleDiceRoll(player.stats.knowledge);
+    //         let roll = await handleDiceRoll(player.stats.knowledge, "trait");
 
     //         if (roll <= 3) {
     //             handleTraitChange("mental", 1, "lose");
@@ -699,7 +701,7 @@ let cards = [
     //         if (hauntStarted === true || answer === "no") {
     //             handlePlayerGainsCard();
     //         } else if (true) {
-    //             let roll = await handleDiceRoll(hauntValue);
+    //             let roll = await handleDiceRoll(hauntValue, "haunt");
     //             if (roll <= 4) {
     //                 let playerStatsInfo =
     //                     playerInfo[player.id.replace("p", "")].stats;
@@ -721,9 +723,9 @@ let cards = [
     //             ["speed", "might"],
     //             "Do you want to roll with Speed or Might?"
     //         );
-    //         let roll = await handleDiceRoll(player.stats[trait]);
+    //         let roll = await handleDiceRoll(player.stats[trait], "trait");
     //         if (roll <= 4) {
-    //             let roll = await handleDiceRoll(1);
+    //             let roll = await handleDiceRoll(1, "amount");
     //             handleTraitChange("physical", roll, "lose");
     //         } else {
     //             let playerStatsInfo =
@@ -739,7 +741,7 @@ let cards = [
     //     todo: "Make a Sanity roll",
     //     result: "4+: Gain 1 Knowledge. <br><br> 2-3: Gain 1 Knowledge and lose 1 Sanity. <br><br> 0-1: Take 2 Mental damage",
     //     effect: async (player) => {
-    //         let roll = await handleDiceRoll(player.stats.sanity);
+    //         let roll = await handleDiceRoll(player.stats.sanity, "trait");
 
     //         if (roll <= 1) {
     //             handleTraitChange("mental", 2, "lose");
@@ -790,7 +792,7 @@ let cards = [
     //             }, 0);
     //         }
 
-    //         let roll = await handleDiceRoll(player.stats.sanity);
+    //         let roll = await handleDiceRoll(player.stats.sanity, "trait");
 
     //         if (roll <= 1) {
     //             let playerStatsInfo =
@@ -822,7 +824,7 @@ let cards = [
     //         let container = document.querySelector(".dice");
     //         container.append(rollsDisplay);
     //         for (let key in player.stats) {
-    //             let roll = await handleDiceRoll(player.stats[key]);
+    //             let roll = await handleDiceRoll(player.stats[key], "trait");
 
     //             let traitRollDisplay = document.createElement("div");
     //             traitRollDisplay.classList.add("total-display");
@@ -852,10 +854,10 @@ let cards = [
     //     todo: "Make a Sanity roll",
     //     result: "4+: Nothing happens. <br><br> 0-3: Take 1 die of Mental damage.",
     //     effect: async (player) => {
-    //         let roll = await handleDiceRoll(player.stats.sanity);
+    //         let roll = await handleDiceRoll(player.stats.sanity, "trait");
     //         window.alert(`You rolled: ${roll}`); //this is here for now so you can see what you rolled
     //         if (roll <= 3) {
-    //             let roll = await handleDiceRoll(1);
+    //             let roll = await handleDiceRoll(1, "amount");
     //             handleTraitChange("mental", roll, "lose");
     //         }
     //     },
@@ -866,7 +868,7 @@ let cards = [
     //     todo: "Make a Sanity roll",
     //     result: "4+: Draw an Item card. <br><br> 0-3: Lose 1 Might.",
     //     effect: async (player) => {
-    //         let roll = await handleDiceRoll(player.stats.sanity);
+    //         let roll = await handleDiceRoll(player.stats.sanity, "trait");
     //         if (roll <= 3) {
     //             let playerStatsInfo =
     //                 playerInfo[player.id.replace("p", "")].stats;
@@ -896,7 +898,7 @@ let cards = [
     //                 renderPlayerStats();
     //             }
     //         } else {
-    //             let roll = await handleDiceRoll(1);
+    //             let roll = await handleDiceRoll(1, "amount");
     //             handleTraitChange("mental", roll, "lose");
     //         }
     //     },
@@ -912,10 +914,10 @@ let cards = [
     //             "Would you like to inhale the scent?"
     //         );
     //         if (choice === "yes") {
-    //             let roll = await handleDiceRoll(2);
+    //             let roll = await handleDiceRoll(2, "amount");
     //             window.alert(`You rolled: ${roll}`); //this is here for now so you can see what you rolled
     //             if (roll <= 2) {
-    //                 let roll = await handleDiceRoll(1);
+    //                 let roll = await handleDiceRoll(1, "amount");
     //                 handleTraitChange("mental", roll, "lose");
     //             } else {
     //                 handleTraitChange("general", 1, "gain");
@@ -934,7 +936,7 @@ let cards = [
     //             "Would you like to drink the fluid?"
     //         );
     //         if (choice === "yes") {
-    //             let roll = await handleDiceRoll(3);
+    //             let roll = await handleDiceRoll(3, "amount");
     //             if (roll === 0) {
     //                 let playerStatsInfo =
     //                     playerInfo[player.id.replace("p", "")].stats;
@@ -991,14 +993,14 @@ let cards = [
     //     todo: "Roll 2 dice.",
     //     result: "4+: Gain 1 Sanity. <br><br> 3: Gain 1 Knowledge. <br><br> 1-2: Take one die of Mental damage. <br><br> 0: Take two dice of Physical damage.",
     //     effect: async (player) => {
-    //         let roll = await handleDiceRoll(2);
+    //         let roll = await handleDiceRoll(2, "amount");
     //         window.alert(`You rolled: ${roll}`); //this is here for now so you can see what you rolled
 
     //         if (roll <= 0) {
-    //             let roll = await handleDiceRoll(2);
+    //             let roll = await handleDiceRoll(2, "amount");
     //             handleTraitChange("mental", roll, "lose");
     //         } else if (roll <= 2) {
-    //             let roll = await handleDiceRoll(1);
+    //             let roll = await handleDiceRoll(1, "amount");
     //             handleTraitChange("mental", roll, "lose");
     //         } else if (roll === 3) {
     //             let playerStatsInfo =
@@ -1019,7 +1021,7 @@ let cards = [
     //     todo: "Make a Sanity roll.",
     //     result: "4+: Gain 1 Knowledge. <br><br> 0-3: Take 1 Mental damage.",
     //     effect: async (player) => {
-    //         let roll = await handleDiceRoll(player.stats.sanity);
+    //         let roll = await handleDiceRoll(player.stats.sanity, "trait");
 
     //         if (roll <= 3) {
     //             handleTraitChange("mental", 1, "lose");
@@ -1037,10 +1039,10 @@ let cards = [
     //     todo: "Roll 2 dice.",
     //     result: " 3-4: Gain 1 Knowledge. <br><br> 0-2: Take one die of Mental damage.",
     //     effect: async (player) => {
-    //         let roll = await handleDiceRoll(2);
+    //         let roll = await handleDiceRoll(2, "amount");
     //         window.alert(`You rolled: ${roll}`); //this is here for now so you can see what you rolled
     //         if (roll <= 2) {
-    //             let roll = await handleDiceRoll(1);
+    //             let roll = await handleDiceRoll(1, "amount" );
     //             handleTraitChange("mental", roll, "lose");
     //         } else {
     //             let playerStatsInfo =
@@ -1063,7 +1065,7 @@ let cards = [
     //         if (hauntStarted === true || answer === "no") {
     //             handlePlayerGainsCard();
     //         } else {
-    //             let roll = await handleDiceRoll(hauntValue);
+    //             let roll = await handleDiceRoll(hauntValue, "haunt");
     //             if (roll <= 4) {
     //                 handlePlayerGainsCard();
     //             } else {
@@ -1125,7 +1127,7 @@ let cards = [
     //     todo: "Make a Sanity roll",
     //     result: "4+: Gain 1 Sanity or Speed. Place your explorer on an adjacent tile. <br><br> 2-3: Gain 1 Speed and lose 1 Sanity. <br><br> 0-1: Lose 1 speed.",
     //     effect: async (player, hauntValue, hauntStarted) => {
-    //         let roll = await handleDiceRoll(player.stats.sanity);
+    //         let roll = await handleDiceRoll(player.stats.sanity, "trait");
 
     //         if (roll <= 1) {
     //             let playerStatsInfo =
@@ -1157,7 +1159,7 @@ let cards = [
     //     todo: "Make a Might roll",
     //     result: "5+: Gain 1 Sanity. <br><br> 0-4: Take 1 Physical damage. Place and Obstacle token on this tile.",
     //     effect: async (player, hauntValue, hauntStarted) => {
-    //         let roll = await handleDiceRoll(player.stats.might);
+    //         let roll = await handleDiceRoll(player.stats.might, "trait");
     //         if (roll <= 4) {
     //             handleTraitChange("physical", 1, "lose");
     //             console.log("Place an obstacle token on this tile");
@@ -1177,7 +1179,7 @@ let cards = [
     //     result: "",
     //     effect: async (player, hauntValue, hauntStarted) => {
     //         let currentFloor = player.currentFloor;
-    //         // let roll = await handleDiceRoll(player.stats.knowledge); // PLAYER WILL NOT DSPALY CORRECTLY UNLESS THERE IS AN DELAY....
+    //         // let roll = await handleDiceRoll(player.stats.knowledge, "trait"); // PLAYER WILL NOT DSPALY CORRECTLY UNLESS THERE IS AN DELAY....
     //         setTimeout(() => {
     //             if (currentFloor === "upper") {
     //                 handlePlayerMovesTiles("entranceHall", "ground");
@@ -1196,10 +1198,10 @@ let cards = [
     //     todo: "Make a Speed roll",
     //     result: " 4+: Draw an Item card. <br><br> 1-3: Take 1 Mental damage. <br><br> 0: Take one die of Physical damage. place your explorer on the Basement Landing.",
     //     effect: async (player, hauntValue, hauntStarted) => {
-    //         let roll = await handleDiceRoll(player.stats.speed);
+    //         let roll = await handleDiceRoll(player.stats.speed, "trait");
     //         if (roll === 0) {
     //             handlePlayerMovesTiles("basementLanding", "basement");
-    //             let roll = await handleDiceRoll(1);
+    //             let roll = await handleDiceRoll(1, "amount");
     //             handleTraitChange("physical", roll, "lose");
     //         } else if (roll <= 3) {
     //             handleTraitChange("mental", 1, "lose");
@@ -1255,7 +1257,7 @@ let cards = [
     //         if (hauntStarted === true || answer === "no") {
     //             handleTraitChange("general", 1, "gain");
     //         } else {
-    //             let roll = await handleDiceRoll(hauntValue);
+    //             let roll = await handleDiceRoll(hauntValue, "amount");
     //             if (roll <= 4) {
     //                 let playerStatsInfo =
     //                     playerInfo[player.id.replace("p", "")].stats;
@@ -1277,7 +1279,7 @@ let cards = [
     //             ["speed", "might"],
     //             "Do you want to roll with Speed or Might?"
     //         );
-    //         let roll = await handleDiceRoll(player.stats[answer]);
+    //         let roll = await handleDiceRoll(player.stats[answer], "trait");
     //         let tiles = [];
     //         if (roll <= 2) {
     //             handleTraitChange("mental", 1, "lose");
@@ -1337,7 +1339,7 @@ let cards = [
     //             ["speed", "might", "knowledge", "sanity"],
     //             "Choose a trait to roll."
     //         );
-    //         let roll = await handleDiceRoll(player.stats[answer]);
+    //         let roll = await handleDiceRoll(player.stats[answer], "trait");
     //         if (roll <= 10) {
     //             let playerStatsInfo =
     //                 playerInfo[player.id.replace("p", "")].stats;
@@ -1368,9 +1370,9 @@ let cards = [
     //     todo: "Make a knowledge roll",
     //     result: "5+: Draw an Item card <br><br> 0-4: Take one die of Physical damage.",
     //     effect: async (player, hauntValue, hauntStarted) => {
-    //         let roll = await handleDiceRoll(player.stats.knowledge);
+    //         let roll = await handleDiceRoll(player.stats.knowledge, "trait");
     //         if (roll <= 4) {
-    //             let roll = await handleDiceRoll(1);
+    //             let roll = await handleDiceRoll(1, "amount");
     //             handleTraitChange("physical", roll, "lose");
     //         } else {
     //             handlePlayerGainsCard();
@@ -1394,7 +1396,7 @@ let cards = [
     //                 handleTraitChange("general", 1, "gain");
     //             }
     //         } else {
-    //             let roll = await handleDiceRoll(player.stats.sanity);
+    //             let roll = await handleDiceRoll(player.stats.sanity, "trait");
     //             if (roll <= 3) {
     //                 handleTraitChange("general", 1, "lose");
     //             } else {

@@ -829,7 +829,7 @@ document.addEventListener("keydown", () => {
     }
 });
 
-export async function handleDiceRoll(diceAmount, answer) {
+export async function handleDiceRoll(diceAmount, rollType) {
     let extraDice = await getExtraDice();
     diceRolling = true;
     rollBtn.style.display = "inline";
@@ -851,19 +851,24 @@ export async function handleDiceRoll(diceAmount, answer) {
     }, 100);
 
     let total = await new Promise((resolve) => {
-        activePlayer.cards.forEach((card) => {
-            let button = Array.from(card.element.children).filter(
-                (child) => child.innerHTML === "use"
-            )[0];
-            button.addEventListener("click", () => {
-                clearInterval(interval);
-                rollBtn.style.display = "none";
-                let total = card.effect(card);
+        if ((rollType = "trait")) {
+            activePlayer.cards.forEach((card) => {
+                let button;
+                if (card.subtype === "trait roll") {
+                    button = Array.from(card.element.children).filter(
+                        (child) => child.innerHTML === "use"
+                    )[0];
+                }
+                button.addEventListener("click", () => {
+                    clearInterval(interval);
+                    rollBtn.style.display = "none";
+                    let total = card.effect(card);
 
-                totalDisplay.innerHTML = "choose any number";
-                resolve(total);
+                    totalDisplay.innerHTML = "choose any number";
+                    resolve(total);
+                });
             });
-        });
+        }
         rollBtn.addEventListener(
             "click",
             () => {
@@ -886,68 +891,6 @@ export async function handleDiceRoll(diceAmount, answer) {
     return total;
 }
 
-// let abortController = new AbortController(); // Used to stop rolling early
-
-// export async function handleDiceRoll(diceAmount, answer) {
-//     let extraDice = await getExtraDice();
-//     diceRolling = true;
-//     rollBtn.style.display = "inline";
-//     totalDisplay.innerHTML = "Rolling...";
-//     let interval;
-//     diceAmount += extraDice;
-
-//     for (let i = 0; i < dice.length; i++) {
-//         dice[i].style.display = i < diceAmount ? "inline-block" : "none";
-//     }
-
-//     // Start dice rolling animation
-//     interval = setInterval(() => {
-//         for (let i = 0; i < diceAmount; i++) {
-//             let num = Math.floor(Math.random() * 3); // Random dice roll (0-2)
-//             dice[i].dataset.value = num;
-//             dice[i].src = `./images/dice/${num}.png`;
-//         }
-//     }, 100);
-
-//     // Return a Promise that resolves when the dice roll completes or an external number is provided
-//     let total = await new Promise((resolve) => {
-//         let stopRolling = (finalTotal) => {
-//             clearInterval(interval);
-//             rollBtn.style.display = "none";
-//             totalDisplay.innerHTML = `Your roll: ${finalTotal}`;
-//             resolve(finalTotal);
-//             diceRolling = false;
-//         };
-
-//         // Listen for external number selection
-//         let checkExternalNumber = () => {
-//             if (selectedNumber !== null) {
-//                 stopRolling(selectedNumber);
-//                 abortController.abort(); // Stop any other event listeners
-//             }
-//         };
-
-//         // Use MutationObserver or setInterval to check for external updates
-//         let observer = new MutationObserver(checkExternalNumber);
-//         observer.observe(document.body, { childList: true, subtree: true });
-
-//         rollBtn.addEventListener(
-//             "click",
-//             () => {
-//                 let total = 0;
-//                 for (let i = 0; i < diceAmount; i++) {
-//                     total += parseInt(dice[i].dataset.value, 10);
-//                 }
-//                 stopRolling(total);
-//                 observer.disconnect();
-//             },
-//             { once: true, signal: abortController.signal }
-//         );
-//     });
-
-//     return total;
-// }
-
 async function getExtraDice() {
     let extras = await new Promise((resolve) => {
         let extras = 0;
@@ -961,8 +904,6 @@ async function getExtraDice() {
     });
     return extras;
 }
-
-export function alterDiceRoll(num) {}
 
 export function handleTraitChange(type, amount, gainOrLose) {
     if (amount === 0) return;
@@ -1120,7 +1061,7 @@ export function displayCardInfo(eventInfo) {
     } else if (eventInfo.type === "item" || eventInfo.type === "omen") {
         let info = [];
         for (let key in eventInfo) {
-            if (key !== "type" && key !== "weapon") {
+            if (key !== "type" && key !== "weapon" && key !== "subtype") {
                 info.push(eventInfo[key]);
             }
         }
