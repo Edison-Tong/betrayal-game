@@ -35,10 +35,11 @@ export let selectedTiles = [];
 let direction;
 let tileMessageBox = document.querySelector(".tile-message");
 let symbolFound;
-let diceRolling = false;
+export let diceRolling = false;
 let traitChanging = false;
 let tileChoosing = false;
 let firstMove = true;
+export let selectedNumber = [];
 
 export let movementTiles = {
     groundFloorStaircase: {
@@ -364,6 +365,9 @@ export function renderPlayerCards() {
         let newCard = document.createElement("div");
         let cardAbility = document.createElement("div");
         let cardBtn = document.createElement("button");
+        // cardBtn.addEventListener("click", () => {
+        //     card.effect(card);
+        // });
         newCard.classList.add("card");
         newCard.classList.add(card.type);
         newCard.innerHTML = card.name;
@@ -554,10 +558,10 @@ function checkForObstacles() {
     }
 }
 
-// FOR TESTING
+// // FOR TESTING
 // document.addEventListener("keydown", () => {
 //     if (event.key === "t") {
-//         handleTraitChange("general", 5, "lose");
+//         console.log(selectedNumber);
 //     } else if (event.key === "y") {
 //         handleTraitChange("general", 5, "gain");
 //     }
@@ -609,26 +613,32 @@ export async function handlePlayerGainsCard(tile) {
     }
 }
 
-export function handlePlayerDiscardsCard() {
-    playerCardsDisplay.classList.remove("hidden");
-    activePlayer.cards.forEach((card) => {
-        if (card.type === "item") {
-            let removeItemBtn = document.createElement("button");
-            removeItemBtn.innerHTML = "Discard";
-            card.element.append(removeItemBtn);
-            let cardName = card.name;
-            removeItemBtn.addEventListener("click", () => {
-                let itemName = cardName;
-                event.target.parentElement.remove();
-                activePlayer.cards.forEach((card) => {
-                    if (card.name === itemName) {
-                        let index = activePlayer.cards.indexOf(card);
-                        activePlayer.cards.splice(index, 1);
-                    }
+export function handlePlayerDiscardsCard(card) {
+    if (!card) {
+        playerCardsDisplay.classList.remove("hidden");
+        activePlayer.cards.forEach((card) => {
+            if (card.type === "item") {
+                let removeItemBtn = document.createElement("button");
+                removeItemBtn.innerHTML = "Discard";
+                card.element.append(removeItemBtn);
+                let cardName = card.name;
+                removeItemBtn.addEventListener("click", () => {
+                    let itemName = cardName;
+                    event.target.parentElement.remove();
+                    activePlayer.cards.forEach((card) => {
+                        if (card.name === itemName) {
+                            let index = activePlayer.cards.indexOf(card);
+                            activePlayer.cards.splice(index, 1);
+                        }
+                    });
                 });
-            });
-        }
-    });
+            }
+        });
+    } else {
+        let index = activePlayer.cards.indexOf(card);
+        activePlayer.cards[index].element.remove();
+        activePlayer.cards.splice(index, 1);
+    }
 }
 
 function handleRotateTile(tile) {
@@ -766,7 +776,6 @@ export async function handlePlayerMovesTiles(opposite, level) {
             newCurrentTile = tile;
         }
     });
-    console.log(newCurrentTile);
     if (!newCurrentTile) {
         return false;
     }
@@ -813,7 +822,14 @@ function handleEndOfTurnEvents() {
     return Promise.all(promises); // Ensure all tasks complete
 }
 
-export async function handleDiceRoll(diceAmount) {
+document.addEventListener("keydown", () => {
+    if (event.key === "t") {
+        console.log("abort");
+        abortController.abort();
+    }
+});
+
+export async function handleDiceRoll(diceAmount, answer) {
     let extraDice = await getExtraDice();
     diceRolling = true;
     rollBtn.style.display = "inline";
@@ -834,8 +850,20 @@ export async function handleDiceRoll(diceAmount) {
         }
     }, 100);
 
-    // Return a Promise that resolves when the dice roll completes
     let total = await new Promise((resolve) => {
+        activePlayer.cards.forEach((card) => {
+            let button = Array.from(card.element.children).filter(
+                (child) => child.innerHTML === "use"
+            )[0];
+            button.addEventListener("click", () => {
+                clearInterval(interval);
+                rollBtn.style.display = "none";
+                let total = card.effect(card);
+
+                totalDisplay.innerHTML = "choose any number";
+                resolve(total);
+            });
+        });
         rollBtn.addEventListener(
             "click",
             () => {
@@ -851,12 +879,74 @@ export async function handleDiceRoll(diceAmount) {
                 totalDisplay.innerHTML = `Your roll: ${total}`;
                 resolve(total); // Resolve the promise with the computed total
             },
-            { once: true }
-        ); // Ensure the event fires only once
+            { once: true } // Ensure the event fires only once
+        );
     });
     diceRolling = false;
     return total;
 }
+
+// let abortController = new AbortController(); // Used to stop rolling early
+
+// export async function handleDiceRoll(diceAmount, answer) {
+//     let extraDice = await getExtraDice();
+//     diceRolling = true;
+//     rollBtn.style.display = "inline";
+//     totalDisplay.innerHTML = "Rolling...";
+//     let interval;
+//     diceAmount += extraDice;
+
+//     for (let i = 0; i < dice.length; i++) {
+//         dice[i].style.display = i < diceAmount ? "inline-block" : "none";
+//     }
+
+//     // Start dice rolling animation
+//     interval = setInterval(() => {
+//         for (let i = 0; i < diceAmount; i++) {
+//             let num = Math.floor(Math.random() * 3); // Random dice roll (0-2)
+//             dice[i].dataset.value = num;
+//             dice[i].src = `./images/dice/${num}.png`;
+//         }
+//     }, 100);
+
+//     // Return a Promise that resolves when the dice roll completes or an external number is provided
+//     let total = await new Promise((resolve) => {
+//         let stopRolling = (finalTotal) => {
+//             clearInterval(interval);
+//             rollBtn.style.display = "none";
+//             totalDisplay.innerHTML = `Your roll: ${finalTotal}`;
+//             resolve(finalTotal);
+//             diceRolling = false;
+//         };
+
+//         // Listen for external number selection
+//         let checkExternalNumber = () => {
+//             if (selectedNumber !== null) {
+//                 stopRolling(selectedNumber);
+//                 abortController.abort(); // Stop any other event listeners
+//             }
+//         };
+
+//         // Use MutationObserver or setInterval to check for external updates
+//         let observer = new MutationObserver(checkExternalNumber);
+//         observer.observe(document.body, { childList: true, subtree: true });
+
+//         rollBtn.addEventListener(
+//             "click",
+//             () => {
+//                 let total = 0;
+//                 for (let i = 0; i < diceAmount; i++) {
+//                     total += parseInt(dice[i].dataset.value, 10);
+//                 }
+//                 stopRolling(total);
+//                 observer.disconnect();
+//             },
+//             { once: true, signal: abortController.signal }
+//         );
+//     });
+
+//     return total;
+// }
 
 async function getExtraDice() {
     let extras = await new Promise((resolve) => {
@@ -871,6 +961,8 @@ async function getExtraDice() {
     });
     return extras;
 }
+
+export function alterDiceRoll(num) {}
 
 export function handleTraitChange(type, amount, gainOrLose) {
     if (amount === 0) return;
@@ -969,9 +1061,8 @@ export function getPlayerChoice(options, message) {
 
         options.forEach((option) => {
             let button = document.createElement("button");
-            button.textContent = `${
-                option.charAt(0).toUpperCase() + option.slice(1)
-            }`;
+            button.textContent = option;
+            // `${option.charAt(0).toUpperCase() + option.slice(1)}`;
             button.onclick = () => {
                 document.body.removeChild(modal);
                 resolve(option);
