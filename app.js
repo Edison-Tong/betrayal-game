@@ -422,17 +422,19 @@ async function handlePlayerMovement() {
                         nextFloor = tile.element.parentElement.classList[1];
                     }
                 });
-                handlePlayerMovesTiles(otherPassage, nextFloor);
+                await handlePlayerMovesTiles(otherPassage, nextFloor);
             } else if (
-                handlePlayerMovesTiles(
+                (await handlePlayerMovesTiles(
                     movementTiles[moveToTile].opposite,
                     movementTiles[moveToTile].connectingFloor
-                ) === false
+                )) === false
             ) {
                 return;
             }
-            column = activePlayer.currentTile.col;
-            row = activePlayer.currentTile.row;
+            setTimeout(() => {
+                column = activePlayer.currentTile.col;
+                row = activePlayer.currentTile.row;
+            });
         }
     }
     if (
@@ -764,6 +766,7 @@ export async function handlePlayerMovesTiles(opposite, level) {
             newCurrentTile = tile;
         }
     });
+    console.log(newCurrentTile);
     if (!newCurrentTile) {
         return false;
     }
@@ -771,7 +774,7 @@ export async function handlePlayerMovesTiles(opposite, level) {
         activePlayer.currentTile = newCurrentTile;
         switchBoards(level);
         positionPlayers("mid", level, [row, column]);
-    }, 1);
+    });
 }
 
 async function handleEndOfTurn() {
@@ -844,7 +847,6 @@ export async function handleDiceRoll(diceAmount) {
                     total += parseInt(dice[i].dataset.value, 10);
                 }
 
-                total = 4;
                 // FUNCTION TO ADD TO THE TOTAL IF CORRESPONDING ITEM OR OMEN IS POSSESSED BY THE PLAYER
                 totalDisplay.innerHTML = `Your roll: ${total}`;
                 resolve(total); // Resolve the promise with the computed total
