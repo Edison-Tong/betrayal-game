@@ -861,13 +861,22 @@ export async function handleDiceRoll(diceAmount, rollType) {
                     )[0];
                 }
                 button.classList.remove("hidden");
-                button.addEventListener("click", () => {
+                button.addEventListener("click", async () => {
                     clearInterval(interval);
                     rollBtn.style.display = "none";
-                    let total = card.effect(card);
-
                     totalDisplay.innerHTML = "choose any number";
-                    resolve(total);
+
+                    let total = await card.effect(card);
+
+                    totalDisplay.innerHTML = `Chosen Number: ${total}`;
+
+                    let confirmBtn = document.createElement("button");
+                    confirmBtn.innerHTML = "Confirm";
+                    document.querySelector(".dice").append(confirmBtn);
+                    confirmBtn.addEventListener("click", () => {
+                        confirmBtn.remove();
+                        resolve(total); // Resolve the promise with the computed total
+                    });
                 });
             });
         }
@@ -884,7 +893,13 @@ export async function handleDiceRoll(diceAmount, rollType) {
 
                 // FUNCTION TO ADD TO THE TOTAL IF CORRESPONDING ITEM OR OMEN IS POSSESSED BY THE PLAYER
                 totalDisplay.innerHTML = `Your roll: ${total}`;
-                resolve(total); // Resolve the promise with the computed total
+                let confirmBtn = document.createElement("button");
+                confirmBtn.innerHTML = "Confirm";
+                document.querySelector(".dice").append(confirmBtn);
+                confirmBtn.addEventListener("click", () => {
+                    confirmBtn.remove();
+                    resolve(total); // Resolve the promise with the computed total
+                });
             },
             { once: true } // Ensure the event fires only once
         );

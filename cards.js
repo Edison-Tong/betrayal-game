@@ -81,27 +81,27 @@ let cards = [
     //         "If someonthing would cause your explorer to die, first roll 3 dice. <br><br> 4-6: Instead of dying, set all your traits to critical. <br><br> 0-3 You die as normal.",
     // },
 
-    // {
-    //     name: "angels Feather",
-    //     type: "item",
-    //     subtype: "trait roll",
-    //     weapon: false,
-    //     ability:
-    //         "When you are required to make a trait roll, you may instead bury the Angles Feather. If you do, choose a number from 0-8. Use that number as the result of the required roll.",
-    //     special: "",
-    //     effect: async (card) => {
-    //         if (!diceRolling) {
-    //             return;
-    //         }
-    //         handlePlayerDiscardsCard(card);
+    {
+        name: "angels Feather",
+        type: "item",
+        subtype: "trait roll",
+        weapon: false,
+        ability:
+            "When you are required to make a trait roll, you may instead bury the Angles Feather. If you do, choose a number from 0-8. Use that number as the result of the required roll.",
+        special: "",
+        effect: async (card) => {
+            if (!diceRolling) {
+                return;
+            }
+            handlePlayerDiscardsCard(card);
 
-    //         let answer = await getPlayerChoice(
-    //             [0, 1, 2, 3, 4, 5, 6, 7, 8],
-    //             "Pick a number"
-    //         );
-    //         return answer;
-    //     },
-    // },
+            let answer = await getPlayerChoice(
+                [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                "Pick a number"
+            );
+            return answer;
+        },
+    },
     // {
     //     name: "brooch",
     //     type: "item",
@@ -119,18 +119,18 @@ let cards = [
     //         "When you use the Chainsaw to attack, add one die to your attack.",
     //     special: "",
     // },
-    {
-        name: "creepy Doll",
-        type: "item",
-        subtype: "trait roll",
-        weapon: false,
-        ability:
-            "Once during your turn, you may use the Creep Doll to reroll all dice on a trait roll you just made. <br><br> Then lose one sanity",
-        special: "",
-        effect: (card) => {
-            console.log(card);
-        },
-    },
+    // {
+    //     name: "creepy Doll",
+    //     type: "item",
+    //     subtype: "trait roll",
+    //     weapon: false,
+    //     ability:
+    //         "Once during your turn, you may use the Creep Doll to reroll all dice on a trait roll you just made. <br><br> Then lose one sanity",
+    //     special: "",
+    //     effect: (card) => {
+    //         console.log(card);
+    //     },
+    // },
     // {
     //     name: "crossbow",
     //     type: "item",
